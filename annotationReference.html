@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta name="keywords" content="sastruts, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Framework" />
 <meta name="description" content="sastruts" />
-<title>Super Agile Struts</title>
+<title>Super Agile Struts - Annotation Reference</title>
 <link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
 <link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
 </head>
@@ -53,7 +53,20 @@
     <li><a href="setup.html">セットアップ</a></li>
 	<li><a href="tutorial.html">チュートリアル</a></li>
 	<li><a href="featureReference.html">機能リファレンス</a></li>
-	<li><a href="annotationReference.html">アノテーションリファレンス</a></li>
+	<li><a href="annotationReference.html">アノテーションリファレンス</a>
+		<ul>
+			<li><a href="#General">一般</a>
+			<ul>
+				<li><a href="#Execute">Execute</a></li>
+			</ul>
+			</li>
+			<li><a href="#Validation">検証</a>
+			<ul>
+				<li><a href="#Required">Required</a></li>
+			</ul>
+			</li>
+		</ul>
+	</li>
 </ul>
 
 </div><!-- contents_left -->
@@ -64,23 +77,41 @@
 
 <div class="section">
 
-<h2>Welcome to the "Super Agile Struts" project.</h2>
+<h2>アノテーションリファレンス</h2>
+<p>SAStrutsで使われているアノテーションの説明をします。</p>
 
+<h3><a name="General">一般的なアノテーション</a></h3>
 <p>
-Super Agile Struts(以降SAStrutsと省略)は、Strutsを使った開発をSuper Agileに行なうためのフレームワークです。
+一般的なアノテーションです。
+</p>
+
+<h4><a name="Execute">Executeアノテーション</a></h4>
+<p>
+実行メソッドにつけるアノテーションです。
 </p>
 <p>
-Strutsで開発する場合に困ることは、設定ファイルをたくさん書く必要があったり、
-設定ファイルやJavaのコードを修正するたびにアプリケーションサーバを再起動する必要があることでしょう。
+Executeアノテーションの付いているメソッドの名前がリクエストのパラメータのキーに含まれている場合、
+そのメソッドが呼び出されます。
+通常は、ボタン系のタグのname属性の値をExecuteアノテーションの付いているメソッド名にします。
 </p>
+<h5>validator属性(オプション)</h5>
 <p>
-SAStrutsを使えば、設定ファイルを書く必要はなく、
-スクリプト言語のようにファイルを保存する(保存と同時にコンパイルするような設定になっている場合)と、
-すぐにその内容をアプリケーションサーバの再起動なしで認識することができます。
+<a href="#Validation">検証用のアノテーション</a>を有効にするかどうかを指定します。
+デフォルトはtrue(有効)です。
+trueの場合は、input属性も指定する必要があります。
 </p>
+
+<h3><a name="Validation">検証用のアノテーション</a></h3>
 <p>
-SAStrutsを使うことで、Strutsを使った開発の生産性を<b>10倍以上</b>向上させることができるでしょう。
+<a href="http://commons.apache.org/validator/">commons validator</a>
+を使ったアノテーションです。
 </p>
+
+<h4><a name="Required">Requiredアノテーション</a></h4>
+<p>
+必須チェック用のアノテーションです。
+</p>
+
 
 </div><!-- section -->
 

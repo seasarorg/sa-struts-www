@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Language" content="ja" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="keywords" content="sastruts, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Framework" />
+<meta name="description" content="sastruts" />
+<title>Super Agile Struts - Feature Reference</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h2 id="h01" class="hide">The Seasar Foundation Project Site</h2><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Project" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" name="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+</div><!-- header -->
+
+
+<div id="contents_left">
+
+<h2>Menu</h2>
+
+<ul>
+    <li><a href="index.html">ホーム</a></li>
+    <li><a href="setup.html">セットアップ</a></li>
+	<li><a href="tutorial.html">チュートリアル</a></li>
+	<li><a href="featureReference.html">機能リファレンス</a>
+		<ul>
+			<li><a href="#Action">アクション</a></li>
+			<li><a href="#ActionForm">アクションフォーム</a></li>
+			<li><a href="#ExecuteMethod">実行メソッド</a></li>
+			<li><a href="#Validator">バリデータ</a></li>
+			<li><a href="#ValidateMethod">検証メソッド</a></li>
+			<li><a href="#ResetMethod">リセットメソッド</a></li>
+		</ul>
+	</li>
+	<li><a href="annotationReference.html">アノテーションリファレンス</a></li>
+</ul>
+
+</div><!-- contents_left -->
+
+<div id="contents_center">
+
+<div id="article">
+
+<div class="section">
+
+<h2>機能リファレンス</h2>
+<p>SAStrutsの機能リファレンスです。</p>
+
+<h3><a name="Action">アクション</a></h3>
+<p>
+リクエストに応じて起動されるクラスをアクションといいます。
+Strutsでは、URLとアクションの関係をstruts-config.xmlに記述しますが、
+SAStrutsでは、次のルールに従って自動的に決まるので、
+設定ファイルを書く必要がありません。
+</p>
+<p>
+http://localhost:8080/sa-struts-tutorial/login/login.doにリクエストされたとします。
+sa-struts-tutorialはWebアプリケーション名です。
+SAStrutsは、次のような手順でURLをActionクラスに変換します。
+</p>
+<ul>
+<li>
+Webアプリケーション名の後ろのパス(/login/login.do)の拡張子を取り除きます(/login/login)。
+</li>
+<li>
+後ろにActionを付加(/login/loginAction)します。
+</li>
+<li>
+最後のスラッシュの直後を大文字(/login/LoginAction)にします。
+</li>
+<li>
+スラッシュをドットに変換(.login.LoginAction)します。
+</li>
+<li>
+ルートパッケージ名.webを先頭につけます(ルートパッケージ名.web.login.LoginAction)。
+sa-struts-tutorialを例にとると、ルートパッケージ名は、tutorialになります。
+ルートパッケージ名の詳細は、
+<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeployPackage">
+SMART deployのパッケージ構成</a>を参照してください。
+</li>
+<li>
+最終的に、/login/login.doに対応するアクションクラスはtutorial.web.login.LoginActionになります。
+</li>
+</ul>
+<p>
+アクションはPOJO(普通のJavaのクラス)にします。StrutsのようにActionを継承する必要はありません。
+HttpServletRequestやHttpServletResponseなどのオブジェクトは、
+次のようにプロパティを定義しておけば、Seasar2が自動的に設定してくれます。
+</p>
+<pre>
+public class MyAction {
+    public HttpServletRequest request;
+    public HttpServletResponse response;
+    ...
+}
+</pre>
+<p>
+自動的に設定される暗黙的なコンポーネントについては、
+<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#ImplicitComponent">こちら</a>を参照してください。
+</p>
+<p>
+SAStrutsは、publicフィールドをプロパティとみなすので、
+setter,getterメソッドをいちいち定義する必要はありません。
+setter,getterメソッドを定義してもかまいませんが、
+何かと面倒なので、publicフィールドにすることをお勧めします。
+</p>
+<p>
+Strutsでは、リクエストのパラメータの内容は、アクションフォームで受け取りますが、
+SAStrutsでは、アクションでそのまま受け取ることができます。
+リクエストのパラメータ名と同じ名前のプロパティをアクションに定義します。
+入力値を受け取るためのプロパティは、バリデーションエラーになっても値を格納できるように
+プロパティの型をStringあるいはbooleanで定義してください。
+アクションフォームをアクションとは別に定義することもできます。
+詳しくは<a href="#ActionForm">アクションフォームの説明</a>を参照してください。
+</p>
+<p>
+アクションのプロパティは、リクエストの属性にプロパティと同じ名前でセットされています。
+そのため、ELやJSTLで次のように参照することができます。
+</p>
+<pre>
+${プロパティ名}
+&lt;c:out value="${プロパティ名}"/&gt;
+</pre>
+<p>
+アクションは、リクエストスコープで管理されています。
+セッションスコープにすることはできません。
+セッションスコープを使いたい場合は、<a href="#ActionForm">アクションフォーム</a>を
+セッションスコープで管理してください。
+</p>
+<p>
+リクエストに対する処理を記述したい場合は、
+<a href="#ExecuteMethod">実行メソッド</a>を記述します。
+</p>
+<p>
+入力値に対する検証処理を記述したい場合は、
+<a href="#ValidateMethod">検証メソッド</a>を記述します。
+</p>
+<p>
+アクションでアクションフォームも兼用した場合、
+入力値のリセット処理をreset()で行なうことができますが、
+アクションはリクエストスコープで管理されているため、
+リクエストのたびにbooleanやString[]のプロパティは、
+自動的にリセットされます。
+そのため、reset()を定義する必要はありません。
+</p>
+
+<h3><a name="ActionForm">アクションフォーム</a></h3>
+<p>
+SAStrutsでは、アクションフォームもPOJOで記述することができます。
+リクエストのパラメータ名と同じ名前のプロパティをアクションフォームに定義します。
+入力値を受け取るためのプロパティは、バリデーションエラーになっても値を格納できるように
+プロパティの型をStringあるいはbooleanで定義してください。
+</p>
+<p>
+アクションフォームクラスは、tutorial.web.form.FormDtoのように
+アクションと同じパッケージにおき、クラス名の最後は、Dtoで終わるようにします。
+これは、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeploy">SMART deploy</a>
+のルールです。
+</p>
+<p>
+SAStrutsのアクションフォームは、デフォルトだとリクエストスコープで管理されますが、
+次のようにアノテーションを指定することで、
+セッションスコープで管理することもできます。
+セッションスコープで管理するコンポーネントは、
+java.io.Serializableをimplementsする必要があります。
+Serializableをimplementsするだけ良く、
+特定のメソッドを実装する必要はありません。
+@Componentの詳細は、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#ComponentAnnotation">こちら</a>を参照してください。
+</p>
+<pre>
+@Component(instance = InstanceType.SESSION)
+public class FormDto implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    ...
+}
+</pre>
+<p>
+アクションフォームを利用するには、アクションのプロパティに@ActionFormを指定します。
+@ActionFormを複数指定しても意味がないので、
+複数指定しないようにしてください。
+アクションフォームのプロパティ名は、クラス名の先頭を小文字にしたものにします。
+後は、Seasar2が自動的に設定してくれます。
+詳しくは、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#AutoBindingMode">自動バインディング</a>
+を参照してください。
+</p>
+<pre>
+public class FormAction {
+
+    @ActionForm
+    public FormDto formDto;
+    ...
+}
+</pre>
+<p>
+検証メソッドはアクションフォームではなく、<a href="#Action">アクション</a>に定義します。
+複数のアクションでアクションフォームを共用した場合、
+検証の内容は、アクションごとに異なることがほとんどだからです。
+</p>
+<p>
+resetメソッドは<a href="#ResetMethod">こちら</a>を参照してください。
+</p>
+
+<h3><a name="ExecuteMethod">実行メソッド</a></h3>
+<p>
+リクエストに対する処理は、実行メソッドに記述します。
+実行メソッドは、<a href="annotationReference.html#Execute">@Execute</a>がつけられている任意の名前のメソッドで、
+戻り値はString、引数は無しにする必要があります。
+</p>
+<pre>
+@Execute
+public String execute() {
+    ...
+    return ...;
+}
+</pre>
+<p>
+実行メソッドの戻り値は、遷移先のパスです。
+同一のサブアプリケーションに遷移するなら、
+パスからサブアプリケーション名を省略できます。
+</p>
+<p>
+例えば、http://localhost:8080/sa-struts-tutorial/login/login.doのアクションから、<br />
+http://localhost:8080/sa-struts-tutorial/login/login.jspに遷移する場合は、
+戻り値をlogin.jspと記述することができます。
+</p>
+<p>
+別のサブアプリケーション、例えば<br />
+http://localhost:8080/sa-struts-tutorial/select/select.doに遷移する場合は、
+戻り値を/select/select.doと記述します。
+</p>
+<p>
+同一のサブアプリケーションのパスに遷移する場合は、先頭は/なしで末端のパスのみを記述し、
+別のサブアプリケーションのパスに遷移する場合は、先頭は/ありで
+サブアプリケーション名もパスに含めてください。
+</p>
+<p>
+デフォルトで遷移先へはフォワードで遷移しますが、リダイレクトで遷移したい場合は、
+パスの<b>最後</b>に<b>redirect=true</b>を追加します。
+=の前後に余分な空白は含めないでください。
+redirect=trueの部分は、実際に実行されるときには、消去されます。
+</p>
+<pre>
+...
+return "xxx.jsp?redirect=true";
+</pre>
+<pre>
+...
+return "xxx.jsp?key=value&amp;redirect=true";
+</pre>
+
+<h3><a name="Validator">バリデータ</a></h3>
+<h3><a name="ValidateMethod">検証メソッド</a></h3>
+
+<h3><a name="ResetMethod">リセットメソッド</a></h3>
+<p>
+チェックボックス(&lt;input type="checkbox" .../&gt;)や
+複数選択リスト(&lt;select multiple="multiple" ...&gt;&lt;/select&gt;)
+では、選択された値のみをブラウザはリクエストで送信します。
+何も選択しなかった場合は、ブラウザは何も送信してくれません。
+そのため、アクションフォームをセッションで管理している場合、
+チェックボックスや複数選択リストで選択状態をすべて解除しても
+何もリクエストで送信されないため、元の状態のまま残ってしまいます。
+</p>
+<p>
+この問題に対応するために用意されているのが、
+アクションフォームのreset()です。
+reset()は、リクエストパラメータをアクションフォームにセットする直前に呼び出されるため、
+reset()で、チェックボックスや複数選択リストのプロパティを選択されていない状態に更新することで、
+リクエストで何も送られてこなかった場合でも、選択状態を解除することができます。
+</p>
+<pre>
+@Component(instance = InstanceType.SESSION)
+public class XxxDto implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    
+    public boolean foo;
+    
+    public String[] bar;
+    ...
+    public void reset() {
+        foo = false;
+        bar = new String[0];
+    }
+}
+</pre>
+
+</div><!-- section -->
+
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>&copy; Copyright The Seasar Foundation and the others 2006, all rights reserved.</address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>
+
