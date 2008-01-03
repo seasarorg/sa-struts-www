@@ -194,8 +194,6 @@ SAStrutsのアクションフォームは、デフォルトだとリクエスト
 セッションスコープで管理することもできます。
 セッションスコープで管理するコンポーネントは、
 java.io.Serializableをimplementsする必要があります。
-Serializableをimplementsするだけ良く、
-特定のメソッドを実装する必要はありません。
 @Componentの詳細は、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#ComponentAnnotation">こちら</a>を参照してください。
 </p>
 <pre>
@@ -402,6 +400,17 @@ errors.required2={0}は必須だぜ。
 </p>
 <pre>
 labels.userName=ユーザ名
+</pre>
+<p>
+target属性を指定することで、特定のメソッドの場合だけ、検証を行なうようにすることもできます。
+複数のメソッドを指定する場合は、カンマで区切ります。
+target属性が指定されていない場合、@Executeでvalidator=trueのすべての実行メソッドが対象になります。
+次の例では、secondプロパティは、goThirdメソッドが呼び出されるときだけ、
+入力必須になります。
+</p>
+<pre>
+@Required(target = "goThird")
+public String second;
 </pre>
 <p>
 JSPでエラーメッセージを出力するには、次のようにhtml:errorsタグを使います。
