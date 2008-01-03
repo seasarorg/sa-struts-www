@@ -60,6 +60,7 @@
 			<li><a href="#Validator">バリデータ</a></li>
 			<li><a href="#ValidateMethod">検証メソッド</a></li>
 			<li><a href="#ResetMethod">リセットメソッド</a></li>
+			<li><a href="#MessageResources">メッセージリソース</a></li>
 		</ul>
 	</li>
 	<li><a href="annotationReference.html">アノテーションリファレンス</a></li>
@@ -278,9 +279,216 @@ return "xxx.jsp?redirect=true";
 ...
 return "xxx.jsp?key=value&amp;redirect=true";
 </pre>
+<p>
+1つのアクションに複数の実行メソッドを定義することができます。
+どの実行メソッドが選択されるのかは、
+リクエストのパラメータのキーにメソッド名が含まれている(値が1文字以上あること)かどうかで決まります。
+通常は、ボタン系のタグのname属性に呼び出したいメソッド名を設定します。
+</p>
+<p>
+次の例では、アクションクラスのsubmit()が呼び出されます。
+</p>
+<pre>
+&lt;input type="submit" name="submit" value="サブミット"/&gt;
+</pre>
+<p>
+リンクから実行メソッドを呼び出すには、クエリストリングのキーにメソッド名を含めます。
+</p>
+<pre>
+&lt;a href="employee.do?submit=true"&gt;サブミット&lt;/a&gt;
+</pre>
+<p>
+実行メソッド名がリクエストのパラメータに含まれていない場合、
+executeという名前の実行メソッドがあれば、そのメソッドが呼び出されます。
+最初の画面を表示するためのメソッドをexecute()にすると良いでしょう。
+</p>
+<p>
+実行メソッドを呼び出す前に、<a href="http://commons.apache.org/validator/">commons validator</a>を使った
+検証を行なうには、@Executeのvalidator属性をtrueにします。デフォルトはtrueです。
+</p>
+<p>
+validator=trueの場合は、検証結果がNGのときの遷移先のパスをinput属性で指定します。
+パスの書き方は、実行メソッドの戻り値と同じです。
+バリデータの詳細は、<a href="#Validator">こちら</a>を参照してください。
+</p>
+<pre>
+@Execute(validator = true, input = "edit.jsp")
+</pre>
+<p>
+実行メソッドを呼び出す前に、アクションクラスのメソッドで検証を行なうには、
+@Executeのvalidate属性で検証用のメソッド名を指定します。
+</p>
+<p>
+validate属性を指定した場合は、検証結果がNGのときの遷移先のパスをinput属性で指定します。
+パスの書き方は、実行メソッドの戻り値と同じです。
+validator属性とvalidate属性を両方指定した場合には、
+バリデータのほうが先に実行されます。
+検証メソッドの詳細は、<a href="#ValidateMethod">こちら</a>を参照してください。
+</p>
+<pre>
+@Execute(validate = "validate", input = "login.jsp")
+</pre>
 
 <h3><a name="Validator">バリデータ</a></h3>
+<p>
+<a href="http://commons.apache.org/validator/">commons validator</a>を使った検証を行なうには、
+アクションやアクションフォームのフィールドに検証用のアノテーションを指定します。
+検証用のアノテーションの詳細は、<a href="annotationReference.html#Validator">こちら</a>を参照してください。
+</p>
+<pre>
+@Required
+public String userName;
+</pre>
+<p>
+検証結果がNGの場合に出力されるメッセージは、<a href="#MessageResources">メッセージリソース</a>に
+記述します。検証用のアノテーションとメッセージのキーは次のようになっています。
+</p>
+<table>
+<tr><th>アノテーション</th><th>メッセージのキー</th></tr>
+<tr><td>Required</td><td>errors.required</td></tr>
+<tr><td>Validwhen</td><td>開発者が指定</td></tr>
+<tr><td>Minlength</td><td>errors.minlength</td></tr>
+<tr><td>Maxlength</td><td>errors.maxlength</td></tr>
+<tr><td>Minbytelength</td><td>errors.minbytelength</td></tr>
+<tr><td>Maxbytelength</td><td>errors.maxbytelength</td></tr>
+<tr><td>Mask</td><td>errors.invalid</td></tr>
+<tr><td>IntRange</td><td>errors.range</td></tr>
+<tr><td>LongRange</td><td>errors.range</td></tr>
+<tr><td>FloatRange</td><td>errors.range</td></tr>
+<tr><td>DoubleRange</td><td>errors.range</td></tr>
+<tr><td>ByteType</td><td>errors.byte</td></tr>
+<tr><td>ShortType</td><td>errors.short</td></tr>
+<tr><td>IntegerType</td><td>errors.integer</td></tr>
+<tr><td>LongType</td><td>errors.long</td></tr>
+<tr><td>FloatType</td><td>errors.float</td></tr>
+<tr><td>DoubleType</td><td>errors.double</td></tr>
+<tr><td>DateType</td><td>errors.date</td></tr>
+<tr><td>CreditCardType</td><td>errors.creditcard</td></tr>
+<tr><td>EmailType</td><td>errors.email</td></tr>
+<tr><td>UrlType</td><td>errors.url</td></tr>
+</table>
+<p>
+メッセージをカスタマイズしたい場合は、キーに対応する値を書き換えてください。
+</p>
+<p>
+特定のプロパティのみ、メッセージをカスタマイズしたい場合は、
+<a href="#MessageResources">メッセージリソース</a>に、
+メッセージを追加し、検証用のアノテーションのmsg属性で指定します。
+</p>
+<pre>
+errors.required2={0}は必須だぜ。
+</pre>
+<pre>
+@Required(msg = @Msg(key = "errors.required2"))
+</pre>
+<p>
+メッセージには、{位置}で引数を渡すことができます。
+位置は0からはじまります。
+検証用のアノテーションで、引数を指定するには、arg0, arg1, ..., args属性で指定します。
+</p>
+<pre>
+@Required(arg0 = @Arg(key = "ほげ", resource = false))
+</pre>
+<pre>
+@Validwhen(test = "((validwhen1Text == null) or (*this* != null))",
+    msg = @Msg(key = "errors.required.other"),
+    args = @Arg(key = "validwhen1Text", resource = false, position = 1))
+</pre>
+<p>
+最初の引数は、プロパティ名が自動的に設定されます。
+プロパティの表示をカスタマイズしたい場合は、
+<a href="#MessageResources">メッセージリソース</a>に<br />
+<b>labels.プロパティ名=...</b>のエントリを追加してください。
+</p>
+<pre>
+labels.userName=ユーザ名
+</pre>
+<p>
+JSPでエラーメッセージを出力するには、次のようにhtml:errorsタグを使います。
+</p>
+<pre>
+&lt;%@taglib prefix="html" uri="http://struts.apache.org/tags-html"%&gt; 
+...
+&lt;html:errors /&gt;
+</pre>
+
 <h3><a name="ValidateMethod">検証メソッド</a></h3>
+<p>
+<a href="#Validator">バリデータ</a>では検証できないような複雑なものは、
+<a href="#Action">アクション</a>の検証メソッドを使います。
+</p>
+<p>
+検証メソッドには、任意の名前をつけることができ、戻り値はActionMessages、
+引数は無しにする必要があります。
+戻り値のActionMessagesが空でない場合、検証結果はNGだとみなされます。
+</p>
+<pre>
+public ActionMessages validate() {
+    ActionMessages errors = new ActionMessages();
+    ...
+    return errors;
+}
+</pre>
+<p>
+実行メソッドで、どの検証メソッドを使うのかは、validate属性で指定します。
+validate属性を指定した場合は、
+input属性に検証結果がNGのときの遷移先も指定する必要があります。
+</p>
+<pre>
+@Execute(validate = "validate", input = "login.jsp")
+</pre>
+<p>
+ログインをするときの実行メソッドと検証メソッドは次のようになります。
+</p>
+<pre>
+@Execute(validate = "validate", input = "login.jsp")
+public String login() {
+    return "welcome.jsp";
+}
+
+public ActionMessages validate() {
+    ActionMessages errors = new ActionMessages();
+    if (!userName.equals(password)) {
+        errors.add(ActionMessages.GLOBAL_MESSAGE,
+            new ActionMessage("errors.invalid.login"));
+    }
+    return errors;
+}
+</pre>
+<p>
+<a href="#Action">アクション</a>以外で、検証を行ないたい場合は、
+検証結果がNGの場合、ActionMessagesExceptionをスローします。
+</p>
+<pre>
+public void validateLogin(String userName, String password) {
+    if (!userName.equals(password)) {
+        throw new ActionMessagesException("errors.invalid.login");
+    }
+}
+</pre>
+<p>
+ActionMessagesExceptionの処理は、app.diconに<br />
+org.seasar.struts.interceptor.ActionMessagesThrowsInterceptorを登録し、
+customizer.diconで登録したインターセプタを使うように記述しておけば、
+個別のアクションでは何もする必要はありません。
+カスタマイザの詳細は、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#Customizer">こちら</a>を参照してください。
+</p>
+<h5>app.dicon</h5>
+<pre>
+&lt;component name="actionMessagesThrowsInterceptor"
+    class="org.seasar.struts.interceptor.ActionMessagesThrowsInterceptor"/&gt;
+</pre>
+<h5>customizer.dicon</h5>
+<pre>
+&lt;component name="actionCustomizer"
+    class="org.seasar.framework.container.customizer.CustomizerChain"&gt;
+    ...
+    &lt;initMethod name="addAspectCustomizer"&gt;
+        &lt;arg&gt;"actionMessagesThrowsInterceptor"&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    ...
+&lt;/component&gt;
+</pre>
 
 <h3><a name="ResetMethod">リセットメソッド</a></h3>
 <p>
@@ -314,6 +522,27 @@ public class XxxDto implements Serializable {
         bar = new String[0];
     }
 }
+</pre>
+
+<h3><a name="MessageResources">メッセージリソース</a></h3>
+<p>
+アプリケーションで使うメッセージは、xxx.propertiesに記述します。
+xxx.propertiesはクラスパスの通っているディレクトリに配置します。
+多言語対応する場合は、ロケールに応じて、xxx_ja.propertiesなどを用意してください。
+xxxの部分は、struts-config.xmlのmessage-resourcesタグのparameter属性に設定します。
+</p>
+<pre>
+&lt;message-resources parameter="xxx"
+    factory="org.seasar.struts.util.S2PropertyMessageResourcesFactory"/&gt;
+</pre>
+<p>
+xxx.propertiesを日本語で入力するためには、
+<a href="http://propedit.sourceforge.jp/">プロパティエディタ</a>を使うのが、
+お勧めです。
+Eclipseをお使いの方は、更新マネージャを使って下記のURLからインストールして下さい。
+</p>
+<pre>
+http://propedit.sourceforge.jp/eclipse/updates/
 </pre>
 
 </div><!-- section -->
