@@ -331,7 +331,7 @@ validator属性とvalidate属性を両方指定した場合には、
 <p>
 <a href="http://commons.apache.org/validator/">commons validator</a>を使った検証を行なうには、
 アクションやアクションフォームのフィールドに検証用のアノテーションを指定します。
-検証用のアノテーションの詳細は、<a href="annotationReference.html#Validator">こちら</a>を参照してください。
+検証用のアノテーションの詳細は、<a href="annotationReference.html#Validation">こちら</a>を参照してください。
 </p>
 <pre>
 @Required
@@ -420,6 +420,16 @@ JSPでエラーメッセージを出力するには、次のようにhtml:errors
 ...
 &lt;html:errors /&gt;
 </pre>
+<p>
+独自の検証用アノテーションを追加したい場合は、
+org.seasar.struts.validator.S2FieldChecksを参考にして、
+検証ロジックを実装し、そのメソッドをvalidator-rules.xmlで指定します。
+</p>
+<p>
+そして、validator-rules.xmlで指定したvalidatorの名前を
+<a href="annotationReference.html#Validator">Validatorアノテーション</a>で
+指定してください。
+</p>
 
 <h3><a name="ValidateMethod">検証メソッド</a></h3>
 <p>
