@@ -57,6 +57,8 @@
 		<ul>
 			<li><a href="#Action">アクション</a></li>
 			<li><a href="#ActionForm">アクションフォーム</a></li>
+			<li><a href="#JSP">JSP</a></li>
+			<li><a href="#Package">パッケージ構成</a></li>
 			<li><a href="#ExecuteMethod">実行メソッド</a></li>
 			<li><a href="#Validator">バリデータ</a></li>
 			<li><a href="#ValidateMethod">検証メソッド</a></li>
@@ -86,32 +88,26 @@ SAStrutsでは、次のルールに従って自動的に決まるので、
 設定ファイルを書く必要がありません。
 </p>
 <p>
-http://localhost:8080/sa-struts-tutorial/login/login.doにリクエストされたとします。
+http://localhost:8080/sa-struts-tutorial/login/にアクセスしたとします。
 sa-struts-tutorialはWebアプリケーション名です。
 SAStrutsは、次のような手順でURLをActionクラスに変換します。
 </p>
 <ul>
 <li>
-Webアプリケーション名の後ろのパス(/login/login.do)の拡張子を取り除きます(/login/login)。
+Webアプリケーション名の後ろのパス(/login/)の最後のスラッシュをActionに変換(/loginAction)します。
 </li>
 <li>
-後ろにActionを付加(/login/loginAction)します。
+最後のスラッシュの直後を大文字(/LoginAction)にします。
 </li>
 <li>
-最後のスラッシュの直後を大文字(/login/LoginAction)にします。
+スラッシュをドットに変換(.LoginAction)します。
 </li>
 <li>
-スラッシュをドットに変換(.login.LoginAction)します。
+ルートパッケージ名.actionを先頭につけます(ルートパッケージ名.action.LoginAction)。
+ルートパッケージ名の詳細は、<a href="#Package">こちら</a>を参照してください。
 </li>
 <li>
-ルートパッケージ名.webを先頭につけます(ルートパッケージ名.web.login.LoginAction)。
-sa-struts-tutorialを例にとると、ルートパッケージ名は、tutorialになります。
-ルートパッケージ名の詳細は、
-<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeployPackage">
-SMART deployのパッケージ構成</a>を参照してください。
-</li>
-<li>
-最終的に、/login/login.doに対応するアクションクラスはtutorial.web.login.LoginActionになります。
+最終的に、/login/に対応するアクションクラスはtutorial.action.LoginActionになります。
 </li>
 </ul>
 <p>
@@ -148,10 +144,11 @@ SAStrutsでは、アクションでそのまま受け取ることができます
 <p>
 アクションのプロパティは、リクエストの属性にプロパティと同じ名前でセットされています。
 そのため、ELやJSTLで次のように参照することができます。
+エスケープが必要なケースは、f:h()を使ってください。
 </p>
 <pre>
 ${プロパティ名}
-&lt;c:out value="${プロパティ名}"/&gt;
+${f:h(プロパティ名)}
 </pre>
 <p>
 アクションは、リクエストスコープで管理されています。
@@ -161,11 +158,14 @@ ${プロパティ名}
 </p>
 <p>
 リクエストに対する処理を記述したい場合は、
-<a href="#ExecuteMethod">実行メソッド</a>を記述します。
+<a href="#ExecuteMethod">実行メソッド</a>を定義します。
+</p>
+<p>
+入力値の検証は、<a href="#Validator">バリデータ</a>を定義します。
 </p>
 <p>
 入力値に対する検証処理を記述したい場合は、
-<a href="#ValidateMethod">検証メソッド</a>を記述します。
+<a href="#ValidateMethod">検証メソッド</a>を定義します。
 </p>
 <p>
 アクションでアクションフォームも兼用した場合、
@@ -184,10 +184,7 @@ SAStrutsでは、アクションフォームもPOJOで記述することがで�
 プロパティの型をStringあるいはbooleanで定義してください。
 </p>
 <p>
-アクションフォームクラスは、tutorial.web.form.FormDtoのように
-アクションと同じパッケージにおき、クラス名の最後は、Dtoで終わるようにします。
-これは、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeploy">SMART deploy</a>
-のルールです。
+アクションフォームクラスは、ルートパッケージ.dtoにおき、クラス名の最後は、Dtoで終わるようにします。
 </p>
 <p>
 SAStrutsのアクションフォームは、デフォルトだとリクエストスコープで管理されますが、
@@ -229,6 +226,26 @@ public class FormAction {
 </p>
 <p>
 resetメソッドは<a href="#ResetMethod">こちら</a>を参照してください。
+</p>
+
+<h3><a name="JSP">JSP</a></h3>
+<p>
+JSPはどのように配置してもかまいませんが、
+/xxx/というパスに対応するXxxAction用のJSPは、/xxx/に格納すると良いでしょう。
+</p>
+
+<h3><a name="Package">パッケージ構成</a></h3>
+<p>
+Seasar2では、ルートパッケージの配下にaction、dto、serviceなどのパッケージを作って、
+そこに必要なファイルを格納します。
+ルートパッケージ名は、任意のもの(ただし、アンダースコア"_"は含めない)を指定することができます。
+sa-struts-tutorialプロジェクトでは、ルートパッケージ名は、tutorialになっています。
+</p>
+<p>
+<a href="#Action">アクション</a>は、ルートパッケージ.actionに格納してください。
+</p>
+<p>
+<a href="#ActionForm">アクションフォーム</a>は、ルートパッケージ.dtoに格納してください。
 </p>
 
 <h3><a name="ExecuteMethod">実行メソッド</a></h3>
@@ -555,6 +572,10 @@ xxxの部分は、struts-config.xmlのmessage-resourcesタグのparameter属性�
 &lt;message-resources parameter="xxx"
     factory="org.seasar.struts.util.S2PropertyMessageResourcesFactory"/&gt;
 </pre>
+<p>
+sa-struts-tutorialプロジェクトでは、
+src/main/resourcesにapplication.propertiesが配置されています。
+</p>
 <p>
 xxx.propertiesを日本語で入力するためには、
 <a href="http://propedit.sourceforge.jp/">プロパティエディタ</a>を使うのが、
