@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Language" content="ja" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="keywords" content="sastruts, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Framework" />
+<meta name="description" content="sastruts" />
+<title>Super Agile Struts - Tutorial</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h2 id="h01" class="hide">The Seasar Foundation Project Site</h2><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Project" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" name="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+</div><!-- header -->
+
+
+<div id="contents_left">
+
+<h2>Menu</h2>
+
+<ul>
+    <li><a href="index.html">ホーム</a></li>
+    <li><a href="setup.html">セットアップ</a></li>
+    <li><a href="download.html">ダウンロード</a></li>
+	<li><a href="tutorial.html">チュートリアル</a>
+		<ul>
+			<li><a href="#login">login</a></li>
+		</ul>
+	</li>
+	<li><a href="featureReference.html">機能リファレンス</a></li>
+	<li><a href="annotationReference.html">アノテーションリファレンス</a></li>
+</ul>
+
+</div><!-- contents_left -->
+
+<div id="contents_center">
+
+<div id="article">
+
+<div class="section">
+
+<h2>チュートリアル</h2>
+<p>
+Seasar2はHOT deployに対応しているので、ソースコードの変更を
+アプリケーションサーバを再起動することなく認識できます。
+また、設定ファイルもほとんど書く必要がありません。
+</p>
+<p>
+<a href="setup.html#tutorial">チュートリアルのセットアップ</a>に従って、
+アプリケーションサーバを起動したら、Javaのコードや*.propertiesファイルをいろいろ
+書き換えながら、HOT deployの威力を実感してください。
+</p>
+
+<h3><a name="login">login</a></h3>
+<p>
+ブラウザでhttp://localhost:8080/sa-struts-tutorial/login/login.doにアクセスしてください。
+ログイン画面が表示されましたね。
+</p>
+<p>
+それでは、webapp/WEB-INF/struts-config.xmlを見てみましょう。
+アクションやアクションフォームの設定はまったくありません。
+SAStrutsは、URLに結びつく適切なアクションクラスを探し出し、
+そのアクションクラスの情報を元に、struts-config.xmlに相当する情報を組み立てています。
+</p>
+<p>
+webapp/WEB-INF/validation.xmlも見てみましょう。
+何の設定もありません。
+SAStrutsは、検証用のアノテーションをプロパティに設定することで、
+validation.xmlに相当する情報を組み立てています。
+</p>
+<p>
+login.doに対応するアクションクラスは、tutorial.web.login.LoginActionです。
+アクションの詳細は、<a href="featureReference.html#Action">こちら</a>を参照してください。
+</p>
+<p>
+LoginActionのソースコードは次のようになります。
+</p>
+<h5>LoginAction</h5>
+<pre>
+package tutorial.web.login;
+
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+import org.seasar.struts.annotation.Execute;
+import org.seasar.struts.annotation.Required;
+
+public class LoginAction {
+
+    @Required
+    public String userName;
+
+    @Required
+    public String password;
+
+    @Execute(validator = false)
+    public String execute() {
+        return "login.jsp";
+    }
+
+    @Execute(validate = "validate", input = "login.jsp")
+    public String login() {
+        return "welcome.jsp";
+    }
+
+    public ActionMessages validate() {
+        ActionMessages errors = new ActionMessages();
+        if (!userName.equals(password)) {
+            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                "errors.invalid.login"));
+        }
+        return errors;
+    }
+}
+</pre>
+<p>
+アクションはPOJO(特定のクラスを継承しない普通のJavaのクラス)で記述し、
+アクションフォームも兼用しますが、
+これまでのStrutsのようにアクションフォームを分離することもできます。
+アクションフォームの詳細は、<a href="featureReference.html#ActionForm">こちら</a>を参照してください。
+</p>
+<p>
+Seasar2はpublicフィールドをプロパティとみなすことができるので、
+getter,setterは記述する必要はありません。
+publicフィールドは、ELやStrutsからでも認識できるようになっています。
+そのからくりに興味のある方は、org.seasar.struts.actionのソースを眺めてください。
+</p>
+<p>
+リクエストに対する処理は、<a href="featureReference.html#ExecuteMethod">実行メソッド</a>に記述します。
+実行メソッドには、@Executeをつけます。
+実行メソッドの戻り値は、遷移先のパスになります。
+</p>
+<p>
+実行メソッドが複数ある場合、どの実行メソッドが選択されるのかは、
+リクエストのパラメータのキーにメソッド名が含まれている(値が1文字以上あること)かどうかで決まります。
+通常は、ボタン系のタグのname属性に呼び出したいメソッド名を設定します。
+実行メソッド名がリクエストのパラメータに含まれていない場合、 executeという名前の実行メソッドがあれば、
+そのメソッドが呼び出されます。最初の画面を表示するためのメソッドをexecute()にするのがお勧めです。  
+実行メソッドの詳細は、<a href="featureReference.html#ExecuteMethod">こちら</a>を参照してください。
+</p>
+<p>
+アノテーション(バリデータ)による検証を行なうには、
+フィールドに<a href="annotationReference.html#Validation">検証用のアノテーション</a>をつけ、
+@Executeのvaliator属性をtrue(デフォルト)にします。
+validator=trueの場合は、検証結果がNGのときの遷移先をinput属性で指定する必要があります。
+バリデータの詳細は、<a href="featureReference.html#Validator">こちら</a>を参照してください。
+</p>
+<p>
+ログインチェック(validateメソッド)のような単純にバリデータでは処理できないような検証は、
+<a href="featureReference.html#ValidateMethod">検証メソッド</a>に記述します。
+実行メソッドでどの検証メソッドを使うのかは、
+@Executeのvalidate属性で指定します。
+validate属性を指定した場合は、検証結果がNGのときの遷移先をinput属性で指定する必要があります。
+検証メソッドの詳細は、<a href="featureReference.html#ValidateMethod">こちら</a>を参照してください。
+</p>
+<p>
+login.jspは次のようになります。
+</p>
+<h5>login.jsp</h5>
+<pre>
+&lt;%@page pageEncoding="UTF-8"%&gt;
+&lt;%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%&gt;
+&lt;%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%&gt;
+&lt;%@taglib prefix="html" uri="http://struts.apache.org/tags-html"%&gt;  
+&lt;%@taglib prefix="bean" uri="http://struts.apache.org/tags-bean"%&gt;
+&lt;%@taglib prefix="tiles" uri="http://jakarta.apache.org/struts/tags-tiles"%&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Login&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;html:errors/&gt;
+&lt;html:form action="/login/login"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;ユーザ名:&lt;/td&gt;
+&lt;td&gt;&lt;html:text property="userName"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;パスワード:&lt;/td&gt;
+&lt;td&gt;&lt;html:password property="password" redisplay="false"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;input type="submit" name="login" value="ログイン"/&gt;
+&lt;/html:form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>
+検証結果がNGのときのメッセージを表示させるために、
+html:errorsタグを定義します。
+</p>
+<p>
+サブミットされた値を受け取るためにhtml:formを定義します。
+action属性には、アクションのパス(.doを除く)を指定します。
+</p>
+<p>
+入力値を受け取るために、html:textタグを定義します。
+property属性にアクション(アクションフォーム)のプロパティ名を指定します。
+</p>
+
+</div><!-- section -->
+
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>&copy; Copyright The Seasar Foundation and the others 2006, all rights reserved.</address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>
+

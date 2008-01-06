@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Language" content="ja" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="keywords" content="sastruts, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Framework" />
+<meta name="description" content="sastruts" />
+<title>Super Agile Struts - Setup</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h2 id="h01" class="hide">The Seasar Foundation Project Site</h2><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Project" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" name="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+</div><!-- header -->
+
+
+<div id="contents_left">
+
+<h2>Menu</h2>
+
+<ul>
+    <li><a href="index.html">ホーム</a></li>
+    <li><a href="setup.html">セットアップ</a>
+    	<ul>
+    		<li><a href="#tutorial">チュートリアル</a></li>
+    		<li><a href="#blank">ブランク</a></li>
+    		<li><a href="#primitive">プリミティブ</a></li>
+    	</ul>
+    </li>
+    <li><a href="download.html">ダウンロード</a></li>
+	<li><a href="tutorial.html">チュートリアル</a></li>
+	<li><a href="featureReference.html">機能リファレンス</a></li>
+	<li><a href="annotationReference.html">アノテーションリファレンス</a></li>
+</ul>
+
+</div><!-- contents_left -->
+
+<div id="contents_center">
+
+<div id="article">
+
+<div class="section">
+
+<h2>セットアップ</h2>
+
+<h3><a name="tutorial">チュートリアルのセットアップ</a></h3>
+<p>
+チュートリアル用のプロジェクトは、Eclipse、Tomcat、Tomcat Launcherを使う用に設定されています。
+SAStrutsそのものは、特定のIDEやアプリケーションサーバに依存しませんが、
+チュートリアルを試すためには、Eclipse、Tomcat、Tomcat Launcherをお使いください。
+</p>
+<p>
+<a href="download.html">ダウンロードのページ</a>からsa-struts-tutorial-xxx.zipを
+ダウンロードして解凍します。
+</p>
+<p>
+解凍した中にsa-struts-tutorialというディレクトリがあるので、
+そのディレクトリをEclipseのプロジェクトとしてインポートします。
+</p>
+<p>
+Tomcatを<a href="http://tomcat.apache.org/">このリンク</a>から指示に従ってインストールします。
+バージョンは5.5以上を選んでください。
+既にインストール済みの場合はその必要はありません。
+</p>
+<p>
+Tomcat LauncherはSysdeo社が開発しているPluginですが、
+Seasarプロジェクトの更新サイトからインストールすることが出来ます。
+Eclipseのメニューから[Help]-&gt; [Software Updates] -&gt; [Find and Install…]を選択し、 
+Install/Updateのダイアログを表示させます。
+</p>
+<p>
+[Search for new features to install]のラジオボタンをチェックして[Next]ボタンをクリックします。 
+[New Remote site]ボタンをクリックして[Name]を[Seasar Plugin3.2]、 
+[URL]に[http://eclipse.seasar.org/updates/3.2/]を入力して[OK]をクリックします。
+</p>
+<p>
+[Finish]ボタンをクリックするとインストールする候補として、
+Tomcat Launcherが出てくるので、これらをチェックしてインストールしましょう。
+既にインストール済みの場合はその必要はありません。
+</p>
+<p>
+インストールが終わったら、Tomcat Launcherの設定を行います。 
+メニューの[Window] -&gt; [Preferences…]-&gt; [Tomcat]を選択してください。 
+Tomcatバージョンにダウンロードしたバージョンを選択し、Tomcatホームにインストールしたディレクトリを指定します。
+コンテキスト宣言モードにコンテキストファイルを選び、[OK]をクリックします。
+</p>
+<p>
+sa-struts-tutorialのプロジェクトを右クリックして、
+[Tomcatプロジェクト] -&gt; [Tomcatのコンテキストを更新]を選びます。
+</p>
+<p>これで、Tomcat Launcherの設定は完了しました。 早速、Tomcatを起動してみましょう。
+メニューから[Tomcat] -&gt;[Tomcat起動]を選択して、Tomcatを起動します。
+エラーなしに無事に起動したのを確認して、ブラウザで<br />
+http://localhost:8080/sa-struts-tutorial/login/login.doにアクセスしてください。
+無事にログイン画面が表示されれば、セットアップはうまくいっています。
+</p>
+<p>
+<a href="tutorial.html">チュートリアル</a>に進んでください。
+</p>
+
+<h3><a name="blank">ブランクのセットアップ</a></h3>
+<p>
+ブランクプロジェクトは、サンプルのアプリケーションがないことを除いては、
+チュートリアル用のプロジェクトと同じです。
+<a href="#tutorial">チュートリアルのセットアップ</a>を参考にしてください。
+</p>
+<p>
+プロジェクトにあわせて、ルートパッケージを指定します。
+ルートパッケージの詳細は、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeploy">SMART deploy</a>を参照してください。
+</p>
+<p>
+JDBCの設定は、<a href="http://s2container.seasar.org/2.4/ja/jdbc.html">こちら</a>を参照してください。
+</p>
+<p>
+トランザクションの設定は、<a href="http://s2container.seasar.org/2.4/ja/transaction.html">こちら</a>を参照してください。
+</p>
+
+<h3><a name="primitive">プリミティブなセットアップ</a></h3>
+<p>
+チュートリアルやブランクに頼らずにセットアップする場合は、
+必要なファイルの取得元として、
+<a href="download.html">ダウンロードのページ</a>からsa-struts-blank-xxx.zipを
+ダウンロードして解凍します。
+</p>
+<p>
+sa-struts-blank/src/main/resourcesにあるファイルをクラスパスに通します。
+</p>
+<p>
+sa-struts-blank/webapp/WEB-INFにあるファイルをWEB-INFにコピーします。
+</p>
+<p>
+sa-struts-blank/webapp/WEB-INF/libにあるファイルをWEB-INF/libにコピーします。
+</p>
+<p>
+プロジェクトにあわせて、ルートパッケージを指定します。
+ルートパッケージの詳細は、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeploy">SMART deploy</a>を参照してください。
+</p>
+<p>
+JDBCの設定は、<a href="http://s2container.seasar.org/2.4/ja/jdbc.html">こちら</a>を参照してください。
+</p>
+<p>
+トランザクションの設定は、<a href="http://s2container.seasar.org/2.4/ja/transaction.html">こちら</a>を参照してください。
+</p>
+
+</div><!-- section -->
+
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>&copy; Copyright The Seasar Foundation and the others 2006, all rights reserved.</address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>
+
