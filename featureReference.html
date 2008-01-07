@@ -55,13 +55,17 @@
 	<li><a href="tutorial.html">チュートリアル</a></li>
 	<li><a href="featureReference.html">機能リファレンス</a>
 		<ul>
+			<li><a href="#Project">プロジェクト構成</a></li>
+			<li><a href="#Architecture">アーキテクチャ</a></li>
 			<li><a href="#Action">アクション</a></li>
-			<li><a href="#ActionForm">アクションフォーム</a></li>
-			<li><a href="#JSP">JSP</a></li>
-			<li><a href="#Package">パッケージ構成</a></li>
 			<li><a href="#ExecuteMethod">実行メソッド</a></li>
 			<li><a href="#Validator">バリデータ</a></li>
 			<li><a href="#ValidateMethod">検証メソッド</a></li>
+			<li><a href="#DataAccess">データアクセス</a></li>
+			<li><a href="#Transaction">トランザクション</a></li>
+			<li><a href="#DataExchange">データ変換</a></li>
+			<li><a href="#ActionForm">アクションフォーム</a></li>
+			<li><a href="#JSP">JSP</a></li>
 			<li><a href="#ResetMethod">リセットメソッド</a></li>
 			<li><a href="#MessageResources">メッセージリソース</a></li>
 		</ul>
@@ -80,6 +84,100 @@
 <h2>機能リファレンス</h2>
 <p>SAStrutsの機能リファレンスです。</p>
 
+<h3><a name="Project">プロジェクト構成</a></h3>
+<p>
+SAStrutsでは、ルートパッケージの配下にactionなどのパッケージを作って、
+そこに必要なファイルを格納します。
+ルートパッケージ名は、任意の名前を指定することができます。
+例えば、sa-struts-tutorialプロジェクトでは、ルートパッケージ名は、tutorialになっています。
+</p>
+<p>
+ルートパッケージ名は、convention.diconで指定します。
+sa-struts-tutorialプロジェクトでは、src/main/resourcesで次のように指定されています。
+</p>
+<h5>convention.dicon</h5>
+<pre>
+&lt;components&gt;
+    &lt;component
+        class="org.seasar.framework.convention.impl.NamingConventionImpl"&gt;
+        <b>&lt;initMethod name="addRootPackageName"&gt;
+            &lt;arg&gt;"tutorial"&lt;/arg&gt;
+        &lt;/initMethod&gt;</b>
+    &lt;/component&gt;
+    &lt;component
+        class="org.seasar.framework.convention.impl.PersistenceConventionImpl"/&gt;
+&lt;/components>
+</pre>
+<p>
+<a href="#Action">アクション</a>は、ルートパッケージ.actionに格納します。
+例えば、http://ホスト名/プロジェクト名/xxx/のURLに対応するアクションクラスは、
+ルートパッケージ.action.XxxActionという名前にします。
+</p>
+<p>
+<a href="#ActionForm">アクションフォーム</a>は、ルートパッケージ.dtoに格納します。
+例えば、XxxActionで利用するアクションフォームは、XxxDtoという名前にします。
+通常は、<a href="#ActionForm">アクションフォーム</a>を定義する必要はありません。
+<a href="#Action">アクション</a>で状態も一緒に管理したほうが、
+関連する定義が近くにあるので、わかりやすいためです。
+</p>
+<p>
+<a href="http://s2container.seasar.org/2.4/ja/s2jdbc_entity.html">エンティティ</a>は、
+ルートパッケージ.entityに格納します。
+エンティティとは、データベースに永続化されるデータです。
+エンティティの名前は任意の名前にすることができますが、
+通常は、テーブルの名前にあわせます。
+</p>
+<p>
+サービスは、ルートパッケージ.serviceに格納します。クラス名の最後は、Serviceで終わるようにします。
+複数の<a href="#Action">アクション</a>から共通に使われるような機能は、
+サービスクラスで実装すると良いでしょう。
+サービスは、インターフェースと実装に分ける必要はなく、実装のみで良いでしょう。
+テストのときにモックが必要なら、実装クラスを継承したモッククラスでメソッドを
+モック用に上書きすればよいからです。
+</p>
+<p>
+ユーティリティは、ルートパッケージ.utilに格納します。
+クラス名は自由につけてかまいません。
+ユーティリティクラスは、通常staticメソッドで構成されています。
+</p>
+<p>
+<a href="#JSP">JSP</a>は、アクションに対応するディレクトリに格納します。
+例えば、XxxActionで使うJSPは、/xxx/に格納すると良いでしょう。
+</p>
+
+<h3><a name="Architecture">アプリケーションアーキテクチャ</a></h3>
+<p>
+SAStrutsは、MVC(Model View Controller)のアーキテクチャに基づいていて、
+Modelは<a href="http://s2container.seasar.org/2.4/ja/s2jdbc_entity.html">エンティティ</a>、
+Viewは<a href="#JSP">JSP</a>、Controllerは<a href="#Action">アクション</a>になります。
+</p>
+<p>
+<a href="#Action">アクション</a>は、複数の<a href="#ExecuteMethod">実行メソッド</a>
+を持つことができ、通常は、1ユースケースを1アクションにマッピングします。
+複数の画面で構成される意味のある単位をユースケースだと、とらえればよいでしょう。
+</p>
+<p>
+ビジネスロジックは、<a href="http://s2container.seasar.org/2.4/ja/s2jdbc_entity.html">エンティティ</a>に
+定義します。ビジネスロジックと間違えやすいのが、データアクセスのロジックと、
+エンティティの関連をたどるような複数種類のエンティティにまたがるようなロジックです。
+</p>
+<p>
+データアクセスのロジックは、<a href="#Action">アクション</a>に記述します。
+データアクセスのロジックをDaoクラスに抽出する方法もありますが、
+<a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>を使うと、
+ほとんどのデータアクセスロジックは、一度JdbcManagerを呼び出して終わりというような
+スカスカなメソッドになってしまいます。
+データアクセスのロジックは、<a href="#Action">アクション</a>に直接記述したほうが、
+わかりやすいでしょう。
+</p>
+<p>
+エンティティの関連をたどるような複数種類のエンティティにまたがるようなロジックは、
+<a href="#Action">アクション</a>に記述します。
+複数種類のエンティティにまたがるようなロジックは、
+どのエンティティ所属するのかあいまいなので、
+制御ロジックととらえ、<a href="#Action">アクション</a>に記述するほうがわかりやすいでしょう。
+</p>
+
 <h3><a name="Action">アクション</a></h3>
 <p>
 リクエストに応じて起動されるクラスをアクションといいます。
@@ -95,6 +193,7 @@ SAStrutsは、次のような手順でURLをActionクラスに変換します。
 <ul>
 <li>
 Webアプリケーション名の後ろのパス(/login/)の最後のスラッシュをActionに変換(/loginAction)します。
+スラッシュがない場合は後ろにActionを付け加えます。
 </li>
 <li>
 最後のスラッシュの直後を大文字(/LoginAction)にします。
@@ -104,45 +203,48 @@ Webアプリケーション名の後ろのパス(/login/)の最後のスラッ�
 </li>
 <li>
 ルートパッケージ名.actionを先頭につけます(ルートパッケージ名.action.LoginAction)。
-ルートパッケージ名の詳細は、<a href="#Package">こちら</a>を参照してください。
+ルートパッケージ名の詳細は、<a href="#Project">こちら</a>を参照してください。
 </li>
 <li>
 最終的に、/login/に対応するアクションクラスはtutorial.action.LoginActionになります。
 </li>
 </ul>
 <p>
+大規模なアプリケーションでは、パスを分割することもできます。
+例えば、/aaa/bbb/のパスに対応するアクションクラスは、
+ルートパッケージ.action.aaa.BbbActionになります。
+</p>
+<p>
 アクションはPOJO(普通のJavaのクラス)にします。StrutsのようにActionを継承する必要はありません。
-HttpServletRequestやHttpServletResponseなどのオブジェクトは、
-次のようにプロパティを定義しておけば、Seasar2が自動的に設定してくれます。
+HttpServletRequestやHttpServletResponseなどのServlet API関連のオブジェクトは、
+次のようにプロパティを定義しておけば、Seasar2が自動的に設定します。
 </p>
 <pre>
 public class MyAction {
     public HttpServletRequest request;
     public HttpServletResponse response;
+    public HttpSession session;
+    public ServletContext application;
     ...
 }
 </pre>
 <p>
-自動的に設定される暗黙的なコンポーネントについては、
-<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#ImplicitComponent">こちら</a>を参照してください。
-</p>
-<p>
-SAStrutsは、publicフィールドをプロパティとみなすので、
+Seasar2は、publicフィールドをプロパティとみなすので、
 setter,getterメソッドをいちいち定義する必要はありません。
 setter,getterメソッドを定義してもかまいませんが、
 何かと面倒なので、publicフィールドにすることをお勧めします。
 </p>
 <p>
 Strutsでは、リクエストのパラメータの内容は、アクションフォームで受け取りますが、
-SAStrutsでは、アクションでそのまま受け取ることができます。
-リクエストのパラメータ名と同じ名前のプロパティをアクションに定義します。
+SAStrutsでは、アクションにリクエストのパラメータ名と同じ名前のプロパティを
+定義しておけば、アクションで受け取ることができます。
 入力値を受け取るためのプロパティは、バリデーションエラーになっても値を格納できるように
 プロパティの型をStringあるいはbooleanで定義してください。
 アクションフォームをアクションとは別に定義することもできます。
 詳しくは<a href="#ActionForm">アクションフォームの説明</a>を参照してください。
 </p>
 <p>
-アクションのプロパティは、リクエストの属性にプロパティと同じ名前でセットされています。
+アクションのプロパティの値は、リクエストの属性にプロパティと同じ名前でセットされています。
 そのため、ELやJSTLで次のように参照することができます。
 エスケープが必要なケースは、f:h()を使ってください。
 </p>
@@ -157,95 +259,53 @@ ${f:h(プロパティ名)}
 セッションスコープで管理してください。
 </p>
 <p>
+ログインしたユーザに関する情報など、
+<a href="#ActionForm">アクションフォーム</a>以外をセッションで管理したい場合、
+ルートパッケージ.dtoにXxxDto作成し、@Componentでセッションで管理されるように定義します。
+</p>
+<pre>
+@Component(instance = InstanceType.SESSION)
+public class UserDto implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    
+    public String userName;
+    ...
+}
+</pre>
+<p>
+作成したUserDtoをアクションで利用するには、次のようにプロパティを定義しておけば、
+Seasar2が自動的に設定します。フィールド名は、クラス名の先頭を小文字にしたものにします。
+</p>
+<pre>
+public UserDto userDto;
+</pre>
+<p>
+複数のアクションから共通に使われるようなロジックをサービスで定義する場合、
+ルートパッケージ.serviceにXxxServiceを作成します。
+</p>
+<pre>
+public class XxxService {
+    ...
+}
+</pre>
+<p>
+作成したXxxServiceをアクションで利用するには、次のようにプロパティを定義しておけば、
+Seasar2が自動的に設定します。フィールド名は、クラス名の先頭を小文字にしたものにします。
+</p>
+<pre>
+public XxxService xxxService;
+</pre>
+<p>
 リクエストに対する処理を記述したい場合は、
 <a href="#ExecuteMethod">実行メソッド</a>を定義します。
 </p>
 <p>
-入力値の検証は、<a href="#Validator">バリデータ</a>を定義します。
+入力値の検証は、<a href="#Validator">検証用のアノテーション</a>を定義します。
 </p>
 <p>
-入力値に対する検証処理を記述したい場合は、
+入力値に対する検証をロジックで記述したい場合は、
 <a href="#ValidateMethod">検証メソッド</a>を定義します。
-</p>
-<p>
-アクションでアクションフォームも兼用した場合、
-入力値のリセット処理をreset()で行なうことができますが、
-アクションはリクエストスコープで管理されているため、
-リクエストのたびにbooleanやString[]のプロパティは、
-自動的にリセットされます。
-そのため、reset()を定義する必要はありません。
-</p>
-
-<h3><a name="ActionForm">アクションフォーム</a></h3>
-<p>
-SAStrutsでは、アクションフォームもPOJOで記述することができます。
-リクエストのパラメータ名と同じ名前のプロパティをアクションフォームに定義します。
-入力値を受け取るためのプロパティは、バリデーションエラーになっても値を格納できるように
-プロパティの型をStringあるいはbooleanで定義してください。
-</p>
-<p>
-アクションフォームクラスは、ルートパッケージ.dtoにおき、クラス名の最後は、Dtoで終わるようにします。
-</p>
-<p>
-SAStrutsのアクションフォームは、デフォルトだとリクエストスコープで管理されますが、
-次のようにアノテーションを指定することで、
-セッションスコープで管理することもできます。
-セッションスコープで管理するコンポーネントは、
-java.io.Serializableをimplementsする必要があります。
-@Componentの詳細は、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#ComponentAnnotation">こちら</a>を参照してください。
-</p>
-<pre>
-@Component(instance = InstanceType.SESSION)
-public class FormDto implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    ...
-}
-</pre>
-<p>
-アクションフォームを利用するには、アクションのプロパティに@ActionFormを指定します。
-@ActionFormを複数指定しても意味がないので、
-複数指定しないようにしてください。
-アクションフォームのプロパティ名は、クラス名の先頭を小文字にしたものにします。
-後は、Seasar2が自動的に設定してくれます。
-詳しくは、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#AutoBindingMode">自動バインディング</a>
-を参照してください。
-</p>
-<pre>
-public class FormAction {
-
-    @ActionForm
-    public FormDto formDto;
-    ...
-}
-</pre>
-<p>
-検証メソッドはアクションフォームではなく、<a href="#Action">アクション</a>に定義します。
-複数のアクションでアクションフォームを共用した場合、
-検証の内容は、アクションごとに異なることがほとんどだからです。
-</p>
-<p>
-resetメソッドは<a href="#ResetMethod">こちら</a>を参照してください。
-</p>
-
-<h3><a name="JSP">JSP</a></h3>
-<p>
-JSPはどのように配置してもかまいませんが、
-/xxx/というパスに対応するXxxAction用のJSPは、/xxx/に格納すると良いでしょう。
-</p>
-
-<h3><a name="Package">パッケージ構成</a></h3>
-<p>
-Seasar2では、ルートパッケージの配下にaction、dto、serviceなどのパッケージを作って、
-そこに必要なファイルを格納します。
-ルートパッケージ名は、任意のもの(ただし、アンダースコア"_"は含めない)を指定することができます。
-sa-struts-tutorialプロジェクトでは、ルートパッケージ名は、tutorialになっています。
-</p>
-<p>
-<a href="#Action">アクション</a>は、ルートパッケージ.actionに格納してください。
-</p>
-<p>
-<a href="#ActionForm">アクションフォーム</a>は、ルートパッケージ.dtoに格納してください。
 </p>
 
 <h3><a name="ExecuteMethod">実行メソッド</a></h3>
@@ -263,26 +323,20 @@ public String execute() {
 </pre>
 <p>
 実行メソッドの戻り値は、遷移先のパスです。
-同一のサブアプリケーションに遷移するなら、
-パスからサブアプリケーション名を省略できます。
+パスが/ではじまっていない場合、アクションのパスからみた相対パスとみなされます。
 </p>
 <p>
-例えば、http://localhost:8080/sa-struts-tutorial/login/login.doのアクションから、<br />
-http://localhost:8080/sa-struts-tutorial/login/login.jspに遷移する場合は、
-戻り値をlogin.jspと記述することができます。
+例えば、http://localhost:8080/sa-struts-tutorial/login/のアクションで
+戻り値をlogin.jspとした場合<br />
+http://localhost:8080/sa-struts-tutorial/login/login.jspに遷移します。
 </p>
 <p>
-別のサブアプリケーション、例えば<br />
-http://localhost:8080/sa-struts-tutorial/select/select.doに遷移する場合は、
-戻り値を/select/select.doと記述します。
+パスが/ではじまっている場合、Webアプリケーションのルートからの相対パスと
+みなされます。例えば、戻り値を/selectとした場合、
+http://localhost:8080/sa-struts-tutorial/select/に遷移します。
 </p>
 <p>
-同一のサブアプリケーションのパスに遷移する場合は、先頭は/なしで末端のパスのみを記述し、
-別のサブアプリケーションのパスに遷移する場合は、先頭は/ありで
-サブアプリケーション名もパスに含めてください。
-</p>
-<p>
-デフォルトで遷移先へはフォワードで遷移しますが、リダイレクトで遷移したい場合は、
+デフォルトではフォワードで遷移しますが、リダイレクトで遷移したい場合は、
 パスの<b>最後</b>に<b>redirect=true</b>を追加します。
 =の前後に余分な空白は含めないでください。
 redirect=trueの部分は、実際に実行されるときには、消去されます。
@@ -296,35 +350,65 @@ return "xxx.jsp?redirect=true";
 return "xxx.jsp?key=value&amp;redirect=true";
 </pre>
 <p>
+別のサイトに遷移したい場合は、パスをhttpやhttpsではじめ、
+リダイレクトするように指定します。
+</p>
+<pre>
+...
+return "https://ホスト名/アプリケーション名/パス?redirect=true";
+</pre>
+<p>
 1つのアクションに複数の実行メソッドを定義することができます。
-どの実行メソッドが選択されるのかは、
+どの実行メソッドが選択されるのかは、URLで指定するか、
 リクエストのパラメータのキーにメソッド名が含まれている(値が1文字以上あること)かどうかで決まります。
-通常は、ボタン系のタグのname属性に呼び出したいメソッド名を設定します。
 </p>
 <p>
+次の例では、LoginAction#index()が呼び出されます。
+</p>
+<pre>
+http://localhost:8080/sa-struts-tutorial/login/index/
+</pre>
+<p>
+メソッドが定義されていない場合、index()が呼び出されるので、
+上記の呼び出しは、下記の呼び出しと一緒です。
+</p>
+<pre>
+http://localhost:8080/sa-struts-tutorial/login/
+</pre>
+<p>
+@ExecuteでURLのパターン(urlPattern)を指定することで、
+URLの一部をパラメータの値として受け取ることができます。
+例えば、EmployeeAction#edit()が次のように定義されているとします。
+</p>
+<pre>
+@Execute(urlPattern = "edit/{id}")
+public String edit() {
+    ...
+}
+</pre>
+<p>
+urlPatternの{}で囲まれている部分をパラメータとして受け取ることができます。
+/employee/list.jspに次のようなアンカータグが定義されている場合、
+アンカータグをクリックするとidプロパティが1に設定されて、
+EmployeeAction#edit()が呼び出されます。
+</p>
+<pre>
+&lt;a href="edit/1"&gt;編集画面へ&lt;/a&gt;
+</pre>
+<p>
+フォームをサブミットする場合は、ボタン系のname属性に実行メソッド名を指定します。
 次の例では、アクションクラスのsubmit()が呼び出されます。
 </p>
 <pre>
 &lt;input type="submit" name="submit" value="サブミット"/&gt;
 </pre>
 <p>
-リンクから実行メソッドを呼び出すには、クエリストリングのキーにメソッド名を含めます。
-</p>
-<pre>
-&lt;a href="employee.do?submit=true"&gt;サブミット&lt;/a&gt;
-</pre>
-<p>
-実行メソッド名がリクエストのパラメータに含まれていない場合、
-executeという名前の実行メソッドがあれば、そのメソッドが呼び出されます。
-最初の画面を表示するためのメソッドをexecute()にすると良いでしょう。
-</p>
-<p>
 実行メソッドを呼び出す前に、<a href="http://commons.apache.org/validator/">commons validator</a>を使った
 検証を行なうには、@Executeのvalidator属性をtrueにします。デフォルトはtrueです。
 </p>
 <p>
 validator=trueの場合は、検証結果がNGのときの遷移先のパスをinput属性で指定します。
-パスの書き方は、実行メソッドの戻り値と同じです。
+パスの書き方は、実行メソッドの戻り値の場合と一緒です。
 バリデータの詳細は、<a href="#Validator">こちら</a>を参照してください。
 </p>
 <pre>
@@ -336,7 +420,7 @@ validator=trueの場合は、検証結果がNGのときの遷移先のパスをi
 </p>
 <p>
 validate属性を指定した場合は、検証結果がNGのときの遷移先のパスをinput属性で指定します。
-パスの書き方は、実行メソッドの戻り値と同じです。
+パスの書き方は、実行メソッドの戻り値の場合と一緒です。
 validator属性とvalidate属性を両方指定した場合には、
 バリデータのほうが先に実行されます。
 検証メソッドの詳細は、<a href="#ValidateMethod">こちら</a>を参照してください。
@@ -526,6 +610,77 @@ customizer.diconで登録したインターセプタを使うように記述し�
     ...
 &lt;/component&gt;
 </pre>
+
+<h3><a name="DataAccess">データアクセス</a></h3>
+<p>
+</p>
+
+<h3><a name="Transaction">トランザクション</a></h3>
+<p>
+</p>
+
+<h3><a name="DataExchange">データ変換</a></h3>
+<p>
+</p>
+
+<h3><a name="ActionForm">アクションフォーム</a></h3>
+<p>
+SAStrutsでは、アクションフォームもPOJOで記述することができます。
+リクエストのパラメータ名と同じ名前のプロパティをアクションフォームに定義します。
+入力値を受け取るためのプロパティは、バリデーションエラーになっても値を格納できるように
+プロパティの型をStringあるいはbooleanで定義してください。
+</p>
+<p>
+アクションフォームクラスは、ルートパッケージ.dtoにおき、クラス名の最後は、Dtoで終わるようにします。
+</p>
+<p>
+SAStrutsのアクションフォームは、デフォルトだとリクエストスコープで管理されますが、
+次のようにアノテーションを指定することで、
+セッションスコープで管理することもできます。
+セッションスコープで管理するコンポーネントは、
+java.io.Serializableをimplementsする必要があります。
+@Componentの詳細は、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#ComponentAnnotation">こちら</a>を参照してください。
+</p>
+<pre>
+@Component(instance = InstanceType.SESSION)
+public class FormDto implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    ...
+}
+</pre>
+<p>
+アクションフォームを利用するには、アクションのプロパティに@ActionFormを指定します。
+@ActionFormを複数指定しても意味がないので、
+複数指定しないようにしてください。
+アクションフォームのプロパティ名は、クラス名の先頭を小文字にしたものにします。
+後は、Seasar2が自動的に設定してくれます。
+詳しくは、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#AutoBindingMode">自動バインディング</a>
+を参照してください。
+</p>
+<pre>
+public class FormAction {
+
+    @ActionForm
+    public FormDto formDto;
+    ...
+}
+</pre>
+<p>
+検証メソッドはアクションフォームではなく、<a href="#Action">アクション</a>に定義します。
+複数のアクションでアクションフォームを共用した場合、
+検証の内容は、アクションごとに異なることがほとんどだからです。
+</p>
+<p>
+resetメソッドは<a href="#ResetMethod">こちら</a>を参照してください。
+</p>
+
+<h3><a name="JSP">JSP</a></h3>
+<p>
+JSPはどのように配置してもかまいませんが、
+/xxx/というパスに対応するXxxAction用のJSPは、/xxx/に格納すると良いでしょう。
+</p>
+
 
 <h3><a name="ResetMethod">リセットメソッド</a></h3>
 <p>

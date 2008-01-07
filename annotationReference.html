@@ -141,6 +141,32 @@ validator属性がtrue、あるいは、validate属性が指定された場合�
 デフォルトはSaveType.REQUESTです。
 セッションに保存する場合は、SaveType.SESSIONを指定します。
 </p>
+<h5>urlPattern属性(オプション)</h5>
+<p>
+urlPatternに一致するメソッドが呼び出されるようにします。
+デフォルトは、メソッド名になります。<br />
+URLがhttp://localhost:8080/sa-struts-tutorial/employee/edit/の場合、<br />
+URLからアクションのパス(http://localhost:8080/sa-struts-tutorial/employee/)を除き(edit/)<br />
+最後の/を取り除いた部分(edit)がパラメータ用のパスになります。
+パラメータ用のパスとurlPatternが一致したメソッドが呼び出されるので、
+今回の例だとedit()が呼び出されます。
+</p>
+<p>
+urlpatternに{パラメータ名}を指定することで、URLで{}に一致する部分を
+パラメータの値として取得できます。
+例えば、次のようにEmployeeAction#edit()が定義されているとします。
+</p>
+<pre>
+@Execute(urlPattern = "edit/{id}")
+public String edit() {
+    ...
+}
+</pre>
+<p>
+http://localhost:8080/sa-struts-tutorial/employee/edit/1にアクセスすると
+パラメータ用のパスは、edit/1になるので、idのパラメータに1が設定されて、
+edit()が呼び出されます。
+</p>
 
 <h4><a name="ActionForm">ActionFormアノテーション</a></h4>
 <p>
