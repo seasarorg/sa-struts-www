@@ -83,7 +83,7 @@ Seasar2はHOT deployに対応しているので、ソースコードの変更を
 
 <h3><a name="login">login</a></h3>
 <p>
-ブラウザでhttp://localhost:8080/sa-struts-tutorial/login/login.doにアクセスしてください。
+ブラウザでhttp://localhost:8080/sa-struts-tutorial/login/にアクセスしてください。
 ログイン画面が表示されましたね。
 </p>
 <p>
@@ -99,7 +99,7 @@ SAStrutsは、検証用のアノテーションをプロパティに設定する
 validation.xmlに相当する情報を組み立てています。
 </p>
 <p>
-login.doに対応するアクションクラスは、tutorial.web.login.LoginActionです。
+/login/に対応するアクションクラスは、tutorial.action.LoginActionです。
 アクションの詳細は、<a href="featureReference.html#Action">こちら</a>を参照してください。
 </p>
 <p>
@@ -144,9 +144,8 @@ public class LoginAction {
 </pre>
 <p>
 アクションはPOJO(特定のクラスを継承しない普通のJavaのクラス)で記述し、
-アクションフォームも兼用しますが、
-これまでのStrutsのようにアクションフォームを分離することもできます。
-アクションフォームの詳細は、<a href="featureReference.html#ActionForm">こちら</a>を参照してください。
+アクションの状態もアクションに定義します。
+関連する情報は同じクラスにあったほうがわかりやすいからです。
 </p>
 <p>
 Seasar2はpublicフィールドをプロパティとみなすことができるので、
@@ -160,12 +159,31 @@ publicフィールドは、ELやStrutsからでも認識できるようになっ
 実行メソッドの戻り値は、遷移先のパスになります。
 </p>
 <p>
-実行メソッドが複数ある場合、どの実行メソッドが選択されるのかは、
+実行メソッドが複数ある場合、どの実行メソッドが選択されるのかは、URLで指定するか、
 リクエストのパラメータのキーにメソッド名が含まれている(値が1文字以上あること)かどうかで決まります。
-通常は、ボタン系のタグのname属性に呼び出したいメソッド名を設定します。
-実行メソッド名がリクエストのパラメータに含まれていない場合、 executeという名前の実行メソッドがあれば、
-そのメソッドが呼び出されます。最初の画面を表示するためのメソッドをexecute()にするのがお勧めです。  
-実行メソッドの詳細は、<a href="featureReference.html#ExecuteMethod">こちら</a>を参照してください。
+</p>
+<p>
+次の例では、LoginAction#index()が呼び出されます。
+</p>
+<pre>
+http://localhost:8080/sa-struts-tutorial/login/index/
+</pre>
+<p>
+メソッドが定義されていない場合、index()が呼び出されるので、
+上記の呼び出しは、下記の呼び出しと一緒です。
+</p>
+<pre>
+http://localhost:8080/sa-struts-tutorial/login/
+</pre>
+<p>
+フォームをサブミットする場合は、ボタン系のname属性に実行メソッド名を指定します。
+次の例では、アクションクラスのlogin()が呼び出されます。
+</p>
+<pre>
+&lt;input type="submit" name="login" value="ログイン"/&gt;
+</pre>
+<p>
+@Executeの詳細は、<a href="annotationReference.html#Execute">こちら</a>を参照してください。
 </p>
 <p>
 アノテーション(バリデータ)による検証を行なうには、
@@ -187,20 +205,13 @@ login.jspは次のようになります。
 </p>
 <h5>login.jsp</h5>
 <pre>
-&lt;%@page pageEncoding="UTF-8"%&gt;
-&lt;%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%&gt;
-&lt;%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%&gt;
-&lt;%@taglib prefix="html" uri="http://struts.apache.org/tags-html"%&gt;  
-&lt;%@taglib prefix="bean" uri="http://struts.apache.org/tags-bean"%&gt;
-&lt;%@taglib prefix="tiles" uri="http://jakarta.apache.org/struts/tags-tiles"%&gt;
-
 &lt;html&gt;
 &lt;head&gt;
 &lt;title&gt;Login&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;html:errors/&gt;
-&lt;html:form action="/login/login"&gt;
+&lt;s:form action="/login"&gt;
 &lt;table&gt;
 &lt;tr&gt;
 &lt;td&gt;ユーザ名:&lt;/td&gt;
@@ -212,21 +223,72 @@ login.jspは次のようになります。
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;input type="submit" name="login" value="ログイン"/&gt;
-&lt;/html:form&gt;
+&lt;/s:form&gt;
 &lt;/body&gt;
 &lt;/html&gt;
 </pre>
+<p>
+どのJSPでも共通に必要になるtaglibの宣言は、/common/common.jspで定義されています。
+common.jspの詳細は、<a href="featureReference.html#JSP">JSP</a>を参照してください。
+</p>
 <p>
 検証結果がNGのときのメッセージを表示させるために、
 html:errorsタグを定義します。
 </p>
 <p>
-サブミットされた値を受け取るためにhtml:formを定義します。
-action属性には、アクションのパス(.doを除く)を指定します。
+サブミットされた値を受け取るためにs:formを定義します。
+action属性には、アクションのパスを指定します。
+s:formはHTMLに出力されるaction属性の値に拡張子(.do)が含まれないことを除いては、
+Strutsのhtml:formと同じです。
 </p>
 <p>
 入力値を受け取るために、html:textタグを定義します。
-property属性にアクション(アクションフォーム)のプロパティ名を指定します。
+property属性にアクションのプロパティ名を指定します。
+</p>
+<p>
+パスワードを受け取るために、html:passwordタグを定義します。
+property属性にアクションのプロパティ名を指定します。
+検証エラーなどで画面が再表示されるときに、パスワードが表示されないようにするには、
+redisplay属性をfalseにします。
+</p>
+<p>
+サブミット時にLoginAction#login()を呼び出すために、サブミットタグの
+name属性の値をloginに設定します。
+</p>
+<p>
+サブミットされると、入力したuserName、passwordの値がアクションに設定され、
+必須かどうかが検証されます。
+</p>
+<p>
+検証結果がNGだった場合は、input属性で指定したlogin.jspに戻されます。
+バリデータの検証結果がOKの場合は、validate属性で指定したvalidate()が呼び出されます。
+</p>
+<p>
+validate()の結果がNGだった場合は、input属性で指定したlogin.jspに戻されます。
+バリデータの検証結果がOKの場合は、login()が呼び出されます。
+戻り値がwelcome.jspなので、welcome.jspに遷移します。
+</p>
+
+<p>
+welcome.jspは次のようになります。
+</p>
+<h5>welcome.jsp</h5>
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Welcome&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+Hello ${f:h(userName)}
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>
+SAStrutsは、アクションのプロパティの値をリクエストの属性に設定しているので、
+${f:h(userName)}でuserNameプロパティを表示することができます。
+</p>
+<p>
+f:h()はHTMLをエスケープするためのファンクションです。
 </p>
 
 </div><!-- section -->
