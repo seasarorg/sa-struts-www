@@ -64,8 +64,8 @@
 			<li><a href="#DataAccess">データアクセス</a></li>
 			<li><a href="#Transaction">トランザクション</a></li>
 			<li><a href="#DataExchange">データ変換</a></li>
-			<li><a href="#ActionForm">アクションフォーム</a></li>
 			<li><a href="#JSP">JSP</a></li>
+			<li><a href="#ActionForm">アクションフォーム</a></li>
 			<li><a href="#ResetMethod">リセットメソッド</a></li>
 			<li><a href="#MessageResources">メッセージリソース</a></li>
 		</ul>
@@ -141,7 +141,7 @@ sa-struts-tutorialプロジェクトでは、src/main/resourcesで次のよう�
 ユーティリティクラスは、通常staticメソッドで構成されています。
 </p>
 <p>
-<a href="#JSP">JSP</a>は、アクションに対応するディレクトリに格納します。
+<a href="#JSP">JSP</a>は、<a href="#Action">アクション</a>に対応するディレクトリに格納します。
 例えば、XxxActionで使うJSPは、/xxx/に格納すると良いでしょう。
 </p>
 
@@ -243,15 +243,6 @@ SAStrutsでは、アクションにリクエストのパラメータ名と同じ
 アクションフォームをアクションとは別に定義することもできます。
 詳しくは<a href="#ActionForm">アクションフォームの説明</a>を参照してください。
 </p>
-<p>
-アクションのプロパティの値は、リクエストの属性にプロパティと同じ名前でセットされています。
-そのため、ELやJSTLで次のように参照することができます。
-エスケープが必要なケースは、f:h()を使ってください。
-</p>
-<pre>
-${プロパティ名}
-${f:h(プロパティ名)}
-</pre>
 <p>
 アクションは、リクエストスコープで管理されています。
 セッションスコープにすることはできません。
@@ -592,7 +583,8 @@ ActionMessagesExceptionの処理は、app.diconに<br />
 org.seasar.struts.interceptor.ActionMessagesThrowsInterceptorを登録し、
 customizer.diconで登録したインターセプタを使うように記述しておけば、
 個別のアクションでは何もする必要はありません。
-カスタマイザの詳細は、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#Customizer">こちら</a>を参照してください。
+app.diconとcustomizer.diconは、sa-struts-tutorialプロジェクトの場合、
+src/main/resourcesにおかれています。
 </p>
 <h5>app.dicon</h5>
 <pre>
@@ -613,20 +605,201 @@ customizer.diconで登録したインターセプタを使うように記述し�
 
 <h3><a name="DataAccess">データアクセス</a></h3>
 <p>
+データアクセス用のフレームワークは、任意のものを使うことができますが、
+SAStrutsと一緒に使うことを想定して作成されている
+<a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>を
+使うことをお勧めします。
 </p>
+<p>
+<a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>を
+使う場合、データベースへ接続するための設定は、jdbc.diconに記述します。
+jdbc.diconの設定は、<a href="http://s2container.seasar.org/2.4/ja/jdbc.html">こちら</a>を参照してください。
+sa-struts-tutorialプロジェクトの場合、jdbc.diconは、src/main/resourcesにおかれています。
+</p>
+<p>
+<a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>自体の設定は、
+s2jdbc.diconに記述します。
+s2jdbc.diconの設定は、<a href="http://s2container.seasar.org/2.4/ja/s2jdbc_setup.html">こちら</a>を参照してください。
+sa-struts-tutorialプロジェクトの場合、jdbc.diconは、src/main/resourcesにおかれています。
+</p>
+<p>
+<a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>は、
+<a href="http://s2container.seasar.org/2.4/ja/s2jdbc_manager.html">JdbcManager</a>経由で利用します。
+JdbcManagerを<a href="#Action">アクション</a>で利用するには、
+次のようにプロパティを定義しておけば、Seasar2が自動的に設定します。
+</p>
+<pre>
+public JdbcManager jdbcManager;
+</pre>
 
 <h3><a name="Transaction">トランザクション</a></h3>
 <p>
+SAStrutsでは、トランザクション処理は、JTAの実装に任せていて、
+SAStruts自体がトランザクション処理に関与することはありません。
+JTAの設定は、s2container.diconで行ないます。
+詳細は、<a href="http://s2container.seasar.org/2.4/ja/s2jdbc_setup.html">こちら</a>を参照してください。
+sa-struts-tutorialプロジェクトの場合、s2container.diconは、src/main/resourcesにおかれています。
 </p>
+<p>
+<a href="#Action">アクション</a>やサービスのメソッドが呼び出されたときに、
+自動的にトランザクションを開始するには、customizer.diconにトランザクション用の設定を記述します。
+sa-struts-tutorialプロジェクトの場合、customizer.diconは、src/main/resourcesにおかれています。
+</p>
+<h5>
+cutomizer.dicon
+</h5>
+<pre>
+&lt;component name="actionCustomizer"
+  class="org.seasar.framework.container.customizer.CustomizerChain"&gt;
+  &lt;initMethod name="addCustomizer"&gt;
+    &lt;arg&gt;
+      <b>&lt;component
+        class="org.seasar.framework.container.customizer.TxAttributeCustomizer"/&gt;</b>
+    &lt;/arg&gt;
+  &lt;/initMethod&gt;
+  ...
+&lt;/component&gt;
+	
+&lt;component name="serviceCustomizer"
+  class="org.seasar.framework.container.customizer.CustomizerChain"&gt;
+  &lt;initMethod name="addCustomizer"&gt;
+    &lt;arg&gt;
+      <b>&lt;component
+        class="org.seasar.framework.container.customizer.TxAttributeCustomizer"/&gt;</b>
+    &lt;/arg&gt;
+  &lt;/initMethod&gt;
+  ...
+&lt;/component&gt;
+</pre>
+<p>
+TxAttributeCustomizerを使うと、Objectクラス以外のpublicなメソッドが呼び出されると、
+自動的にトランザクション処理が行なわれます。
+デフォルトのトランザクション属性は、Requiredです。
+</p>
+<p>
+Requiredは、トランザクションが開始されていなければ、
+自動的にトランザクションを開始し、
+既にトランザクションが開始されていれば、
+そのトランザクションを引き継ぎます。
+例外が起こった場合は、自動的にロールバックします。
+</p>
+<p>
+特定のクラスのトランザクション属性を変えたい場合は、
+クラスに@TransactionAttributeを指定します。
+</p>
+<pre>
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+public class XxxAction {
+    ...
+}
+</pre>
+特定のメソッドのトランザクション属性を変えたい場合は、
+メソッドに@TransactionAttributeを指定します。
+次の例では、someMethod()はTransactionAttributeType.NEVERで、
+someMethod2()はTransactionAttributeType.REQUIRES_NEWになります。
+</p>
+<pre>
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+public class XxxAction {
+    @TransactionAttribute(TransactionAttributeType.NEVER)
+    public void someMethod() {
+        ...
+    }
+    public void someMethod2() {
+        ...
+    }　
+    ...
+}
+</pre>
 
 <h3><a name="DataExchange">データ変換</a></h3>
 <p>
+<a href="#Action">アクション</a>とエンティティ間でデータを変換するには、
+<a href="http://s2container.seasar.org/2.4/ja/beans.html">Beans</a>の機能を使うのが良いでしょう。
+単純に値をコピーするだけでなく、文字列と数値などの変換も行なってくれます。
+<a href="http://commons.apache.org/beanutils/">Commons BeanUtils</a>はpublicフィールドに対応していないので、
+publicフィールドを使いたい場合は、<a href="http://s2container.seasar.org/2.4/ja/beans.html">Beans</a>
+を使ってください。
 </p>
+<p>
+<a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>を組み合わせて、
+プライマリーキーで取得したデータを<a href="#Action">アクション</a>にコピーするには次のようにします。
+thisは<a href="#Action">アクション</a>です。
+</p>
+<pre>
+Employee emp = jdbcManager
+    .from(Employee.class)
+    .id(id)
+    .getSingleResult();
+Beans.copy(emp, this).execute();
+</pre>
+<p>
+<a href="#Action">アクション</a>のデータでテーブルを更新するには次のようにします。
+thisは<a href="#Action">アクション</a>です。
+</p>
+<pre>
+Employee emp = Beans.createAndCopy(Employee.class, this).execute();
+jdbcManager.update(emp).execute();
+</pre>
+
+<h3><a name="JSP">JSP</a></h3>
+<p>
+JSPは、<a href="#Action">アクション</a>に対応するディレクトリに格納します。
+例えば、XxxActionで使うJSPは、/xxx/に格納すると良いでしょう。
+</p>
+<p>
+<a href="#Action">アクション</a>や<a href="#ActionForm">アクションフォーム</a>のプロパティの値は、
+リクエストの属性にプロパティと同じ名前でセットされています。
+そのため、ELやJSTLで次のように参照することができます。
+エスケープが必要なケースは、f:h()を使ってください。
+</p>
+<pre>
+${プロパティ名}
+${f:h(プロパティ名)}
+</pre>
+<p>
+ネストしたプロパティにはドット(.)でアクセスできます。
+</p>
+<pre>
+${プロパティ名.ネストしたプロパティ名}
+</pre>
+<p>
+どのJSPでも共通で使うような宣言は、1つのJSPにまとめ、web.xmlでそのJSPを指定します。
+sa-strtus-tutorialプロジェクトでは、webapp/common/common.jspに共通で使う宣言が
+定義されています。
+</p>
+<h5>commons.jsp</h5>
+<pre>
+&lt;%@page pageEncoding="UTF-8"%&gt;
+&lt;%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%&gt;
+&lt;%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%&gt;
+&lt;%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%&gt;
+&lt;%@taglib prefix="html" uri="http://struts.apache.org/tags-html"%&gt;
+&lt;%@taglib prefix="bean" uri="http://struts.apache.org/tags-bean"%&gt;
+&lt;%@taglib prefix="tiles" uri="http://jakarta.apache.org/struts/tags-tiles"%&gt;
+&lt;%@taglib prefix="s" uri="http://sastruts.seasar.org"%&gt;
+&lt;%@taglib prefix="f" uri="http://sastruts.seasar.org/functions"%&gt;
+</pre>
+<h5>web.xml</h5>
+<pre>
+&lt;web-app&gt;
+    ...
+    &lt;jsp-config&gt;
+        &lt;jsp-property-group&gt;
+            &lt;url-pattern&gt;*.jsp&lt;/url-pattern&gt;
+            &lt;el-ignored&gt;false&lt;/el-ignored&gt;
+            &lt;page-encoding&gt;UTF-8&lt;/page-encoding&gt;
+            &lt;scripting-invalid&gt;false&lt;/scripting-invalid&gt;
+            &lt;include-prelude&gt;<b>/common/common.jsp</b>&lt;/include-prelude&gt;
+        &lt;/jsp-property-group&gt;
+    &lt;/jsp-config&gt;
+&lt;/web-app&gt;
+</pre>
 
 <h3><a name="ActionForm">アクションフォーム</a></h3>
 <p>
 SAStrutsでは、アクションフォームもPOJOで記述することができます。
-リクエストのパラメータ名と同じ名前のプロパティをアクションフォームに定義します。
+リクエストのパラメータと同じ名前のプロパティをアクションフォームに定義します。
 入力値を受け取るためのプロパティは、バリデーションエラーになっても値を格納できるように
 プロパティの型をStringあるいはbooleanで定義してください。
 </p>
@@ -639,7 +812,6 @@ SAStrutsのアクションフォームは、デフォルトだとリクエスト
 セッションスコープで管理することもできます。
 セッションスコープで管理するコンポーネントは、
 java.io.Serializableをimplementsする必要があります。
-@Componentの詳細は、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#ComponentAnnotation">こちら</a>を参照してください。
 </p>
 <pre>
 @Component(instance = InstanceType.SESSION)
@@ -653,10 +825,8 @@ public class FormDto implements Serializable {
 アクションフォームを利用するには、アクションのプロパティに@ActionFormを指定します。
 @ActionFormを複数指定しても意味がないので、
 複数指定しないようにしてください。
-アクションフォームのプロパティ名は、クラス名の先頭を小文字にしたものにします。
-後は、Seasar2が自動的に設定してくれます。
-詳しくは、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#AutoBindingMode">自動バインディング</a>
-を参照してください。
+次のようにプロパティを定義しておけば、 Seasar2が自動的に設定します。
+フィールド名は、クラス名の先頭を小文字にしたものにします。 
 </p>
 <pre>
 public class FormAction {
@@ -672,15 +842,8 @@ public class FormAction {
 検証の内容は、アクションごとに異なることがほとんどだからです。
 </p>
 <p>
-resetメソッドは<a href="#ResetMethod">こちら</a>を参照してください。
+リセットメソッドは<a href="#ResetMethod">こちら</a>を参照してください。
 </p>
-
-<h3><a name="JSP">JSP</a></h3>
-<p>
-JSPはどのように配置してもかまいませんが、
-/xxx/というパスに対応するXxxAction用のJSPは、/xxx/に格納すると良いでしょう。
-</p>
-
 
 <h3><a name="ResetMethod">リセットメソッド</a></h3>
 <p>
