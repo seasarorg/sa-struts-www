@@ -55,7 +55,7 @@
 	<li><a href="tutorial.html">チュートリアル</a></li>
 	<li><a href="featureReference.html">機能リファレンス</a></li>
 	<li><a href="annotationReference.html">アノテーションリファレンス</a></li>
-	<li><a href="fileReference.html">ファイルリファレンス</a>
+	<li><a href="fileReference.html">設定ファイルリファレンス</a>
 	    <ul>
 			<li><a href="#web">web.xml</a></li>
 			<li><a href="#strutsConfig">struts-config.xml</a></li>
@@ -65,7 +65,11 @@
 			<li><a href="#env">env.txt</a></li>
 			<li><a href="#env_ut">env_ut.txt</a></li>
 			<li><a href="#s2container">s2container.dicon</a></li>
+			<li><a href="#creator">creator.dicon</a></li>
+			<li><a href="#customizer">customizer.dicon</a></li>
+			<li><a href="#jdbc">jdbc.dicon</a></li>
 			<li><a href="#s2jdbc">s2jdbc.dicon</a></li>
+			<li><a href="#log4j">log4j.properties</a></li>
 			<li><a href="#MessageResources">メッセージリソース</a></li>
 		</ul>
 	</li>
@@ -79,10 +83,10 @@
 
 <div class="section">
 
-<h2>ファイルリファレンス</h2>
+<h2>設定ファイルリファレンス</h2>
 
 <p>
-SAStrutsで使われているファイルの説明をします。
+SAStrutsで使われている設定ファイルの説明をします。
 </p>
 
 <h3><a name="web">web.xml</a></h3>
@@ -517,6 +521,121 @@ s2-framework-xxx.jarの中に含まれています。
 env.txtの値で、Seasar2のデプロイの仕方が変化するのは、s2container.diconで実現されています。
 </p>
 
+<h3><a name="creator">creator.dicon</a></h3>
+<p>
+ルートパッケージ.actionなどにおいたJavaの設定情報を自動的に作成するための
+設定ファイルがcreator.diconです。
+creator.diconは、クラスパスの通っているディレクトリにおきます。
+sa-struts-tutorialプロジェクトでは、src/main/resourcesに
+creator.diconがあります。
+</p>
+<pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN" 
+    "http://www.seasar.org/dtd/components24.dtd"&gt;
+&lt;components&gt;
+    &lt;include path="convention.dicon"/&gt;
+    &lt;include path="customizer.dicon"/&gt;
+	
+    &lt;component
+        class="org.seasar.framework.container.creator.ActionCreator"/&gt;
+    &lt;component
+        class="org.seasar.framework.container.creator.ServiceCreator"/&gt;
+    &lt;component
+        class="org.seasar.framework.container.creator.DtoCreator"/&gt;
+    &lt;component
+        class="org.seasar.framework.container.creator.InterceptorCreator"/&gt;
+&lt;/components&gt;
+</pre>
+<p>
+action、service、dtoなどそれぞれのパッケージ応じたクリエータが登録されています。
+</p>
+
+<h3><a name="customizer">customizer.dicon</a></h3>
+<p>
+クリエータが作成した設定情報をカスタマイズするための
+設定ファイルがcustomizer.diconです。
+customizer.diconは、クラスパスの通っているディレクトリにおきます。
+sa-struts-tutorialプロジェクトでは、src/main/resourcesに
+customizer.diconがあります。
+</p>
+<pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN" 
+    "http://www.seasar.org/dtd/components24.dtd"&gt;
+&lt;components&gt;
+    &lt;include path="default-customizer.dicon"/&gt;
+	
+    &lt;component name="actionCustomizer"
+        class="org.seasar.framework.container.customizer.CustomizerChain"&gt;
+        &lt;initMethod name="addAspectCustomizer"&gt;
+            &lt;arg&gt;<b>"aop.traceInterceptor"</b>&lt;/arg&gt;
+        &lt;/initMethod&gt;
+        &lt;initMethod name="addAspectCustomizer"&gt;
+            &lt;arg&gt;<b>"actionMessagesThrowsInterceptor"</b>&lt;/arg&gt;
+        &lt;/initMethod&gt;
+        &lt;initMethod name="addCustomizer"&gt;
+            &lt;arg&gt;
+                &lt;component
+                    class=<b>"org.seasar.framework.container.customizer.TxAttributeCustomizer"</b>/&gt;
+            &lt;/arg&gt;
+        &lt;/initMethod&gt;
+        &lt;initMethod name="addCustomizer"&gt;
+            &lt;arg&gt;
+                &lt;component
+                    class=<b>"org.seasar.struts.customizer.ActionCustomizer"</b>/&gt;
+            &lt;/arg&gt;
+        &lt;/initMethod&gt;
+    &lt;/component&gt;
+	
+    &lt;component name="serviceCustomizer"
+        class="org.seasar.framework.container.customizer.CustomizerChain"&gt;
+        &lt;initMethod name="addAspectCustomizer"&gt;
+            &lt;arg><b>"aop.traceInterceptor"</b>&lt;/arg&gt;
+        &lt;/initMethod&gt;
+        &lt;initMethod name="addCustomizer"&gt;
+            &lt;arg&gt;
+                &lt;component
+                    class=<b>"org.seasar.framework.container.customizer.TxAttributeCustomizer"</b>/&gt;
+            &lt;/arg&gt;
+        &lt;/initMethod&gt;
+    &lt;/component&gt;
+&lt;/components&gt;
+</pre>
+<p>
+<a href="featureReference.html#Action">アクション</a>やサービスの設定をカスタマイズするために
+actionCustomizerやserviceCustomizerが定義されています。
+</p>
+<p>
+aop.traceInterceptorはトレース用のログを出力するためのインターセプタで、
+aop.diconに定義されています。
+</p>
+<p>
+actionMessagesThrowsInterceptorは<a href="featureReference.html#Action">アクション</a>以外から、
+ActionMessages(html:errors)にメッセージを出力するためのインターセプタで、
+<a href="#app">app.dicon</a>に定義されています。
+</p>
+<p>
+TxAttributeCustomizerは、トランザクションを自動的に処理するためのカスタマイザです。
+詳細は、<a href="featureReference.html#Transaction">こちら</a>を参照してください。
+</p>
+<p>
+ActionCustomizerは、<a href="featureReference.html#Action">アクション</a>が
+デプロイされるときに、Struts用の設定情報を自動的に組み立てるクラスで、
+SAStrutsで最も重要なクラスです。
+</p>
+
+<h3><a name="jdbc">jdbc.dicon</a></h3>
+<p>
+データベース接続用の設定ファイルがjdbc.diconです。
+jdbc.diconは、クラスパスの通っているディレクトリにおきます。
+sa-struts-tutorialプロジェクトでは、src/main/resourcesに
+jdbc.diconがあります。
+</p>
+<p>
+jdbc.diconの詳細は、<a href="http://s2container.seasar.org/2.4/ja/jdbc.html">こちら</a>を参照してください。
+</p>
+
 <h3><a name="s2jdbc">s2jdbc.dicon</a></h3>
 <p>
 <a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>
@@ -527,6 +646,37 @@ s2jdbc.diconがあります。
 </p>
 <p>
 s2jdbc.diconの詳細は、<a href="http://s2container.seasar.org/2.4/ja/s2jdbc_setup.html">こちら</a>を参照してください。
+</p>
+
+<h3><a name="log4j">log4j.properties</a></h3>
+<p>
+<a href="http://logging.apache.org/log4j/">log4j</a>
+用の設定ファイルがlog4j.propertiesです。
+log4j.propertiesは、クラスパスの通っているディレクトリにおきます。
+sa-struts-tutorialプロジェクトでは、src/main/resourcesに
+log4j.propertiesがあります。
+</p>
+<pre>
+log4j.category.org.seasar=DEBUG, C
+log4j.additivity.org.seasar=false
+
+log4j.category.<b>tutorial</b>=DEBUG, C
+log4j.additivity.<b>tutorial</b>=false
+
+log4j.appender.C=org.apache.log4j.ConsoleAppender
+log4j.appender.C.Target=System.out
+log4j.appender.C.ImmediateFlush=true
+log4j.appender.C.layout=org.apache.log4j.PatternLayout
+log4j.appender.C.layout.ConversionPattern=%-5p %d [%t] %m%n
+
+log4j.rootLogger=INFO, A1
+log4j.appender.A1=org.apache.log4j.ConsoleAppender
+log4j.appender.A1.layout=org.apache.log4j.PatternLayout
+log4j.appender.A1.layout.ConversionPattern=%d [%t] %-5p %c - %m%n
+</pre>
+<p>
+tutorialの部分は、ルートパッケージ名を指定します。
+ルートパッケージの詳細は、<a href="featureReference.html#Project">こちら</a>を参照してください。
 </p>
 
 <h3><a name="MessageResources">メッセージリソース</a></h3>
