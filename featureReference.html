@@ -212,6 +212,16 @@ Webアプリケーション名の後ろのパス(/login/)の最後のスラッ�
 </li>
 </ul>
 <p>
+アクション用のパスがない場合、ルートパッケージ.action.IndexActionがあれば、
+そのアクションが呼び出されます。
+例えば、http://localhost:8080/sa-struts-tutorial/にアクセスすると、
+tutorial.action.IndexActionが呼び出されます。
+</p>
+<p>
+IndexActionを呼び出したいときは、Webのルートにindex.jspをおかないようにしてください。
+index.jspの方が優先されて呼び出されるためです。
+</p>
+<p>
 大規模なアプリケーションでは、パスを分割することもできます。
 例えば、/aaa/bbb/のパスに対応するアクションクラスは、
 ルートパッケージ.action.aaa.BbbActionになります。

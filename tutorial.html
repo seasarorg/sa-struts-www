@@ -54,6 +54,7 @@
     <li><a href="download.html">ダウンロード</a></li>
 	<li><a href="tutorial.html">チュートリアル</a>
 		<ul>
+		    <li><a href="#index">index</a></li>
 			<li><a href="#login">login</a></li>
 		</ul>
 	</li>
@@ -82,10 +83,51 @@ Seasar2はHOT deployに対応しているので、ソースコードの変更を
 書き換えながら、HOT deployの威力を実感してください。
 </p>
 
+<h3><a name="index">index</a></h3>
+<p>
+ブラウザでhttp://localhost:8080/sa-struts-tutorial/にアクセスしてください。
+いろんなアプリケーションを試せるページが表示されましたね。
+</p>
+<p>
+webappの直下を見てみましょう。index.jsp(index.html)は存在しません。
+それでは、どのページが表示されているのでしょうか。
+</p>
+<p>
+SAStrutsは、Webアプリケーションのルートにアクセスすると、
+ルートパッケージ.action.IndexActionというクラスがあれば、
+自動的にそのアクションに遷移します。
+ルートパッケージの詳細は、<a href="featureReference.html#Project">こちら</a>を参照ください。
+</p>
+<h5>tutorial.action.IndexAction</h5>
+<pre>
+package tutorial.action;
+
+import org.seasar.struts.annotation.Execute;
+
+public class IndexAction {
+
+    @Execute(validator = false)
+    public String index() {
+        return "start.jsp";
+    }
+}
+</pre>
+<p>
+アクションに遷移した後、@Executeのついた実行メソッドが呼び出されます。
+実行メソッドを複数定義した場合に、どの実行メソッドが呼び出されるのかは、
+<a href="featureReference.html#ExecuteMethod">こちら</a>を参照してください。
+今回は、実行メソッドが1つしかないので、無条件にindex()が呼び出されます。
+</p>
+<p>
+メソッドの戻り値は遷移先になります。
+IndexAction#index()の場合は、start.jspに遷移します。
+</p>
+
 <h3><a name="login">login</a></h3>
 <p>
-ブラウザでhttp://localhost:8080/sa-struts-tutorial/login/にアクセスしてください。
-ログイン画面が表示されましたね。
+インデックスページからログインページにアクセスしてください。
+あるいは、ブラウザでhttp://localhost:8080/sa-struts-tutorial/login/にアクセスしても同じです。
+ログインページが表示されましたね。
 </p>
 <p>
 それでは、webapp/WEB-INF/struts-config.xmlを見てみましょう。
