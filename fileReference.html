@@ -160,14 +160,6 @@ sa-struts-tutorialプロジェクトでは、webapp/WEB-INFにあります。
         &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
         &lt;dispatcher&gt;REQUEST&lt;/dispatcher&gt;
     &lt;/filter-mapping&gt;
-
-    &lt;servlet&gt;
-        &lt;servlet-name&gt;s2container&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;
-            <b>org.seasar.framework.container.servlet.S2ContainerServlet</b>
-        &lt;/servlet-class&gt;
-        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
-    &lt;/servlet&gt;
     
     &lt;servlet&gt;
         &lt;servlet-name&gt;action&lt;/servlet-name&gt;
@@ -192,19 +184,27 @@ sa-struts-tutorialプロジェクトでは、webapp/WEB-INFにあります。
             &lt;param-name&gt;detail&lt;/param-name&gt;
             &lt;param-value&gt;2&lt;/param-value&gt;
         &lt;/init-param&gt;
-        &lt;load-on-startup&gt;2&lt;/load-on-startup&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
     &lt;/servlet&gt;
 
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;s2container&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;
+            <b>org.seasar.framework.container.servlet.S2ContainerServlet</b>
+        &lt;/servlet-class&gt;
+        &lt;load-on-startup&gt;2&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+    
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;action&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;*.do&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
     &lt;servlet-mapping&gt;
         &lt;servlet-name&gt;s2container&lt;/servlet-name&gt;
         &lt;url-pattern&gt;/s2container&lt;/url-pattern&gt;
     &lt;/servlet-mapping&gt;
   
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;action&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;*.do&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-
     &lt;welcome-file-list&gt;
     &lt;/welcome-file-list&gt;
     
@@ -238,13 +238,14 @@ filterタグとfilter-mappingタグの順番は、非常に重要です。
 必ず上記の順序で定義するようにしてください。
 </p>
 <p>
-S2ContainerServletは、Seasar2の初期化と終了処理を行なうためのサーブレットです。
+ActionServletは、Struts用のサーブレットです。
 </p>
 <p>
-ActionServletは、Struts用のサーブレットです。
-S2ContainerServletよりも後に起動されるようにload-on-startupの値を
-S2ContainerServletのload-on-startupの値より大きくしてください。
+S2ContainerServletは、Seasar2の初期化と終了処理を行なうためのサーブレットです。
+ActionServletよりも後に起動されるようにload-on-startupの値を
+ActionServletのload-on-startupの値より大きくしてください。
 </p>
+
 <p>
 S2ModuleConfigFactoryは、<a href="#strutsConfig">struts-config.xml</a>なしの
 開発を実現するためのクラスです。
