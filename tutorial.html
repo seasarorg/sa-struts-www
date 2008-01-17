@@ -300,16 +300,18 @@ name属性の値をloginに設定します。
 </p>
 <p>
 サブミットされると、入力したuserName、passwordの値がアクションに設定され、
-必須かどうかが検証されます。
+バリデータにより必須かどうかが検証されます。
 </p>
 <p>
-検証結果がNGだった場合は、input属性で指定したlogin.jspに戻されます。
-バリデータの検証結果がOKの場合は、validate属性で指定したvalidate()が呼び出されます。
+バリデータの結果がNGだった場合は、input属性で指定したlogin.jspに戻されます。
+バリデータの結果がOKの場合は、validate属性で指定したvalidate()が呼び出されます。
 </p>
 <p>
 validate()の結果がNGだった場合は、input属性で指定したlogin.jspに戻されます。
-バリデータの検証結果がOKの場合は、login()が呼び出されます。
-戻り値がwelcome.jspなので、welcome.jspに遷移します。
+validate()の検証結果がOKの場合は、login()が呼び出されます。
+</p>
+<p>
+login()の戻り値がwelcome.jspなので、welcome.jspに遷移します。
 </p>
 
 <p>
