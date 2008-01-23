@@ -845,6 +845,26 @@ SAStrutsには、Strutsのhtml:formを継承したs:formが用意されていま
 s:formタグは、action属性の値に拡張子(.do)が付かないこと以外は、
 html:formと同じです。
 </p>
+<p>
+JSPへのダイレクト(methodがGETによる)アクセスは、デフォルトで禁止されています。
+JSPは<a href="#Action">アクション</a>を経由して表示したほうがいいでしょう。
+最初は、<a href="#Action">アクション</a>で何もすることがなくても、
+後から必要になった場合に、URLが変わらないようにするためです。
+また、セキュリティ的なチェックを入れたいときも、
+<a href="#Action">アクション</a>を経由するほうが何かと便利です。
+</p>
+<p>
+リダイレクトで、他のJSPへ遷移するときも、戻り値を下記のようにして、
+<a href="#Action">アクション</a>を経由するようにします。
+</p>
+<pre>
+return "/アクション名/メソッド名?redirect=true";
+</pre>
+<p>
+どうしても、JSPへ直接アクセスする必要がでてきた場合は、
+web.xmlのroutingfilterのinit-paramでjspDirectAccessの値をtrueにします。
+詳しくは、<a href="fileReference.html#web">web.xml</a>を参照してください。
+</p>
 
 <h3><a name="ActionForm">アクションフォーム</a></h3>
 <p>

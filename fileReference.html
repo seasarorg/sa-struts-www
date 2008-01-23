@@ -132,6 +132,10 @@ sa-struts-tutorialプロジェクトでは、webapp/WEB-INFにあります。
         &lt;filter-class&gt;
             <b>org.seasar.struts.filter.RoutingFilter</b>
         &lt;/filter-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;<b>jspDirectAccess</b>&lt;/param-name&gt;
+            &lt;param-value&gt;<b>false</b>&lt;/param-value&gt;
+        &lt;/init-param&gt;
     &lt;/filter&gt;
         
     &lt;filter-mapping&gt;
@@ -232,6 +236,9 @@ HotdeployFilterは、Seasar2がJavaのクラスの変更をHOTに認識できる
 <p>
 RoutingFilterは、きれいなURL(Strutsの.doなどの拡張子を見せない)を
 実現するためのフィルタです。
+デフォルトで、JSPへのダイレクトアクセスを禁止するようになっているので、
+JSPへ直接アクセスする必要がある場合は、
+jspDirectAccessのパラメータをtrueに設定してください。
 </p>
 <p>
 filterタグとfilter-mappingタグの順番は、非常に重要です。
