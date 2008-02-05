@@ -285,15 +285,10 @@ Seasar2が自動的に設定します。フィールド名は、クラス名の�
 <pre>
 public UserDto userDto;
 </pre>
-<p>
-Dtoをセッションに保存する場合、DtoのHOT deployが効かない場合があります。
-Tomcatを使っているなら、デフォルトでセッションをアプリケーションの終了時に
-保存する設定になっているので、Seasar2の関与しないところでクラスローダに読み込まれてしまい
-HOT deployがうまく動作しません。
-</p>
-<p>
-セッションに保存しないようにするには、TOMCAT_HOME/conf/context.xmlの
-Managerタグのコメントをはずしてください。
+<p style="background-color:red">
+Dtoをセッションに保存する設定のときに、DtoのHOT deployが効かない場合があります。
+Tomcatを使っているなら、<a href="fileReference.html#context">context.xml</a>を
+リンクの指示に従って修正してください。
 </p>
 <p>
 他のアプリケーションサーバでも、セッションをアプリケーションの終了時に
@@ -385,24 +380,35 @@ return "https://ホスト名/アプリケーション名/パス?redirect=true";
 <p>
 1つのアクションに複数の実行メソッドを定義することができます。
 どの実行メソッドが選択されるのかは、URLで指定するか、
-リクエストのパラメータのキーにメソッド名が含まれている(値が1文字以上あること)かどうかで決まります。
+リクエストのパラメータのキーにメソッド名が含まれている(値が1文字以上あること)か、
+リクエストのSAStruts.methodパラメータにメソッド名が指定されているかどうかで決まります。
 </p>
 <p>
-次の例では、LoginAction#index()が呼び出されます。
+次の例では、AddAction#index()が呼び出されます。
 </p>
 <pre>
-http://localhost:8080/sa-struts-tutorial/login/index/
+http://localhost:8080/sa-struts-tutorial/add/index
 </pre>
 <p>
 メソッドが定義されていない場合、index()が呼び出されるので、
 上記の呼び出しは、下記の呼び出しと一緒です。
 </p>
 <pre>
-http://localhost:8080/sa-struts-tutorial/login/
+http://localhost:8080/sa-struts-tutorial/add
 </pre>
 <p>
 @ExecuteでURLのパターン(urlPattern)を指定することで、
-URLの一部をパラメータの値として受け取ることができます。
+URLがパターンに一致した場合にそのメソッドが呼び出されます。
+また、URLの一部をパラメータの値として受け取ることができます。
+</p>
+<p>
+内部的な仕組みとしては、RoutingFilterでURLがパターンに一致するか調べます。
+一致した場合は、SAStruts.methodをキーにしてそのメソッド名をパラメータに追加します。
+パターンの{パラメータ名}の部分は、
+パラメータ名がキーで実際のURLで一致した部分を値としてパラメータに追加します。
+パラメータをクエリストリングとして組み立てた後に、
+Strutsにフォワードします。
+</p>
 例えば、EmployeeAction#edit()が次のように定義されているとします。
 </p>
 <pre>
@@ -412,17 +418,31 @@ public String edit() {
 }
 </pre>
 <p>
-urlPatternの{}で囲まれている部分をパラメータとして受け取ることができます。
-/employee/list.jspに次のようなアンカータグが定義されている場合、
-アンカータグをクリックするとidプロパティが1に設定されて、
-EmployeeAction#edit()が呼び出されます。
+/employee/list.jspに次のようなアンカータグが定義されているとします。
 </p>
 <pre>
 &lt;a href="edit/1"&gt;編集画面へ&lt;/a&gt;
 </pre>
 <p>
+アンカータグをクリックするとRoutingFilterがURL(edit/1)がパターン(edit/{id})に一致していることを検知し、
+次のようなURLを組み立ててStrutsにフォワードします。
+</p>
+<pre>
+/employee.do?id=1&SAStruts.method=edit
+</pre>
+<p>
+SAStrutsは、idパラメータの値をアクションのプロパティに設定し、
+SAStruts.methodパラメータで指定されているeditメソッドを呼び出します。
+</p>
+<p style="background-color:red">
+パターンに一致する値が化ける場合があります。
+アプリケーションサーバがURLを正しくデコードしていないのが原因です。
+Tomcatを使っている場合は、<a href="fileReference.html#server">server.xml</a>
+をリンク先の指示に従って修正してください。
+</p>
+<p>
 フォームをサブミットする場合は、ボタン系のname属性に実行メソッド名を指定します。
-次の例では、アクションクラスのsubmit()が呼び出されます。
+次の例では、アクションクラスのsubmit()を呼び出します。
 </p>
 <pre>
 &lt;input type="submit" name="submit" value="サブミット"/&gt;
@@ -453,6 +473,80 @@ validator属性とvalidate属性を両方指定した場合には、
 <pre>
 @Execute(validate = "validate", input = "login.jsp")
 </pre>
+<p>
+roles属性を指定して、メソッドを呼び出すのに必要なロールを設定できます。
+複数のロールを設定するには、カンマ(,)で区切ります。
+必要なロールがない場合、org.seasar.struts.exception.NoRoleRuntimeExceptionがスローされます。
+NoRoleRuntimeExceptionがスローされた場合に、適切なページ(/error/norole.jsp)に遷移して、
+適切なメッセージ(errors.norole)を表示するには次のように設定します。
+</p>
+<h5><a href="fileReference.html#MessageResources">application_jp.properties</a></h5>
+<pre>
+errors.norole=適切なロールがありません。
+</pre>
+<h5>struts-config.xml</h5>
+<pre>
+&lt;global-exceptions&gt;
+    &lt;exception path="/error/norole.jsp" key="errors.norole"
+        type="org.seasar.struts.exception.NoRoleRuntimeException"/&gt;
+&lt;/global-exceptions&gt;
+</pre>
+<h5>/error/norole.jsp</h5>
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Role error&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;html:errors property="errors.norole"/&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<h5>ProtectAction</h5>
+<pre>
+package tutorial.action;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.seasar.struts.annotation.Execute;
+
+public class ProtectAction {
+
+    public HttpServletRequest request;
+
+    @Execute(validator = false)
+    public String index() {
+        return "index.jsp";
+    }
+
+    @Execute(validator = false, input = "input.jsp", <b>roles = "tomcat"</b>)
+    public String tomcat() {
+        return "tomcat.jsp";
+    }
+}
+</pre>
+<h5>/protect/index.jsp</h5>
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Protect index&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;html:errors/&gt;
+このページは、tomcatとrole1ユーザが表示できます。&lt;br /&gt;
+&lt;s:form action="/protect"&gt;
+&lt;input type="submit" name="tomcat"
+  value="tomcatユーザだけが押せます"/&gt;
+&lt;/s:form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>
+チュートリアルの保護されたページに、tomcatユーザでアクセスすると、
+tomcat.jspにアクセスできます。インデックスページに戻ってログアウトして、
+もう一度保護されたページにrole1でアクセスしてください。
+今度は、tomcat.jspにアクセスできずにエラーのページに遷移します。
+</p>
 
 <h3><a name="Validator">バリデータ</a></h3>
 <p>
@@ -784,12 +878,22 @@ JSPは、<a href="#Action">アクション</a>に対応するディレクトリ�
 <p>
 <a href="#Action">アクション</a>や<a href="#ActionForm">アクションフォーム</a>のプロパティの値は、
 リクエストの属性にプロパティと同じ名前でセットされています。
-そのため、ELやJSTLで次のように参照することができます。
+そのため、次のように参照することができます。
 </p>
 <pre>
-${プロパティ名}
 ${f:h(プロパティ名)}
+
 &lt;a href="${f:u(プロパティ名)}"&gt;...&lt;/a&gt;
+
+&lt;c:forEach items="${プロパティ名}" ...
+
+${f:br(f:h(プロパティ名))}
+
+&lt;fmt:formatDate value="${f:date(hireDate, 'yyyyMMdd')}"
+  pattern="yyyy/MM/dd"/&gt;
+
+&lt;fmt:formatNumber value="${f:number(salary, '####')}"
+  pattern="#,###"/&gt;
 </pre>
 <p>
 HTMLエスケープ(クロスサイトスクリプティング対策で"<"を"&amp;lt;"などに変換すること)が必要なケースは、f:h()を使ってください。
@@ -798,9 +902,31 @@ HTMLエスケープ(クロスサイトスクリプティング対策で"<"を"&a
 URLエンコーディング(クロスサイトスクリプティング対策でURLの部分をjavascript:alert('hoge')
 のような感じでJavaScriptが実行されないように変換すること)が必要なケースは、f:u()を使ってください。
 </p>
+<p style="background-color:red">
+ELは、items="${プロパティ名}"のように属性の設定のみに使い、
+タグのボディでは使わないようにしてください。
+クロスサイトスクリプティングの問題が起こる危険があります。
+タグのボディでは、f:h()を使ってください。
+</p>
 <p>
-タグのボディでは、HTMLエスケースしてください。
-URL用の属性は、URLエンコーディングしてください。
+テキストエリアで入力した値を表示するときに、改行を&lt;br /&gt;に変換したい場合は、
+f:br()を使います。
+</p>
+<p>
+日付をフォーマットして表示するには、fmt:formatDateを使いますが、
+value属性に設定する値はDate型である必要があります。
+Strutsの場合、入力値は、文字列で定義するのが一般的なので、
+文字列で定義されている入力値は、fmt:formatDateでフォーマットできません。
+このような場合は、f:date()を使って文字列をDate型に変換します。
+2番めの引数は、SimpleDateFormatの形式で指定します。
+</p>
+<p>
+数値をフォーマットして表示するには、fmt:formatNumberを使いますが、
+value属性に設定する値はNumber型である必要があります。
+Strutsの場合、入力値は、文字列で定義するのが一般的なので、
+文字列で定義されている入力値は、fmt:formatNumberでフォーマットできません。
+このような場合は、f:number()を使って文字列をNumber型に変換します。
+2番めの引数は、DecimalFormatの形式で指定します。
 </p>
 <p>
 ネストしたプロパティにはドット(.)でアクセスできます。
@@ -914,12 +1040,10 @@ public class FormAction {
 <p>
 リセットメソッドは<a href="#ResetMethod">こちら</a>を参照してください。
 </p>
-<p>
-Tomcatを使う場合、セッションをアプリケーションの終了時に保存する設定になっていると、
-Seasar2の関与しないところでクラスローダに読み込まれてしまうので、
-HOT deployがうまく動作しません。
-セッションに保存しないようにするには、TOMCAT_HOME/conf/context.xmlの
-Managerタグのコメントをはずしてください。
+<p style="background-color:red">
+アクションフォームをセッションに保存する設定のときに、アクションフォームのHOT deployが効かない場合があります。
+Tomcatを使っているなら、<a href="fileReference.html#context">context.xml</a>を
+リンクの指示に従って修正してください。
 </p>
 <p>
 他のアプリケーションサーバでも、セッションをアプリケーションの終了時に

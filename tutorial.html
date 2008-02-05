@@ -54,8 +54,8 @@
     <li><a href="download.html">ダウンロード</a></li>
 	<li><a href="tutorial.html">チュートリアル</a>
 		<ul>
-		    <li><a href="#index">index</a></li>
-			<li><a href="#login">login</a></li>
+		    <li><a href="#index">インデックス</a></li>
+			<li><a href="#add">足し算</a></li>
 		</ul>
 	</li>
 	<li><a href="featureReference.html">機能リファレンス</a></li>
@@ -122,12 +122,10 @@ public class IndexAction {
 メソッドの戻り値は遷移先になります。
 IndexAction#index()の場合は、start.jspに遷移します。
 </p>
-
-<h3><a name="login">login</a></h3>
-<p>
-インデックスページからログインページにアクセスしてください。
-あるいは、ブラウザでhttp://localhost:8080/sa-struts-tutorial/login/にアクセスしても同じです。
-ログインページが表示されましたね。
+<p style="background-color:red">
+Webアプリケーションのルートにindex.jspをおくと、
+IndexActionに制御がわたらずindex.jspに直接遷移します。
+アクションで、何らかの制御を行ないたい場合は、index.jspは定義しないでください。
 </p>
 <p>
 それでは、webapp/WEB-INF/struts-config.xmlを見てみましょう。
@@ -141,47 +139,49 @@ webapp/WEB-INF/validation.xmlも見てみましょう。
 SAStrutsは、検証用のアノテーションをプロパティに設定することで、
 validation.xmlに相当する情報を組み立てています。
 </p>
+
+<h3><a name="add">足し算</a></h3>
 <p>
-/login/に対応するアクションクラスは、tutorial.action.LoginActionです。
+インデックスページから足し算のページにアクセスしてください。
+あるいは、ブラウザでhttp://localhost:8080/sa-struts-tutorial/addにアクセスしても同じです。
+足し算のページが表示されましたね。
+</p>
+<p>
+/addに対応するアクションクラスは、tutorial.action.AddActionです。
 アクションの詳細は、<a href="featureReference.html#Action">こちら</a>を参照してください。
 </p>
 <p>
-LoginActionのソースコードは次のようになります。
+AddActionのソースコードは次のようになります。
 </p>
-<h5>LoginAction</h5>
+<h5>AddAction</h5>
 <pre>
-package tutorial.web.login;
+package tutorial.action;
 
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.seasar.struts.annotation.Execute;
+import org.seasar.struts.annotation.IntegerType;
 import org.seasar.struts.annotation.Required;
 
-public class LoginAction {
+public class AddAction {
 
     @Required
-    public String userName;
+    @IntegerType
+    public String arg1;
 
     @Required
-    public String password;
+    @IntegerType
+    public String arg2;
+
+    public Integer result;
 
     @Execute(validator = false)
-    public String execute() {
-        return "login.jsp";
+    public String index() {
+        return "add.jsp";
     }
 
-    @Execute(validate = "validate", input = "login.jsp")
-    public String login() {
-        return "welcome.jsp";
-    }
-
-    public ActionMessages validate() {
-        ActionMessages errors = new ActionMessages();
-        if (!userName.equals(password)) {
-            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
-                "errors.invalid.login"));
-        }
-        return errors;
+    @Execute(input = "add.jsp")
+    public String submit() {
+        result = Integer.valueOf(arg1) + Integer.valueOf(arg2);
+        return "add.jsp";
     }
 }
 </pre>
@@ -206,26 +206,26 @@ publicフィールドは、ELやStrutsからでも認識できるようになっ
 リクエストのパラメータのキーにメソッド名が含まれている(値が1文字以上あること)かどうかで決まります。
 </p>
 <p>
-次の例では、LoginAction#index()が呼び出されます。
+次の例では、AddAction#index()が呼び出されます。
+/addの後ろがメソッド名になります。
 </p>
 <pre>
-http://localhost:8080/sa-struts-tutorial/login/index/
+http://localhost:8080/sa-struts-tutorial/add/index
 </pre>
 <p>
 メソッドが定義されていない場合、index()が呼び出されるので、
 上記の呼び出しは、下記の呼び出しと一緒です。
 </p>
 <pre>
-http://localhost:8080/sa-struts-tutorial/login/
+http://localhost:8080/sa-struts-tutorial/add
 </pre>
 <p>
 フォームをサブミットする場合は、ボタン系のname属性に実行メソッド名を指定します。
-次の例では、アクションクラスのlogin()が呼び出されます。
+次の例では、アクションクラスのsubmit()を呼び出します。
 </p>
 <pre>
-&lt;input type="submit" name="login" value="ログイン"/&gt;
-</pre>
-<p>
+&lt;input type="submit" name="submit" value="サブミット"/&gt;
+</pre><p>
 @Executeの詳細は、<a href="annotationReference.html#Execute">こちら</a>を参照してください。
 </p>
 <p>
@@ -236,36 +236,20 @@ validator=trueの場合は、検証結果がNGのときの遷移先をinput属�
 バリデータの詳細は、<a href="featureReference.html#Validator">こちら</a>を参照してください。
 </p>
 <p>
-ログインチェック(validateメソッド)のような単純にバリデータでは処理できないような検証は、
-<a href="featureReference.html#ValidateMethod">検証メソッド</a>に記述します。
-実行メソッドでどの検証メソッドを使うのかは、
-@Executeのvalidate属性で指定します。
-validate属性を指定した場合は、検証結果がNGのときの遷移先をinput属性で指定する必要があります。
-検証メソッドの詳細は、<a href="featureReference.html#ValidateMethod">こちら</a>を参照してください。
+add.jspは次のようになります。
 </p>
-<p>
-login.jspは次のようになります。
-</p>
-<h5>login.jsp</h5>
+<h5>add.jsp</h5>
 <pre>
 &lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;Login&lt;/title&gt;
+&lt;title&gt;Add&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;html:errors/&gt;
-&lt;s:form action="/login"&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td&gt;ユーザ名:&lt;/td&gt;
-&lt;td&gt;&lt;html:text property="userName"/&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;パスワード:&lt;/td&gt;
-&lt;td&gt;&lt;html:password property="password" redisplay="false"/&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;input type="submit" name="login" value="ログイン"/&gt;
+&lt;s:form action="/add"&gt;
+&lt;html:text property="arg1"/&gt; + &lt;html:text property="arg2"/&gt;
+= ${f:h(result)}&lt;br /&gt;
+&lt;input type="submit" name="submit" value="サブミット"/&gt;
 &lt;/s:form&gt;
 &lt;/body&gt;
 &lt;/html&gt;
@@ -289,51 +273,25 @@ Strutsのhtml:formと同じです。
 property属性にアクションのプロパティ名を指定します。
 </p>
 <p>
-パスワードを受け取るために、html:passwordタグを定義します。
-property属性にアクションのプロパティ名を指定します。
-検証エラーなどで画面が再表示されるときに、パスワードが表示されないようにするには、
-redisplay属性をfalseにします。
+サブミット時にAddAction#submit()を呼び出すために、サブミットタグの
+name属性の値をsubmitに設定します。
 </p>
 <p>
-サブミット時にLoginAction#login()を呼び出すために、サブミットタグの
-name属性の値をloginに設定します。
+サブミットされると、入力したarg1、arg2の値がアクションに設定され、
+バリデータにより必須かどうか、整数かどうかが検証されます。
 </p>
 <p>
-サブミットされると、入力したuserName、passwordの値がアクションに設定され、
-バリデータにより必須かどうかが検証されます。
+バリデータの結果がNGだった場合は、input属性で指定したadd.jspに戻されます。
+バリデータの結果がOKの場合は、submit()が呼び出されます。
 </p>
 <p>
-バリデータの結果がNGだった場合は、input属性で指定したlogin.jspに戻されます。
-バリデータの結果がOKの場合は、validate属性で指定したvalidate()が呼び出されます。
+submit()の戻り値がadd.jspなので、またadd.jspに遷移します。
 </p>
 <p>
-validate()の結果がNGだった場合は、input属性で指定したlogin.jspに戻されます。
-validate()の検証結果がOKの場合は、login()が呼び出されます。
-</p>
-<p>
-login()の戻り値がwelcome.jspなので、welcome.jspに遷移します。
-</p>
-
-<p>
-welcome.jspは次のようになります。
-</p>
-<h5>welcome.jsp</h5>
-<pre>
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;Welcome&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-Hello ${f:h(userName)}
-&lt;/body&gt;
-&lt;/html&gt;
-</pre>
-<p>
-SAStrutsは、アクションのプロパティの値をリクエストの属性に設定しているので、
-${f:h(userName)}でuserNameプロパティを表示することができます。
-</p>
-<p>
-f:h()はHTMLをエスケープするためのファンクションです。
+アクションのresultプロパティは、リクエストの属性に同じ名前でセットされているので、
+${f:h(result)}のようにして表示できます。
+f:hはHTMLをエスケープするファンクションです。
+詳細は、<a href="featureReference.html#JSP">こちら</a>を参照してください。
 </p>
 
 </div><!-- section -->

@@ -168,6 +168,16 @@ http://localhost:8080/sa-struts-tutorial/employee/edit/1にアクセスすると
 パラメータ用のパスは、edit/1になるので、idのパラメータに1が設定されて、
 edit()が呼び出されます。
 </p>
+<h5>roles属性(オプション)</h5>
+<p>
+実行メソッドを呼び出すために必要なロールを設定します。
+複数設定する場合は、カンマ(,)で区切ります。
+rolesが指定されていない場合は、チェックは行なわれません。
+</p>
+<p>
+チェックがNGの場合、org.seasar.struts.exception.NoRoleRuntimeExceptionが
+スローされます。
+</p>
 
 <h4><a name="ActionForm">ActionFormアノテーション</a></h4>
 <p>
