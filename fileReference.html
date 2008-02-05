@@ -70,6 +70,9 @@
 			<li><a href="#jdbc">jdbc.dicon</a></li>
 			<li><a href="#s2jdbc">s2jdbc.dicon</a></li>
 			<li><a href="#log4j">log4j.properties</a></li>
+			<li><a href="#server">Tomcatのserver.xml</a></li>
+			<li><a href="#context">Tomcatのcontext.xml</a></li>
+			<li><a href="#defaultweb">デフォルトのweb.xml</a></li>
 			<li><a href="#MessageResources">メッセージリソース</a></li>
 		</ul>
 	</li>
@@ -103,7 +106,7 @@ sa-struts-tutorialプロジェクトでは、webapp/WEB-INFにあります。
     version="2.4"&gt;
 
     &lt;filter&gt;
-        &lt;filter-name&gt;encodingfilter&lt;/filter-name&gt;
+        &lt;filter-name&gt;<a name="encodingfilter">encodingfilter</a>&lt;/filter-name&gt;
         &lt;filter-class&gt;
             <b>org.seasar.extension.filter.EncodingFilter</b>
         &lt;/filter-class&gt;
@@ -252,10 +255,16 @@ S2ContainerServletは、Seasar2の初期化と終了処理を行なうための�
 ActionServletよりも後に起動されるようにload-on-startupの値を
 ActionServletのload-on-startupの値より大きくしてください。
 </p>
-
 <p>
 S2ModuleConfigFactoryは、<a href="#strutsConfig">struts-config.xml</a>なしの
 開発を実現するためのクラスです。
+</p>
+<a name="indexjsp"/>
+<p>
+きれいなURLを使うと、拡張子なしのリクエスト(例えば、/add)に対して、アクションよりも先に
+/add/index.jspに制御がいく場合があります。
+これを避けるために、welcome-file-listは空にしておきます。
+<a href="defaultweb">デフォルトのweb.xml</a>のwelcome-file-listも空にしておきましょう。
 </p>
 <p>
 jsp-configタグの詳細は、<a href="featureReference.html#JSP">こちら</a>を参照してください。
@@ -685,6 +694,48 @@ log4j.appender.A1.layout.ConversionPattern=%d [%t] %-5p %c - %m%n
 <p>
 tutorialの部分は、ルートパッケージ名を指定します。
 ルートパッケージの詳細は、<a href="featureReference.html#Project">こちら</a>を参照してください。
+</p>
+
+<h3><a name="server">Tomcatのserver.xml</a></h3>
+<p>
+Tomcatを使っていて、GETのリクエストが文字化けする場合、
+conf/server.xmlのConnectorタグの設定を下記のようにします。
+</p>
+<pre>
+&lt;Connector port="8080" ... <b>useBodyEncodingForURI="true"</b>...
+</pre>
+<p>
+Tomcatを使っていて、URLが文字化けする場合、
+conf/server.xmlのConnectorタグの設定を下記のようにします。
+UTF-8の部分は、<a href="#encodingfilter">encodingfilter</a>の設定にあわせてください。
+</p>
+<pre>
+&lt;Connector port="8080" ... <b>URIEncoding="UTF-8"</b>...
+</pre>
+
+<h3><a name="context">Tomcatのcontext.xml</a></h3>
+<p>
+Tomcatを使っていて、<a href="featureReference.html#ActionForm">ActionForm</a>やDtoを
+セッションに格納するようにしている場合に、HOT deployが効かないことがあります。
+これは、Tomcatがセッション情報をシリアライズし、
+Seasar2が関与できないところでデシリアライズすることが原因です。
+</p>
+<p>
+セッションをシリアライズ・デシリアライズさせないようにするには
+conf/context.xmlのManagerタグのコメントアウトをはずします。
+</p>
+<pre>
+&lt;!-- Uncomment this to disable session persistence across Tomcat restarts --&gt;
+&lt;Manager pathname="" /&gt;
+</pre>
+
+<h3><a name="defaultweb">デフォルトのweb.xml</a></h3>
+<p>
+きれいなURLを使うと、拡張子なしのリクエスト(例えば、/add)に対して、アクションよりも先に
+/add/index.jspに制御がいく場合があります。
+これを避けるために、welcome-file-listは空にしておきます。
+通常のweb.xmlのwelcome-file-listも空にしておきましょう。
+Tomcatの場合、confディレクトリにデフォルトのweb.xmlがあります。
 </p>
 
 <h3><a name="MessageResources">メッセージリソース</a></h3>
