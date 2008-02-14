@@ -215,6 +215,11 @@ sa-struts-tutorialプロジェクトでは、webapp/WEB-INFにあります。
     &lt;welcome-file-list&gt;
     &lt;/welcome-file-list&gt;
     
+    &lt;error-page&gt;
+        &lt;exception-type&gt;java.lang.Throwable&lt;/exception-type&gt;
+        &lt;location&gt;/error/debug.jsp&lt;/location&gt;
+    &lt;/error-page&gt;
+    
     &lt;jsp-config&gt;
         &lt;jsp-property-group&gt;
             &lt;url-pattern&gt;*.jsp&lt;/url-pattern&gt;
@@ -265,6 +270,10 @@ S2ModuleConfigFactoryは、<a href="#strutsConfig">struts-config.xml</a>なし�
 /add/index.jspに制御がいく場合があります。
 これを避けるために、welcome-file-listは空にしておきます。
 <a href="defaultweb">デフォルトのweb.xml</a>のwelcome-file-listも空にしておきましょう。
+</p>
+<p>
+例外が起きたときに、特定のページに遷移させるためには、
+error-pageタグを使います。
 </p>
 <p>
 jsp-configタグの詳細は、<a href="featureReference.html#JSP">こちら</a>を参照してください。
