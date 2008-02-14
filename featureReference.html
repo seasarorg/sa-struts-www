@@ -130,10 +130,10 @@ sa-struts-tutorialプロジェクトでは、src/main/resourcesで次のよう�
 通常は、テーブルの名前にあわせます。
 </p>
 <p>
-サービスは、ルートパッケージ.serviceに格納します。クラス名の最後は、Serviceで終わるようにします。
+ロジックは、ルートパッケージ.logicに格納し、クラス名の最後は、Logicで終わるようにします。
 複数の<a href="#Action">アクション</a>から共通に使われるような機能は、
-サービスクラスで実装すると良いでしょう。
-サービスは、インターフェースと実装に分ける必要はなく、実装のみで良いでしょう。
+ロジッククラスで実装すると良いでしょう。
+ロジッククラスは、インターフェースと実装に分ける必要はなく、実装のみで良いでしょう。
 テストのときにモックが必要なら、実装クラスを継承したモッククラスでメソッドを
 モック用に上書きすればよいからです。
 </p>
@@ -160,26 +160,16 @@ Viewは<a href="#JSP">JSP</a>、Controllerは<a href="#Action">アクション</
 </p>
 <p>
 ビジネスロジックは、<a href="http://s2container.seasar.org/2.4/ja/s2jdbc_entity.html">エンティティ</a>に
-定義します。ビジネスロジックと間違えやすいのが、データアクセスのロジックと、
-エンティティの関連をたどる(部署のエンティティから関連先の従業員のエンティティをみにいくこと)
-ような複数種類(部署と従業員)のエンティティにまたがるようなロジックです。
+定義します。
 </p>
 <p>
 データアクセスのロジックは、<a href="#Action">アクション</a>に記述します。
 データアクセスのロジックをDaoクラスに抽出する方法もありますが、
 <a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>を使うと、
-ほとんどのデータアクセスロジックは、一度JdbcManagerを呼び出して終わりというような
+ほとんどのデータアクセスロジックは、JdbcManagerを呼び出して終わりというような
 スカスカなメソッドになってしまいます。
 データアクセスのロジックは、<a href="#Action">アクション</a>に直接記述したほうが、
 わかりやすいでしょう。
-</p>
-<p>
-エンティティの関連をたどる
-ような複数種類のエンティティにまたがるようなロジックは、
-<a href="#Action">アクション</a>に記述します。
-複数種類のエンティティにまたがるようなロジックは、
-どのエンティティ所属するのかあいまいなので、
-制御ロジックととらえ、<a href="#Action">アクション</a>に記述するほうがわかりやすいでしょう。
 </p>
 
 <h3><a name="Action">アクション</a></h3>
@@ -297,20 +287,20 @@ HOT deployがうまくいかないときは、セッションをアプリケー�
 保存しないように設定してください。
 </p>
 <p>
-複数のアクションから共通に使われるようなロジックをサービスで定義する場合、
-ルートパッケージ.serviceにXxxServiceを作成します。
+複数のアクションから共通に使われるようなロジックをロジッククラスで定義する場合、
+ルートパッケージ.logicにXxxLogicを作成します。
 </p>
 <pre>
-public class XxxService {
+public class XxxLogic {
     ...
 }
 </pre>
 <p>
-作成したXxxServiceをアクションで利用するには、次のようにプロパティを定義しておけば、
+作成したXxxLogicをアクションで利用するには、次のようにプロパティを定義しておけば、
 Seasar2が自動的に設定します。フィールド名は、クラス名の先頭を小文字にしたものにします。
 </p>
 <pre>
-public XxxService xxxService;
+public XxxLogic xxxLogic;
 </pre>
 <p>
 リクエストに対する処理を記述したい場合は、
@@ -769,7 +759,7 @@ JTAの設定は、s2container.diconで行ないます。
 sa-struts-tutorialプロジェクトの場合、s2container.diconは、src/main/resourcesにおかれています。
 </p>
 <p>
-<a href="#Action">アクション</a>やサービスのメソッドが呼び出されたときに、
+<a href="#Action">アクション</a>やロジックのメソッドが呼び出されたときに、
 自動的にトランザクションを開始するには、customizer.diconにトランザクション用の設定を記述します。
 sa-struts-tutorialプロジェクトの場合、customizer.diconは、src/main/resourcesにおかれています。
 </p>
@@ -788,7 +778,7 @@ cutomizer.dicon
   ...
 &lt;/component&gt;
 	
-&lt;component name="serviceCustomizer"
+&lt;component name="logicCustomizer"
   class="org.seasar.framework.container.customizer.CustomizerChain"&gt;
   &lt;initMethod name="addCustomizer"&gt;
     &lt;arg&gt;

@@ -557,7 +557,7 @@ creator.diconがあります。
     &lt;component
         class="org.seasar.framework.container.creator.ActionCreator"/&gt;
     &lt;component
-        class="org.seasar.framework.container.creator.ServiceCreator"/&gt;
+        class="org.seasar.framework.container.creator.LogicCreator"/&gt;
     &lt;component
         class="org.seasar.framework.container.creator.DtoCreator"/&gt;
     &lt;component
@@ -565,7 +565,7 @@ creator.diconがあります。
 &lt;/components&gt;
 </pre>
 <p>
-action、service、dtoなどそれぞれのパッケージ応じたクリエータが登録されています。
+action、logic、dtoなどそれぞれのパッケージ応じたクリエータが登録されています。
 </p>
 
 <h3><a name="customizer">customizer.dicon</a></h3>
@@ -605,7 +605,7 @@ customizer.diconがあります。
         &lt;/initMethod&gt;
     &lt;/component&gt;
 	
-    &lt;component name="serviceCustomizer"
+    &lt;component name="logicCustomizer"
         class="org.seasar.framework.container.customizer.CustomizerChain"&gt;
         &lt;initMethod name="addAspectCustomizer"&gt;
             &lt;arg><b>"aop.traceInterceptor"</b>&lt;/arg&gt;
@@ -620,8 +620,8 @@ customizer.diconがあります。
 &lt;/components&gt;
 </pre>
 <p>
-<a href="featureReference.html#Action">アクション</a>やサービスの設定をカスタマイズするために
-actionCustomizerやserviceCustomizerが定義されています。
+<a href="featureReference.html#Action">アクション</a>やロジックの設定をカスタマイズするために
+actionCustomizerやlogicCustomizerが定義されています。
 </p>
 <p>
 aop.traceInterceptorはトレース用のログを出力するためのインターセプタで、
