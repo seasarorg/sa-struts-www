@@ -443,7 +443,8 @@ Tomcatを使っている場合は、<a href="fileReference.html#server">server.x
 </p>
 <p>
 validator=trueの場合は、検証結果がNGのときの遷移先のパスをinput属性で指定します。
-パスの書き方は、実行メソッドの戻り値の場合と一緒です。
+パスの書き方は、実行メソッドの戻り値の書き方に加えて、
+urlPattern属性のようにパラメータをパス({パラメータ名})で指定することもできます。
 バリデータの詳細は、<a href="#Validator">こちら</a>を参照してください。
 </p>
 <pre>
