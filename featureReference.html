@@ -925,6 +925,12 @@ Strutsの場合、入力値は、文字列で定義するのが一般的なの�
 <pre>
 ${プロパティ名.ネストしたプロパティ名}
 </pre>
+<p style="background-color:red">
+ActionやActionFormのプロパティは、
+publicフィールドをELやStrutsが参照できるようにするために、
+JavaBeansはMapに、配列は、Listにラップされています。
+スクリプトレットで直接、変数にアクセスするときには気をつけてください。
+</p>
 <p>
 どのJSPでも共通で使うような宣言は、1つのJSPにまとめ、web.xmlでそのJSPを指定します。
 sa-strtus-tutorialプロジェクトでは、webapp/common/common.jspに共通で使う宣言が
