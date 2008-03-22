@@ -63,7 +63,9 @@
 			<li><a href="#Setup">セットアップ</a>
 			<li><a href="#news">NEWS</a></li>
 			<li><a href="#maillist">メーリングリスト</a></li>
-			<li><a href="#tracking-jpa">トラッキング</a></li>
+			<li><a href="#tracking">トラッキング</a></li>
+			<li><a href="#subversion">Subversionリポジトリ</a></li>
+			<li><a href="#blog">コミッタのブログ</a></li>
 		</ul>
 </ul>
 
@@ -84,25 +86,36 @@ SAStrutsを使った開発を支援するためのEclipseプラグインです�
 </p>
 
 <ul>
-	<li>Javaソースからポップアップメニューかショートカットキー（F6）で対応するJSPソースを開く・作成する</li>
+	<li>Javaファイルからポップアップメニューかショートカットキー（F6）で対応するJSPファイルを開く・作成する</li>
+	<li>JSPファイルからポップアップメニューかショートカットキー（F7）で対応するJavaファイルを開く・作成する</li>
 </ul>
 
 <h3><a name="Usage">使い方</a></h3>
 <h4>プロジェクトの設定</h4>
 <ul>
 	<li>プロジェクトのプロパティで「SAStruts」を選択し、Webapp ルートを選択します。</li>
+	<li>プロジェクトのプロパティで「SAStruts」を選択し、Main Java Source Pathを選択します。</li>
+	<li>プロジェクトのプロパティで「SAStruts」を選択し、convention.dicon パスを選択します。</li>
 </ul>
 
 <img src="images/project_property.gif"/>
 
 <p>
-Super Agile Strutsチュートリアル(sa-struts-tutorial)であれば「/webapp」、Maven2のプロジェクトなら「/src/main/webapp」となります。
+Super Agile Strutsチュートリアル(sa-struts-tutorial)であれば「/webapp」、「/src/main/java」、「/src/main/resouces/convention.dicon」となります。
+Maven2のWebアプリケーションプロジェクトならWebapp ルートは「/src/main/webapp」となります。
+</p>
+<p>
+SAStrutsPluginは、
+Webapp ルートを基点にJSPファイルのパスを、
+Main Java Source Pathを基点にJavaファイルのパスを、
+convention.dicon パスを基点にルートパッケージ名を、
+取得します。
 </p>
 
 <h4><a name="func_jsp_open">JSPファイルを開く</a></h4>
 
 <p>
-Actionクラスの実行メソッドの戻り値であるJSPファイル名を選択してポップアップメニューかショートカットキー（F6）で対応するJSPソースを開くことができます。
+JSPファイル名が記述されている文字列のある行からポップアップメニューかショートカットキー（F6）で対応するJSPファイルを開くことができます。
 </p>
 
 <img src="images/open_jsp.gif"/>
@@ -113,24 +126,49 @@ Actionクラスの実行メソッドの戻り値であるJSPファイル名を�
 JSPファイルを開こうとして対応するJSPファイルが存在しない場合は、JSPファイル作成用のウィザードを使って新規に作成することができます。
 ファイル名や保存するフォルダは自動的に決定されるのでほとんどの場合変更する必要はありません。
 </p>
-  <ol><li value="1">「<a href="#func_jsp_open">JSPファイルを開く</a>」と同様にして、JSPファイルの存在しない文字列を選択すると
+  <ol><li value="1">対応するJSPファイルが存在しない場合は、
     メッセージボックスがポップアップします。</li></ol><br clear="all"/>
 
-  <img class="ss" src="images/message_box.gif" alt=""/>
+  <img class="ss" src="images/message_box_jsp.gif" alt=""/>
   <br/><br/>
   <ol><li value="2">OKをクリックすると「JSPファイルの新規作成ウィザード」が開きます。
   保存先のディレクトリやJSPファイル名は自動的に決まるので、ほとんどの場合、変更する必要はありません。</li></ol><br clear="all"/>
-  <img class="ss" src="images/wizard.gif" alt=""/>
+  <img class="ss" src="images/wizard_jsp.gif" alt=""/>
+</ol>
+
+<h4><a name="func_java_open">Javaファイルを開く</a></h4>
+
+<p>
+s:formタグのaction属性の行からポップアップメニューかショートカットキー（F7）で対応するJavaソースを開くことができます。
+</p>
+
+<img src="images/open_java.gif"/>
+
+<h4>Javaファイルを作成する</h4>
+<ol type="1">
+<p>
+Javaファイルを開こうとして対応するJavaファイルが存在しない場合は、Javaファイル作成用のウィザードを使って新規に作成することができます。
+ファイル名や保存するフォルダは自動的に決定されるのでほとんどの場合変更する必要はありません。
+</p>
+  <ol><li value="1">対応するJavaファイルが存在しない場合は、
+    メッセージボックスがポップアップします。</li></ol><br clear="all"/>
+
+  <img class="ss" src="images/message_box_java.gif" alt=""/>
+  <br/><br/>
+  <ol><li value="2">OKをクリックすると「Javaファイルの新規作成ウィザード」が開きます。
+  保存先のディレクトリやJavaファイル名は自動的に決まるので、ほとんどの場合、変更する必要はありません。</li></ol><br clear="all"/>
+  <img class="ss" src="images/wizard_java.gif" alt=""/>
 </ol>
 
 <h3><a name="Setup">セットアップ</a></h3>
-<p>Eclipse3.3で動作します。次の更新サイトから「SAStrutsPlugin」を選択してインストールしてください。</p>
+<p>Eclipse3.3+WTP2.0で動作します。次の更新サイトから「SAStrutsPlugin」を選択してインストールしてください。</p>
 <ul>
   <li><a href="http://eclipse.seasar.org/updates/3.3/ ">http://eclipse.seasar.org/updates/3.3/ </a></li>
 </ul>
 
 <h3><a name="news">NEWS</a></h3>
 <ul>
+  <li>2008/03/22 SAStrutsPlugin 0.0.2  をリリースしました．</li>
   <li>2008/03/14 SAStrutsPlugin 0.0.1  をリリースしました．</li>
 </ul>
 
@@ -146,12 +184,24 @@ JSPファイルを開こうとして対応するJSPファイルが存在しな�
       Seasar2および関連プロダクト開発者のためのメーリングリストです。
     </dd>
 </dl>
-<h3><a name="tracking-jpa">トラキング</a></h2>
+<h3><a name="tracking">トラッキング</a></h2>
 <dl>
   <dt><a href="https://www.seasar.org/issues/browse/SAStruts">JIRA</a></dt>
-    <dd>バグや問題の報告などはこちらへ</dd>
+    <dd>SAStrutsPluginのバグはComponent/sがSAStruts Pluginで管理されています。</dd>
 </dl>
-
+<h3><a name="subversion">Subversionリポジトリ</a></h2>
+<p>SAStrutsPlugin のソースコードは、seasar.org のSubversionリポジトリで公開されています。</br>
+どなたでもアクセスしてソースコードを閲覧することができます。</br>
+(以下のリンクをクリックするとWeb経由でもソースコードを閲覧できます)
+</p>
+<dl>
+<dt><b>SVNリポジトリのURL</b></dt><dd><a href="https://www.seasar.org/svn/sastruts/trunk/sa-struts-plugin/">https://www.seasar.org/svn/sastruts/trunk/sa-struts-plugin/</a></dd>
+</dl>
+<h3><a name="blog">コミッタのブログ</a></h3>
+<p>SAStrutsPlugin は、コミッタのブログを中心として仕様検討を進めています。</p>
+<ul>
+  <li><a href="http://d.hatena.ne.jp/wyukawa/" target="_blank">watawata日記</a></li>
+</ul>
 
 
 </div><!-- section -->
