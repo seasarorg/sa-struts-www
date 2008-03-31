@@ -56,6 +56,7 @@
 		<ul>
 		    <li><a href="#index">インデックス</a></li>
 			<li><a href="#add">足し算</a></li>
+			<li><a href="#upload">ファイルアップロード</a></li>
 		</ul>
 	</li>
 	<li><a href="featureReference.html">機能リファレンス</a></li>
@@ -99,7 +100,10 @@ SAStrutsは、Webアプリケーションのルートにアクセスすると、
 自動的にそのアクションに遷移します。
 ルートパッケージの詳細は、<a href="featureReference.html#Project">こちら</a>を参照ください。
 </p>
-<h5>tutorial.action.IndexAction</h5>
+<p>
+IndexAction.javaのソースコードは次のようになります。
+</p>
+<h5>IndexAction.java</h5>
 <pre>
 package tutorial.action;
 
@@ -152,9 +156,9 @@ validation.xmlに相当する情報を組み立てています。
 アクションの詳細は、<a href="featureReference.html#Action">こちら</a>を参照してください。
 </p>
 <p>
-AddActionのソースコードは次のようになります。
+AddAction.javaのソースコードは次のようになります。
 </p>
-<h5>AddAction</h5>
+<h5>AddAction.java</h5>
 <pre>
 package tutorial.action;
 
@@ -294,6 +298,137 @@ ${f:h(result)}のようにして表示できます。
 f:hはHTMLをエスケープするファンクションです。
 詳細は、<a href="featureReference.html#JSP">こちら</a>を参照してください。
 </p>
+
+<h3><a name="upload">ファイルアップロード</a></h3>
+<p>
+インデックスページからファイルアップロードのページにアクセスしてください。
+あるいは、ブラウザでhttp://localhost:8080/sa-struts-tutorial/uploadにアクセスしても同じです。
+ファイルアップロードのページが表示されましたね。
+</p>
+<p>
+/uploadに対応するアクションクラスは、tutorial.action.UploadActionです。
+アクションの詳細は、<a href="featureReference.html#Action">こちら</a>を参照してください。
+</p>
+<p>
+UploadAction.javaのソースコードは次のようになります。
+</p>
+<h5>UploadAction.java</h5>
+<pre>
+package tutorial.action;
+
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.upload.FormFile;
+import org.seasar.framework.container.annotation.tiger.Binding;
+import org.seasar.framework.container.annotation.tiger.BindingType;
+import org.seasar.framework.exception.IORuntimeException;
+import org.seasar.struts.annotation.Execute;
+import org.seasar.struts.annotation.Required;
+import org.seasar.struts.util.ActionMessagesUtil;
+
+public class UploadAction {
+
+    @Required
+    @Binding(bindingType = BindingType.NONE)
+    <b>public FormFile formFile;</b>
+
+    @Required
+    @Binding(bindingType = BindingType.NONE)
+    <b>public FormFile[] formFiles;</b>
+
+    public HttpServletRequest request;
+
+    public ServletContext application;
+
+    @Execute(validator = false)
+    public String index() {
+        return "upload.jsp";
+    }
+
+    @Execute(input = "upload.jsp")
+    public String upload() {
+        ActionMessages messages = new ActionMessages();
+        upload(formFile, messages);
+        for (FormFile file : formFiles) {
+            upload(file, messages);
+        }
+        ActionMessagesUtil.addMessages(request, messages);
+        return "upload.jsp";
+    }
+
+    protected void upload(FormFile file, ActionMessages messages) {
+        String path = application.getRealPath("/WEB-INF/work/"
+            + file.getFileName());
+        try {
+            OutputStream out = new BufferedOutputStream(new FileOutputStream(
+                path));
+            try {
+                out.write(file.getFileData(), 0, file.getFileSize());
+            } finally {
+                out.close();
+            }
+        } catch (IOException e) {
+            throw new IORuntimeException(e);
+        }
+        messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+            "messages.upload.complete",
+            new Object[] { path }));
+    }
+}
+</pre>
+<p>
+ファイルアップロードは、FormFileを型にしたプロパティをActionまたはActionFormに定義し、
+FormFile経由でアップロードされたファイルを取得します。
+</p>
+<p>FormFileはインタフェースであるため、Seasar2では
+<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#AutoBindingMode">自動バインディング</a>
+の対象とみなされ、実行時にDIされない旨の警告が出てしまいます。
+これを防ぐためにプロパティには、@Binding(bindingType = BindingType.NONE)をつける必要があります。
+</p>
+<p>
+プロパティの型をFormFile[]のように配列指定することで、
+複数のFormFileを受け取ることができます。
+</p>
+<p>
+upload.jspは次のようになります。
+</p>
+<h5>upload.jsp</h5>
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Upload&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;html:messages id="m" message="true"&gt;
+${f:h(m)}&lt;br /&gt;
+&lt;/html:messages&gt;
+
+&lt;s:form action="/upload" <b>enctype="multipart/form-data"</b>&gt;
+<b>&lt;input type="file" name="formFile" /&gt;</b>&lt;br /&gt;
+&lt;c:forEach varStatus="s" begin="0" end="1"&gt;
+<b>&lt;input type="file" name="formFiles[${s.index}]" /&gt;</b>&lt;br /&gt;
+&lt;/c:forEach&gt;
+
+&lt;input type="submit" name="upload" value="アップロード"/&gt;
+&lt;/s:form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>
+ファイルをアップロードする場合は、formのenctype属性を"multipart/form-data"にします。
+アップロード用のタグ(&lt;input type="file" ... /&gt;)のname属性は、
+ActionまたはActionFormのプロパティ名にあわせます。
+FormFileを配列で受け取る場合は、name属性の値をプロパティ名[配列のインデックス]にします。
+</p>
+
 
 </div><!-- section -->
 

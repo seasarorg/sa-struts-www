@@ -61,6 +61,7 @@
 			<li><a href="#ExecuteMethod">実行メソッド</a></li>
 			<li><a href="#Validator">バリデータ</a></li>
 			<li><a href="#ValidateMethod">検証メソッド</a></li>
+			<li><a href="#FileUpload">ファイルアップロード</a></li>
 			<li><a href="#DataAccess">データアクセス</a></li>
 			<li><a href="#Transaction">トランザクション</a></li>
 			<li><a href="#DataExchange">データ変換</a></li>
@@ -722,6 +723,17 @@ src/main/resourcesにおかれています。
     ...
 &lt;/component&gt;
 </pre>
+
+<h3><a name="FileUpload">ファイルアップロード</a></h3>
+<p>
+ファイルアップロードは、FormFileを型にしたプロパティをActionまたはActionFormに定義し、
+FormFile経由でアップロードされたファイルを取得します。
+</p>
+<p>
+プロパティの型をFormFile[]のように配列指定することで、
+複数のFormFileを受け取ることができます。
+詳しくは<a href="tutorial.html#upload">チュートリアルのファイルアップロード</a>を参照してください。
+</p>
 
 <h3><a name="DataAccess">データアクセス</a></h3>
 <p>
