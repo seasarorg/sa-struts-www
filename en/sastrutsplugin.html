@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="en" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="keywords" content="sastruts, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Framework" />
+<meta name="description" content="sastruts" />
+<title>Super Agile Struts</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h2 id="h01" class="hide">The Seasar Foundation Project Site</h2><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Project" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" name="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+</div><!-- header -->
+
+
+<div id="contents_left">
+
+<h2>Menu</h2>
+
+<ul>
+	<li><a href="index.html">Home</a></li>
+	<li><a href="setup.html">Setting up</a></li>
+	<li><a href="download.html">Download</a></li>
+	<li><a href="tutorial.html">Tutorial</a></li>
+	<li><a href="featureReference.html">Feature Reference</a></li>
+	<li><a href="annotationReference.html">Annotations Reference</a></li>
+	<li><a href="fileReference.html">Configuration File Reference</a></li>
+	<li><a href="sastrutsplugin.html">SAStrutsPlugin</a></li>
+		<ul>
+			<li><a href="#Abstract">Overview</a></li>
+			<li><a href="#Usage">Usage</a></li>
+			<li><a href="#Setup">Setting up</a>
+			</li><li><a href="#news">NEWS</a></li>
+			<li><a href="#maillist">Mailing List</a></li>
+			<li><a href="#tracking">Tracking</a></li>
+			<li><a href="#subversion">Subversion Repository</a></li>
+			<li><a href="#blog">Committer's blog</a></li>
+		</ul>
+</ul>
+
+</div><!-- contents_left -->
+
+<div id="contents_center">
+
+<div id="article">
+
+<div class="section">
+
+<h2>SAStrutsPlugin</h2>
+
+<h3><a name="Abstract">Overview</a></h3>
+
+<p>SAStrutsPlugin is an Eclipse plugin to assist your development work with SAStruts. It has the following features:</p>
+
+<ul>
+	<li>Opens/creates a JSP file corresponding to a Java source file (which is an SAStruts action class) via the context menu or by a keyboard shortcut (F6) </li>
+	<li>Opens/creates a Java source file corresponding  to a JSP flie via the popup menu or by a keyboard shortcut (F7). </li>
+</ul>
+
+<h3><a name="Usage">Usage</a></h3>
+<h4>Project setting</h4>
+<ul>
+	<li>In the Properties of your project, select  "SAStruts",  then specify Webapp Root.  </li>
+	<li>In the Properties of your project, select "SAStruts", then specify Main Java Source Path.  </li>
+	<li>In the Properties of your project, select  "SAStruts" , then specify convention.dicon Path. </li>
+</ul>
+
+<img src="images/project_property.gif"/>
+
+<p>For example, in the case of Super Agile Struts Tutorial(sa-struts-tutorial), you have to specify those parameters as "/webapp", "/src/main/java" and "/src/main/resouces/convention.dicon". For a web application project of Maven2 [i.e. maven-archetype-webapp], Webapp  Root must be specified as "/src/main/webapp".</p>
+<p>SAStrutsPlugin obtains JSP file paths, Java file paths and root packages from Webapp Root, Main Java Source Path and convention.dicon Path, respectively.</p>
+
+<h4><a name="func_jsp_open">Open the  JSP file</a></h4>
+
+<p>In an SAStruts action source code, place the text cursor on  the line where JSP file name string is present,  then use the context menu or hit the shortcut key(F6)  to  open the corresponding JSP file.</p>
+
+<img src="images/open_jsp.gif"/>
+
+<h4>Creating the JSP file</h4>
+<ol type="1">
+<p>When no corresponding JSP file to open is found, you can create a new one with a wizard. The file name and the folder to save in are automatically determined, and no modification is required in most cases.</p>
+  <ol><li value="1">When no corresponding JSP file to open is found, a message box appears. [NOTE: The following screenshots are in Japanese. If you use a non-Japanese environment, the message will be as this: "JSP file is not found. / Create a corresponding JSP file?"]</li></ol><br clear="all"/>
+
+  <img class="ss" src="images/message_box_jsp.gif" alt=""/>
+  <br/><br/>
+  <ol><li value="2">By clicking OK, "Create a new JSP file" wizard appears.  The file name of the JSP file and the folder to save in are automatically determined, so no modification is required in most cases.</li></ol><br clear="all"/>
+  <img class="ss" src="images/wizard_jsp.gif" alt=""/>
+</ol>
+
+<h4><a name="func_java_open">Open the JAVA file</a></h4>
+
+<p>In a JSP source code, place the text cursor on the line where action attribute of s:form tag is present, then use the context menu or hit the shortcut key (F7) to open the corresponding JAVA source file.</p>
+
+<img src="images/open_java.gif"/>
+
+<h4>Creating the JAVA file</h4>
+<ol type="1">
+<p>When no corresponding JAVA file to open is found, you can create a new one with a wizard. The file name and the folder to save in are automatically determined, and no modification is required in most cases.</p>
+  <ol><li value="1">When no corresponding JAVA file to open is found, a message box appears. [ For a non-Japanese environment, the message will be: "Java file is not found. / Create a corresponding Java file? ". ]</li></ol><br clear="all"/>
+
+  <img class="ss" src="images/message_box_java.gif" alt=""/>
+  <br/><br/>
+  <ol><li value="2">By clicking OK, "Create a new Java file" wizard appears. The file name of the JAVA file and the folder to save in are automatically determined, so no modification is required in most cases.</li></ol><br clear="all"/>
+  <img class="ss" src="images/wizard_java.gif" alt=""/>
+</ol>
+
+<h3><a name="Setup">Setting up</a></h3>
+<p>SAStrutsPlugin works with Eclipse3.3+WTP2.0. The JAVA file can be opened from JSP Editor.    You cannot open the one from Web page Editor. Go to the following update site and select "SAStrutsPlugin" to install.</p>
+<ul>
+  <li><a href="http://eclipse.seasar.org/updates/3.3/ ">http://eclipse.seasar.org/updates/3.3/ </a></li>
+</ul>
+
+<h3><a name="news">NEWS</a></h3>
+<ul>
+  <li>2008/03/22 SAStrutsPlugin 0.0.2  is released.</li>
+  <li>2008/03/14 SAStrutsPlugin 0.0.1 is released.</li>
+</ul>
+
+<h3><a name="maillist">Mailing List</a></h2>
+<dl>
+  <dt><a href="https://www.seasar.org/mailman/listinfo/seasar-user">seasar-user</a></dt>
+    <dd>A mailing list for users of Seasar2 and related products. <br> For questions, troubles or any suggestions on SAStrutsPlugin, use this list.</dd>
+  <dt><a href="https://www.seasar.org/mailman/listinfo/seasar-dev">seasar-dev</a></dt>
+    <dd>A mailing list for developers of Seasar2 and related products.</dd>
+</dl>
+<h3><a name="tracking">Tracking</a></h2>
+<dl>
+  <dt><a href="https://www.seasar.org/issues/browse/SAStruts">JIRA</a></dt>
+    <dd>Bugs of SAStrutsPlugin are managed  using a component named SAStruts plugin.</dd>
+</dl>
+<h3><a name="subversion">Subversion Repository</a></h2>
+<p>SAStrutsPlugin source code is available from the Subversion repository of seasar.org. </br> Everyone can access it to view. </br> (Follow the link below to view sourcecode on the Web)</p>
+<dl>
+<dt><b>URL for the SVN repository</b></dt><dd><a href="https://www.seasar.org/svn/sastruts/trunk/sa-struts-plugin/">https://www.seasar.org/svn/sastruts/trunk/sa-struts-plugin/</a></dd>
+</dl>
+<h3><a name="blog">Committer's blog</a></h3>
+<p>Specifications of SAStrutsPlugin are discussed mainly on the committer's blog.</p>
+<ul>
+  <li><a href="http://d.hatena.ne.jp/wyukawa/" target="_blank">watawata Nikki [in Japanese]</a></li>
+</ul>
+
+
+</div><!-- section -->
+
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>© Copyright The Seasar Foundation and the others 2008, all rights reserved.</address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>
+
