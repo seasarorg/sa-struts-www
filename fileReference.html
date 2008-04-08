@@ -301,7 +301,8 @@ sa-struts-tutorialプロジェクトでは、webapp/WEB-INFにあります。
     &lt;controller
         maxFileSize="1024K"
         bufferSize="1024"
-        processorClass="<b>org.seasar.struts.action.S2RequestProcessor</b>"/&gt;
+        processorClass=<b>"org.seasar.struts.action.S2RequestProcessor"</b>
+        multipartClass=<b>"org.seasar.struts.upload.S2MultipartRequestHandler"</b>/&gt;
 
     &lt;message-resources parameter="application"
         factory="<b>org.seasar.struts.util.S2PropertyMessageResourcesFactory</b>"/&gt;
@@ -314,8 +315,12 @@ sa-struts-tutorialプロジェクトでは、webapp/WEB-INFにあります。
 &lt;/struts-config&gt;
 </pre>
 <p>
-controllerタグでS2RequestProcessorを指定します。
-S2RequestProcessorによって、SAStruts風にリクエストを処理するようになります。
+controllerタグのprocessorClass属性でS2RequestProcessorを指定します。
+S2RequestProcessorによって、SAStrutsのやり方でリクエストを処理するようになります。
+また、multipartClass属性でS2MultipartRequestHandlerを指定します。
+S2MultipartRequestHandlerによって、ファイルアップロードで
+サイズオーバーの例外が発生した場合に、その例外を取得できるようになります
+(素のStrutsは取得できない)。
 </p>
 <p>
 message-resourcesタグでS2PropertyMessageResourcesFactoryを指定します。
