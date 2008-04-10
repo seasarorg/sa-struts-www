@@ -57,6 +57,7 @@
 		    <li><a href="#index">インデックス</a></li>
 			<li><a href="#add">足し算</a></li>
 			<li><a href="#upload">ファイルアップロード</a></li>
+			<li><a href="#clientValidator">クライアントサイドバリデータ</a></li>
 		</ul>
 	</li>
 	<li><a href="featureReference.html">機能リファレンス</a></li>
@@ -458,6 +459,99 @@ ActionまたはActionFormのプロパティ名にあわせます。
 FormFileを配列で受け取る場合は、name属性の値をプロパティ名[配列のインデックス]にします。
 </p>
 
+<h3><a name="clientValidator">クライアントサイドバリデータ</a></h3>
+<p>
+インデックスページからクライアントサイドバリデータのページにアクセスしてください。
+あるいは、ブラウザでhttp://localhost:8080/sa-struts-tutorial/clientValidatorにアクセスしても同じです。
+クライアントサイドバリデータのページが表示されましたね。
+</p>
+<p>
+何も入力していない状態で「aaaが必須」のボタンをクリックしてください。
+JavaScriptで検証が行なわれて「aaaは必須です。」のメッセージが表示されました。
+</p>
+<p>
+今度は同様に「bbbが必須」のボタンをクリックしてください。
+JavaScriptで検証が行なわれて「bbbは必須です。」のメッセージが表示されました。
+それぞれのボタンに対して異なる検証が行なわれていることがわかります。
+</p>
+<p>
+/clientValidatorに対応するアクションクラスは、tutorial.action.ClientValidatorActionです。
+アクションの詳細は、<a href="featureReference.html#Action">こちら</a>を参照してください。
+</p>
+<p>
+ClientValidatorAction.javaのソースコードは次のようになります。
+</p>
+<h5>ClientValidatorAction.java</h5>
+<pre>
+package tutorial.action;
+
+import org.seasar.struts.annotation.Execute;
+import org.seasar.struts.annotation.Required;
+
+public class ClientValidatorAction {
+
+    @Required(target = "submit")
+    public String aaa;
+
+    @Required(target = "submit2")
+    public String bbb;
+
+    @Execute(validator = false)
+    public String index() {
+        return "clientValidator.jsp";
+    }
+
+    @Execute(validator = true, input = "clientValidator.jsp")
+    public String submit() {
+        return "clientValidator.jsp";
+    }
+
+    @Execute(validator = true, input = "clientValidator.jsp")
+    public String submit2() {
+        return "clientValidator.jsp";
+    }
+}
+</pre>
+<p>
+ボタン(メソッド)ごとに対象となるバリデータを変えたい場合、
+バリデータ用のアノテーションのtarget属性にメソッドの名前を指定します。
+複数のメソッドを指定したい場合は、カンマ(,)で区切ってください。
+</p>
+<p>
+clientValidator.jspは次のようになります。
+</p>
+<h5>clientValidator.jsp</h5>
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Client Validator&lt;/title&gt;
+&lt;html:javascript formName="clientValidatorActionForm_submit"/&gt;
+&lt;html:javascript formName="clientValidatorActionForm_submit2"/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;html:errors/&gt;
+&lt;s:form action="/clientValidator"&gt;
+aaa:&lt;html:text property="aaa"/&gt;&lt;br /&gt;
+bbb:&lt;html:text property="bbb"/&gt;&lt;br /&gt;
+&lt;input type="submit" name="submit" value="aaaが必須"
+    onclick="forms[0].name='clientValidatorActionForm_submit';
+        return validateClientValidatorActionForm_submit(forms[0]);"/&gt;
+&lt;input type="submit" name="submit2" value="bbbが必須"
+    onclick="forms[0].name='clientValidatorActionForm_submit2';
+        return validateClientValidatorActionForm_submit2(forms[0]);"/&gt;
+&lt;/s:form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>
+検証用のJavaScriptを出力するために、html:javascriptタグを使います。
+formName属性には、「アクション名 + Form + _ + メソッド名」を指定します。
+</p>
+<p>
+検証用のJavaScriptを呼び出すために、ボタン系タグのonclick属性で、
+form要素のname属性に上記のformName属性の値を代入した後に、
+「validate + formName属性の値」のメソッドを呼び出します。
+</p>
 
 </div><!-- section -->
 
