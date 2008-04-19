@@ -17,8 +17,8 @@
 <div style="position:absolute; left: 200px; top: 160px; border: 1px dotted gray; width: 800px; background-color: #EEEEFF">
 NOTE: This page is a translation from the original Japanese version of
  <a href="../setup.html">setup.html, 
- rev 389</a> 
- as of 2008-03-14.
+ rev 460</a> 
+ as of 2008-04-20.
 </div>
 <!--  TRANSLATION NOTE ENDS  -->
 
@@ -85,26 +85,37 @@ NOTE: This page is a translation from the original Japanese version of
 
 <h3 xmlns="http://www.w3.org/1999/xhtml"><a name="tutorial" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Setting up Tutorial</a></h3>
 <p xmlns="http://www.w3.org/1999/xhtml">The tutorial project is configured for use with Eclipse, Tomcat and Tomcat launcher. Though SAStruts itself does not depend on any specific IDEs or app servers, you should use Eclipse, Tomcat and Tomcat Launcher for tutorial.</p>
+
+<h4 xmlns="http://www.w3.org/1999/xhtml">1. Tutorial project</h4>
 <p xmlns="http://www.w3.org/1999/xhtml">
-Download sa-struts-tutorial-xxx.zip from a <a href="download.html" xmlns="http://www.w3.org/1999/xhtml" shape="rect">download page</a>
+Download sa-struts-tutorial-xxx.zip from the <a href="download.html" xmlns="http://www.w3.org/1999/xhtml" shape="rect">download page</a>
 
 and extract the archive.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Import a directory named sa-struts-tutorial in the extracted contents
 
 as an Eclipse project.</p>
+<h4 xmlns="http://www.w3.org/1999/xhtml">2. Tomcat and related plugin</h4>
 <p xmlns="http://www.w3.org/1999/xhtml">Install Tomcat from <a href="http://tomcat.apache.org/" xmlns="http://www.w3.org/1999/xhtml" shape="rect">this link</a> following the instrunctions.
  Select a release of version 5.5 or later. Installation is not needed if you have already installed one.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">Tomcat Launcher is a plugin developed by Sysdeo [EclipseTotale]. You can install it from the update site of Seasar Project. From Eclipse menu,  select  [Help]-&gt; [Software Updates] -&gt; [Find and Install…] to show Install/Update dialog.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Tomcat Launcher is a plugin developed by EclipseTotale. You can install it from the Eclipse3.2 update site of Seasar Project. From Eclipse menu,  select  [Help]-&gt; [Software Updates] -&gt; [Find and Install…] to show Install/Update dialog.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Check [Search for new features to install] radio button then click [Next]. Click [New Remote site], enter [Seasar Plugin3.2] to [Name], enter [http://eclipse.seasar.org/updates/<b xmlns="http://www.w3.org/1999/xhtml">3.2</b>/] to [URL], then click [OK].</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Click [Finish], then Tomcat Launcher appears as an option. Check  it and install. Installation is not needed if you have already installed one.</p>
+<h4 xmlns="http://www.w3.org/1999/xhtml">3. Plugins to facilitate development with SAStruts</h4>
+<p xmlns="http://www.w3.org/1999/xhtml">Now we will install SAStrutsPlugin and ResourceSynchronizer. Though these plugins are optional,  they are  very convenient.</p>
+
+<p xmlns="http://www.w3.org/1999/xhtml">SAStrutsPlugin is an Eclipse plugin to assist your development work with SAStruts. You can switch between a Java file and a corresponding JSP. For datails, see <a href="sastrutsplugin.html" xmlns="http://www.w3.org/1999/xhtml" shape="rect">SAStrutsPlugin page</a>.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">To use SAStrutsPlugin, WST2.0 is required. WTP2.0 is already installed if you use Eclipse IDE for JAVA EE Developers. If you use other distributions, check Eclipse site and install required packages before you proceed.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">ResourceSynchronizer is a plugin to operate Eclipes from your web browser. By using it, you can display stack trace and the appropriate part of the source code when an JAVA exception is thrown.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">You can install SAStrutsPlugin and ResourceSynchronizer from the Eclipse3.3 update site of Seasar Project.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">From Eclipse menu,  select  [Help]-&gt; [Software Updates] -&gt; [Find and Install…] to show Install/Update dialog.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Check [Search for new features to install] radio button then click [Next]. Click [New Remote site], enter [Seasar Plugin3.3] to [Name], enter [http://eclipse.seasar.org/updates/<b xmlns="http://www.w3.org/1999/xhtml">3.3</b>/] to [URL], then click [OK].</p>
-<p xmlns="http://www.w3.org/1999/xhtml">Click [Finish], then ResourceSynchronizer appeas as an option. Check  it and install. Installation is not needed if you have already installed one.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Click [Finish], then ResourceSynchronizer and SAStrutsPlugin will appear as options. Check  them and install. Installation is not needed if you have already installed one.</p>
+<h4 xmlns="http://www.w3.org/1999/xhtml">4. PropertiesEditor Plugin</h4>
 <p xmlns="http://www.w3.org/1999/xhtml">Optionally, you can install PropertiesEditor plugin to edit .properties file in a native language, e.g. Japanese. Though this plugin is optional, it is very useful for developers who handle properties with i18n characters.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">From Eclipse menu,  select  [Help]-&gt; [Software Updates] -&gt; [Find and Install…] to show Install/Update dialog.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Check [Search for new features to install] radio button then click [Next]. Click [New Remote site], enter [PropertiesEditor] to [Name], enter [http://propedit.sourceforge.jp/eclipse/updates/] to [URL], then click [OK].</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Click [Finish], then PropertiesEditorForEclipse3.x appears as an option. Install it. Installation is not needed if you have already installed one.</p>
+<h4 xmlns="http://www.w3.org/1999/xhtml">5. Setting after the installation and checking that it works</h4>
 <p xmlns="http://www.w3.org/1999/xhtml">After the installation, let us configure Tomcat Launcher. In the menu, select  [Window] -&gt; [Preferences…]-&gt; [Tomcat]. Specify Tomcat version and Tomcat home to the version you have downloaded and the directory you have installed Tomcat. Select Context files as Context declaration mode, then click [OK].</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Right-click the project of sa-struts-tutorial then select [Tomcat project] -&gt; [Update context definition]. That's all for Tomcat Launcher configuration.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">The next step is to  configure Tomcat. Modify <a href="fileReference.html#server" xmlns="http://www.w3.org/1999/xhtml" shape="rect">conf/server.xml</a>、 <a href="fileReference.html#context" xmlns="http://www.w3.org/1999/xhtml" shape="rect">conf/context.xml</a>、 <a href="fileReference.html#defaultweb" xmlns="http://www.w3.org/1999/xhtml" shape="rect">conf/web.xml</a>  following the instructions found in the links.</p>
@@ -119,7 +130,7 @@ Please proceed to <a href="tutorial.html" xmlns="http://www.w3.org/1999/xhtml" s
 <p xmlns="http://www.w3.org/1999/xhtml">For configurations of transaction, please see <a href="featureReference.html#Transaction" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
 
 <h3 xmlns="http://www.w3.org/1999/xhtml"><a name="primitive" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Primitive Setup</a></h3>
-<p xmlns="http://www.w3.org/1999/xhtml">In the case you want to set up without relying on Tutorial nor Blank,  download sa-struts-blank-xxx.zip from a <a href="download.html" xmlns="http://www.w3.org/1999/xhtml" shape="rect">download page</a>  and extract the archive to obtain required files.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">In the case you want to set up without relying on Tutorial nor Blank,  download sa-struts-blank-xxx.zip from the <a href="download.html" xmlns="http://www.w3.org/1999/xhtml" shape="rect">download page</a>  and extract the archive to obtain required files.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Add files in sa-struts-blank/src/main/resources to your classpath.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Copy files in sa-struts-blank/webapp/WEB-INF into WEB-INF.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Copy files in sa-struts-blank/webapp/WEB-INF/lib into WEB-INF/lib.</p>
