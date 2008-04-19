@@ -77,10 +77,12 @@
 
 <h3><a name="tutorial">チュートリアルのセットアップ</a></h3>
 <p>
-チュートリアル用のプロジェクトは、Eclipse、Tomcat、Tomcat Launcherを使う用に設定されています。
+チュートリアル用のプロジェクトは、Eclipse、Tomcat、Tomcat Launcherを使う様に設定されています。
 SAStrutsそのものは、特定のIDEやアプリケーションサーバに依存しませんが、
 チュートリアルを試すためには、Eclipse、Tomcat、Tomcat Launcherをお使いください。
 </p>
+
+<h4>1.チュートリアル本体</h4>
 <p>
 <a href="download.html">ダウンロードのページ</a>からsa-struts-tutorial-xxx.zipを
 ダウンロードして解凍します。
@@ -89,14 +91,15 @@ SAStrutsそのものは、特定のIDEやアプリケーションサーバに依
 解凍した中にsa-struts-tutorialというディレクトリがあるので、
 そのディレクトリをEclipseのプロジェクトとしてインポートします。
 </p>
+<h4>2.Tomcatと関連Plugin</h4>
 <p>
 Tomcatを<a href="http://tomcat.apache.org/">このリンク</a>から指示に従ってインストールします。
 バージョンは5.5以上を選んでください。
 既にインストール済みの場合はその必要はありません。
 </p>
 <p>
-Tomcat LauncherはSysdeo社が開発しているPluginですが、
-Seasarプロジェクトの更新サイトからインストールすることが出来ます。
+Tomcat LauncherはEclipseTotaleが開発しているPluginですが、
+SeasarプロジェクトのEclipse3.2の更新サイトからインストールすることが出来ます。
 Eclipseのメニューから[Help]-&gt; [Software Updates] -&gt; [Find and Install…]を選択し、 
 Install/Updateのダイアログを表示させます。
 </p>
@@ -110,10 +113,31 @@ Install/Updateのダイアログを表示させます。
 Tomcat Launcherが出てくるので、これらをチェックしてインストールしましょう。
 既にインストール済みの場合はその必要はありません。
 </p>
+<h4>3.SAStrutsでの開発を便利にするPlugin</h4>
 <p>
-ResourceSynchronizerは、ブラウザからEclipseを操作するためのPluginです。
+SAStrutsPluginとResourceSynchronizerをインストールします。
+これらのPluginは必須ではありませんが、あるととっても便利です。
+</p>
+
+<p>
+SAStrutsPluginは、SAStrutsを使った開発を支援するためのPluginです。
+Javaファイルと対応するJSPの間の行き来ができます。詳しい使い方は、
+<a href="sastrutsplugin.html">SAStrutsPluginのページ</a>で説明しています。
+</p>
+<p>
+SAStrutsPluginには、WTP2.0が必要になります。
+WTP2.0は、Eclipse IDE for Java EE Developersをお使いの方は、デフォルトでインストールされています。
+それ以外のディストリビューションをお使いの方は、
+Eclipseのサイトを確認して必要なパッケージをあらかじめインストールしておいてください。
+</p>
+<p>
+また、ResourceSynchronizerは、ブラウザからEclipseを操作するためのPluginです。
 例外が発生したときに、ブラウザ上にスタックトレースを表示し、
 そのスタックトレースの該当するソースコードを表示するために使います。
+</p>
+<p>
+SAStrutsPluginとResourceSynchronizerは、
+SeasarプロジェクトのEclipse3.3の更新サイトからインストールすることが出来ます。
 </p>
 <p>
 Eclipseのメニューから[Help]-&gt; [Software Updates] -&gt; [Find and Install…]を選択し、 
@@ -126,9 +150,10 @@ Install/Updateのダイアログを表示させます。
 </p>
 <p>
 [Finish]ボタンをクリックするとインストールする候補として、
-ResourceSynchronizerが出てくるので、これらをチェックしてインストールしましょう。
+ResourceSynchronizerとSAStrutsPluginが出てくるので、これらをチェックしてインストールしましょう。
 既にインストール済みの場合はその必要はありません。
 </p>
+<h4>4.プロパティエディタPlugin</h4>
 <p>
 Propertiesファイルを日本語で簡単に入力するために、プロパティエディタPluginをインストールします。
 このPluginは必須ではありませんが、あるととっても便利です。
@@ -147,6 +172,7 @@ Install/Updateのダイアログを表示させます。
 PropertiesEditorForEclipse3.xが出てくるのでそのままインストールしましょう。
 既にインストール済みの場合はその必要はありません。
 </p>
+<h4>5.インストール後の設定と動作確認</h4>
 <p>
 インストールが終わったら、Tomcat Launcherの設定を行います。 
 メニューの[Window] -&gt; [Preferences…]-&gt; [Tomcat]を選択してください。 
@@ -228,7 +254,7 @@ sa-struts-blank/webapp/WEB-INF/libにあるファイルをWEB-INF/libにコピ�
 </div><!-- contents_center -->
 
 <div id="footer">
-<address>&copy; Copyright The Seasar Foundation and the others 2006, all rights reserved.</address>
+<address>&copy; Copyright The Seasar Foundation and the others 2006-2008, all rights reserved.</address>
 <div class="line"><span class="hide">spacer</span></div>
 </div><!-- footer -->
 
