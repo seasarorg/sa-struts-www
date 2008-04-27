@@ -17,8 +17,8 @@
 <div style="position:absolute; left: 200px; top: 160px; border: 1px dotted gray; width: 800px; background-color: #EEEEFF">
 NOTE: This page is a translation from the original Japanese version of
  <a href="../sastrutsplugin.html">sastrutsplugin.html, 
- rev 406</a> 
- as of 2008-03-22.
+ rev 468</a> 
+ as of 2008-04-28.
 </div>
 <!--  TRANSLATION NOTE ENDS  -->
 
@@ -128,7 +128,7 @@ NOTE: This page is a translation from the original Japanese version of
 
 <h4><a name="func_java_open">Open the JAVA file</a></h4>
 
-<p>In a JSP source code, place the text cursor on the line where action attribute of s:form tag is present, then use the context menu or hit the shortcut key (F7) to open the corresponding JAVA source file.</p>
+<p>In a JSP source code, place the text cursor on the line where the action attribute of s:form tag or one of input tags is present, then use the context menu or hit the shortcut key (F7) to open the corresponding JAVA source file. If  the cursor was on s:form tag, it  forwards to index method of the JAVA source. If the cursor was on an input tag, it forwards to the corresponding JAVA method (whose name is the same as the name attribute of the tag). If no corresponding method is found, it will forward to index method.</p>
 
 <img src="images/open_java.gif"/>
 
@@ -151,14 +151,15 @@ NOTE: This page is a translation from the original Japanese version of
 
 <h3><a name="news">NEWS</a></h3>
 <ul>
-  <li>2008/03/22 SAStrutsPlugin 0.0.2  is released.</li>
-  <li>2008/03/14 SAStrutsPlugin 0.0.1 is released.</li>
+  <li>2008/04/27 SAStrutsPlugin 0.0.3  is released. For changelog, see <a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-04-27#r2910cdf">here</a>.</li>
+  <li>2008/03/22 SAStrutsPlugin 0.0.2  is released. For changelog, see <a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-03-22#n5246636">here</a>.</li>
+  <li>2008/03/14 SAStrutsPlugin 0.0.1 is released. For changelog, see <a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-03-14#jf0fbc8c">here</a>.</li>
 </ul>
 
 <h3><a name="maillist">Mailing List</a></h2>
 <dl>
   <dt><a href="https://www.seasar.org/mailman/listinfo/seasar-user">seasar-user</a></dt>
-    <dd>A mailing list for users of Seasar2 and related products. <br> For questions, troubles or any suggestions on SAStrutsPlugin, use this list.</dd>
+    <dd>A mailing list for users of Seasar2 and related products. <br> For questions, troubles or any suggestions on SAStrutsPlugin, use this list. <br> Please include [SAStrutsPlugin] to the subject. It would also be appreciated if you could include any excerpt of the Eclipse error log, if any.</dd>
   <dt><a href="https://www.seasar.org/mailman/listinfo/seasar-dev">seasar-dev</a></dt>
     <dd>A mailing list for developers of Seasar2 and related products.</dd>
 </dl>
