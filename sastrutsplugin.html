@@ -139,7 +139,10 @@ JSPファイルを開こうとして対応するJSPファイルが存在しな�
 <h4><a name="func_java_open">Javaファイルを開く</a></h4>
 
 <p>
-s:formタグのaction属性の行からポップアップメニューかショートカットキー（F7）で対応するJavaソースを開くことができます。
+s:formタグの行、inputタグの行からポップアップメニューかショートカットキー（F7）で対応するJavaソースを開くことができます。
+s:formタグの行から操作した場合はJavaソースのindexメソッドに遷移します。
+inputタグの行から操作した場合はJavaソースの該当するメソッド（name属性と同じメソッド名）に遷移します。
+対応するメソッドが見つからない場合はindexメソッドに遷移します。
 </p>
 
 <img src="images/open_java.gif"/>
@@ -168,8 +171,9 @@ Javaファイルを開こうとして対応するJavaファイルが存在しな
 
 <h3><a name="news">NEWS</a></h3>
 <ul>
-  <li>2008/03/22 SAStrutsPlugin 0.0.2  をリリースしました．</li>
-  <li>2008/03/14 SAStrutsPlugin 0.0.1  をリリースしました．</li>
+  <li>2008/04/27 SAStrutsPlugin 0.0.3  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-04-27#r2910cdf">こちら</a></li>
+  <li>2008/03/22 SAStrutsPlugin 0.0.2  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-03-22#n5246636">こちら</a></li>
+  <li>2008/03/14 SAStrutsPlugin 0.0.1  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-03-14#jf0fbc8c">こちら</a></li>
 </ul>
 
 <h3><a name="maillist">メーリングリスト</a></h2>
@@ -177,7 +181,8 @@ Javaファイルを開こうとして対応するJavaファイルが存在しな
   <dt><a href="https://www.seasar.org/mailman/listinfo/seasar-user">seasar-user</a></dt>
     <dd>
       Seasar2および関連プロダクトの利用者のためのメーリングリストです。<br>
-      SAStrutsPluginを利用していて疑問に思ったことや困ったこと、要望などはこちらへ。
+      SAStrutsPluginを利用していて疑問に思ったことや困ったこと、要望などはこちらへ。<br>
+      件名に[SAStrusPlugin]を含めていただけると幸いです。またEclipseのエラーログに何か出ている場合はその情報も送っていただけると問題解決がスムーズになります。
     </dd>
   <dt><a href="https://www.seasar.org/mailman/listinfo/seasar-dev">seasar-dev</a></dt>
     <dd>
