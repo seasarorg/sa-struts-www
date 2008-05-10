@@ -114,7 +114,7 @@ public class IndexAction {
 
     @Execute(validator = false)
     public String index() {
-        return "start.jsp";
+        return "index.jsp";
     }
 }
 </pre>
@@ -126,12 +126,9 @@ public class IndexAction {
 </p>
 <p>
 メソッドの戻り値は遷移先になります。
-IndexAction#index()の場合は、start.jspに遷移します。
-</p>
-<p style="background-color:red">
-Webアプリケーションのルートにindex.jspをおくと、
-IndexActionに制御がわたらずindex.jspに直接遷移します。
-アクションで、何らかの制御を行ないたい場合は、index.jspは定義しないでください。
+IndexAction#index()の場合は、index.jspに遷移します。
+web.xmlでVIEW_PREFIXが/WEB-INF/viewと指定されているので、
+具体的な遷移先は、/WEB-INF/view/index.jspになります。
 </p>
 <p>
 それでは、webapp/WEB-INF/struts-config.xmlを見てみましょう。
@@ -149,7 +146,7 @@ validation.xmlに相当する情報を組み立てています。
 <h3><a name="add">足し算</a></h3>
 <p>
 インデックスページから足し算のページにアクセスしてください。
-あるいは、ブラウザでhttp://localhost:8080/sa-struts-tutorial/addにアクセスしても同じです。
+あるいは、ブラウザでhttp://localhost:8080/sa-struts-tutorial/add/にアクセスしても同じです。
 足し算のページが表示されましたね。
 </p>
 <p>
@@ -181,13 +178,13 @@ public class AddAction {
 
     @Execute(validator = false)
     public String index() {
-        return "add.jsp";
+        return "index.jsp";
     }
 
-    @Execute(input = "add.jsp")
+    @Execute(input = "index.jsp")
     public String submit() {
         result = Integer.valueOf(arg1) + Integer.valueOf(arg2);
-        return "add.jsp";
+        return "index.jsp";
     }
 }
 </pre>
@@ -213,17 +210,17 @@ publicフィールドは、ELやStrutsからでも認識できるようになっ
 </p>
 <p>
 次の例では、AddAction#index()が呼び出されます。
-/addの後ろがメソッド名になります。
+/add/の後ろがメソッド名になります。
 </p>
 <pre>
-http://localhost:8080/sa-struts-tutorial/add/index
+http://localhost:8080/sa-struts-tutorial/add/index/
 </pre>
 <p>
 メソッドが定義されていない場合、index()が呼び出されるので、
 上記の呼び出しは、下記の呼び出しと一緒です。
 </p>
 <pre>
-http://localhost:8080/sa-struts-tutorial/add
+http://localhost:8080/sa-struts-tutorial/add/
 </pre>
 <p>
 フォームをサブミットする場合は、ボタン系のname属性に実行メソッド名を指定します。
@@ -242,9 +239,9 @@ validator=trueの場合は、検証結果がNGのときの遷移先をinput属�
 バリデータの詳細は、<a href="featureReference.html#Validator">こちら</a>を参照してください。
 </p>
 <p>
-add.jspは次のようになります。
+/add/index.jspは次のようになります。
 </p>
-<h5>add.jsp</h5>
+<h5>/add/index.jsp</h5>
 <pre>
 &lt;html&gt;
 &lt;head&gt;
@@ -261,7 +258,7 @@ add.jspは次のようになります。
 &lt;/html&gt;
 </pre>
 <p>
-どのJSPでも共通に必要になるtaglibの宣言は、/common/common.jspで定義されています。
+どのJSPでも共通に必要になるtaglibの宣言は、webapp/WEB-INF/view/common/common.jspで定義されています。
 common.jspの詳細は、<a href="featureReference.html#JSP">JSP</a>を参照してください。
 </p>
 <p>
@@ -287,11 +284,11 @@ name属性の値をsubmitに設定します。
 バリデータにより必須かどうか、整数かどうかが検証されます。
 </p>
 <p>
-バリデータの結果がNGだった場合は、input属性で指定したadd.jspに戻されます。
+バリデータの結果がNGだった場合は、input属性で指定したindex.jspに戻されます。
 バリデータの結果がOKの場合は、submit()が呼び出されます。
 </p>
 <p>
-submit()の戻り値がadd.jspなので、またadd.jspに遷移します。
+submit()の戻り値がindex.jspなので、またindex.jspに遷移します。
 </p>
 <p>
 アクションのresultプロパティは、リクエストの属性に同じ名前でセットされているので、
@@ -361,10 +358,10 @@ public class UploadAction {
                 new Object[] { e.getPermittedSize(), e.getActualSize() }));
             ActionMessagesUtil.addErrors(request, errors);
         }
-        return "upload.jsp";
+        return "index.jsp";
     }
 
-    @Execute(input = "upload.jsp")
+    @Execute(input = "index.jsp")
     public String upload() {
         ActionMessages messages = new ActionMessages();
         upload(formFile, messages);
@@ -372,7 +369,7 @@ public class UploadAction {
             upload(file, messages);
         }
         ActionMessagesUtil.addMessages(request, messages);
-        return "upload.jsp";
+        return "index.jsp";
     }
 
     protected void upload(FormFile file, ActionMessages messages) {
@@ -427,9 +424,9 @@ indexメソッドで、SizeLimitExceededExceptionの存在をチェックする�
 アップロードされたファイルが上限を超えたのかチェックすることができます。
 </p>
 <p>
-upload.jspは次のようになります。
+/upload/index.jspは次のようになります。
 </p>
-<h5>upload.jsp</h5>
+<h5>/upload/index.jsp</h5>
 <pre>
 &lt;html&gt;
 &lt;head&gt;
@@ -498,15 +495,15 @@ public class ClientValidatorAction {
 
     @Execute(validator = false)
     public String index() {
-        return "clientValidator.jsp";
+        return "index.jsp";
     }
 
-    @Execute(validator = true, input = "clientValidator.jsp")
+    @Execute(validator = true, input = "index.jsp")
     public String submit() {
-        return "clientValidator.jsp";
+        return "index.jsp";
     }
 
-    @Execute(validator = true, input = "clientValidator.jsp")
+    @Execute(validator = true, input = "index.jsp")
     public String submit2() {
         return "clientValidator.jsp";
     }
@@ -518,9 +515,9 @@ public class ClientValidatorAction {
 複数のメソッドを指定したい場合は、カンマ(,)で区切ってください。
 </p>
 <p>
-clientValidator.jspは次のようになります。
+/clientValidator/index.jspは次のようになります。
 </p>
-<h5>clientValidator.jsp</h5>
+<h5>/clientValidator/index.jsp</h5>
 <pre>
 &lt;html&gt;
 &lt;head&gt;

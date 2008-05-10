@@ -72,7 +72,6 @@
 			<li><a href="#log4j">log4j.properties</a></li>
 			<li><a href="#server">Tomcatのserver.xml</a></li>
 			<li><a href="#context">Tomcatのcontext.xml</a></li>
-			<li><a href="#defaultweb">デフォルトのweb.xml</a></li>
 			<li><a href="#MessageResources">メッセージリソース</a></li>
 		</ul>
 	</li>
@@ -106,6 +105,11 @@ sa-struts-tutorialプロジェクトでは、webapp/WEB-INFにあります。
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
     version="2.4"&gt;
 
+    &lt;context-param&gt;
+        &lt;param-name&gt;<b>sastruts.VIEW_PREFIX</b>&lt;/param-name&gt;
+        &lt;param-value&gt;/WEB-INF/view&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    
     &lt;filter&gt;
         &lt;filter-name&gt;<a name="encodingfilter">encodingfilter</a>&lt;/filter-name&gt;
         &lt;filter-class&gt;
@@ -205,22 +209,21 @@ sa-struts-tutorialプロジェクトでは、webapp/WEB-INFにあります。
         &lt;url-pattern&gt;/s2container&lt;/url-pattern&gt;
     &lt;/servlet-mapping&gt;
     
-    &lt;error-page&gt;
-        &lt;exception-type&gt;java.lang.Throwable&lt;/exception-type&gt;
-        &lt;location&gt;/error/debug.jsp&lt;/location&gt;
-    &lt;/error-page&gt;
-    
     &lt;jsp-config&gt;
         &lt;jsp-property-group&gt;
             &lt;url-pattern&gt;*.jsp&lt;/url-pattern&gt;
             &lt;el-ignored&gt;false&lt;/el-ignored&gt;
             &lt;page-encoding&gt;UTF-8&lt;/page-encoding&gt;
             &lt;scripting-invalid&gt;false&lt;/scripting-invalid&gt;
-            &lt;include-prelude&gt;<b>/common/common.jsp</b>&lt;/include-prelude&gt;
+            &lt;include-prelude&gt;<b>/WEB-INF/view/common/common.jsp</b>&lt;/include-prelude&gt;
         &lt;/jsp-property-group&gt;
     &lt;/jsp-config&gt;
 &lt;/web-app&gt;
 </pre>
+<p>
+JSPなどのView用のファイルを置くディレクトリをsastruts.VIEW_PREFIXで指定します。
+ブラウザから直接アクセスされないように/WEB-INF配下のディレクトリを指定すると良いでしょう。
+</p>
 <p>
 EncodingFilterは、リクエストのパラメータをエンコードするためのフィルタです。
 </p>
@@ -253,17 +256,6 @@ ActionServletのload-on-startupの値より大きくしてください。
 <p>
 S2ModuleConfigFactoryは、<a href="#strutsConfig">struts-config.xml</a>なしの
 開発を実現するためのクラスです。
-</p>
-<a name="welcomefilelist"/>
-<p>
-きれいなURLを使うと、拡張子なしのリクエスト(例えば、/add)に対して、アクションよりも先に
-/add/index.jspに制御がいく場合があります。
-これを避けるために、welcome-file-listは空にしておきます。
-<a href="defaultweb">デフォルトのweb.xml</a>のwelcome-file-listも空にしておきましょう。
-</p>
-<p>
-例外が起きたときに、特定のページに遷移させるためには、
-error-pageタグを使います。
 </p>
 <p>
 jsp-configタグの詳細は、<a href="featureReference.html#JSP">こちら</a>を参照してください。
@@ -561,7 +553,7 @@ creator.diconがあります。
     &lt;component
         class="org.seasar.framework.container.creator.ActionCreator"/&gt;
     &lt;component
-        class="org.seasar.framework.container.creator.LogicCreator"/&gt;
+        class="org.seasar.framework.container.creator.ServiceCreator"/&gt;
     &lt;component
         class="org.seasar.framework.container.creator.DtoCreator"/&gt;
     &lt;component
@@ -569,7 +561,7 @@ creator.diconがあります。
 &lt;/components&gt;
 </pre>
 <p>
-action、logic、dtoなどそれぞれのパッケージ応じたクリエータが登録されています。
+action、service、dtoなどそれぞれのパッケージ応じたクリエータが登録されています。
 </p>
 
 <h3><a name="customizer">customizer.dicon</a></h3>
@@ -609,7 +601,7 @@ customizer.diconがあります。
         &lt;/initMethod&gt;
     &lt;/component&gt;
 	
-    &lt;component name="logicCustomizer"
+    &lt;component name="serviceCustomizer"
         class="org.seasar.framework.container.customizer.CustomizerChain"&gt;
         &lt;initMethod name="addAspectCustomizer"&gt;
             &lt;arg><b>"aop.traceInterceptor"</b>&lt;/arg&gt;
@@ -732,15 +724,6 @@ conf/context.xmlのManagerタグのコメントアウトをはずします。
 &lt;!-- Uncomment this to disable session persistence across Tomcat restarts --&gt;
 &lt;Manager pathname="" /&gt;
 </pre>
-
-<h3><a name="defaultweb">デフォルトのweb.xml</a></h3>
-<p>
-きれいなURLを使うと、拡張子なしのリクエスト(例えば、/add)に対して、アクションよりも先に
-/add/index.jspに制御がいく場合があります。
-これを避けるために、welcome-file-listは空にしておきます。
-通常のweb.xmlのwelcome-file-listも空にしておきましょう。
-Tomcatの場合、confディレクトリにデフォルトのweb.xmlがあります。
-</p>
 
 <h3><a name="MessageResources">メッセージリソース</a></h3>
 <p>
