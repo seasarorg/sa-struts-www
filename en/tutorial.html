@@ -17,8 +17,8 @@
 <div style="position:absolute; left: 200px; top: 160px; border: 1px dotted gray; width: 800px; background-color: #EEEEFF">
 NOTE: This page is a translation from the original Japanese version of
  <a href="../tutorial.html">tutorial.html, 
- rev 440</a> 
- as of 2008-04-10.
+ rev 487</a> 
+ as of 2008-05-10.
 </div>
 <!--  TRANSLATION NOTE ENDS  -->
 
@@ -102,13 +102,12 @@ public class IndexAction {
 
     @Execute(validator = false)
     public String index() {
-        return &quot;start.jsp&quot;;
+        return &quot;index.jsp&quot;;
     }
 }
 </pre>
 <p xmlns="http://www.w3.org/1999/xhtml">After the transition to every action, an execution method with @Execute annotation is invoked. Please see <a href="featureReference.html#ExecuteMethod" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a> to find out which one of multiple execution methods defined is invoked. In this case, we have only one execution method, and obviously, index() is called.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">The return value of the method specifies where to forward. In the case of IndexAction#index(), it forwards to start.jsp.</p>
-<p style="background-color:red" xmlns="http://www.w3.org/1999/xhtml">If you put index.jsp on the web application root, The servlet engine  forwards directly to index.jsp without calling IndexAction. Do not create index.jsp if you want to do some of control within the action.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">The return value of the method specifies where to forward. In the case of IndexAction#index(), it forwards to index.jsp. More precisely, it forwards to /WEB-INF/view/index.jsp because VIEW_PREFIX parameter in web.xml is specified as /WEB-INF/view.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Now, let's see webapp/WEB-INF/struts-config.xml. You don't see any configurations about actions nor actionforms. SAStruts seeks appropriate action classes for the URL, picks up information from them, then reconstructs required configurations equivalent to struts-config.xml.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Also, let's see webapp/WEB-INF/validation.xml. You don't see such a file. SAStruts reconstructs required configurations equivalent to validation.xml from annotations added to properties for validation.</p>
 
@@ -138,13 +137,13 @@ public class AddAction {
 
     @Execute(validator = false)
     public String index() {
-        return &quot;add.jsp&quot;;
+        return &quot;index.jsp&quot;;
     }
 
-    @Execute(input = &quot;add.jsp&quot;)
+    @Execute(input = &quot;index.jsp&quot;)
     public String submit() {
         result = Integer.valueOf(arg1) + Integer.valueOf(arg2);
-        return &quot;add.jsp&quot;;
+        return &quot;index.jsp&quot;;
     }
 }
 </pre>
@@ -154,11 +153,11 @@ public class AddAction {
 <p xmlns="http://www.w3.org/1999/xhtml">SAStruts uses the URL and optionally a request parameter  to determine which of multiple execution methods to call.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">In the following example, AddAction#index() is called. The string after /add will be the method name.</p>
 <pre xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
-http://localhost:8080/sa-struts-tutorial/add/index
+http://localhost:8080/sa-struts-tutorial/add/index/
 </pre>
 <p xmlns="http://www.w3.org/1999/xhtml">If no methods are defined, index() is called. Therefore, the invocation above is the same thing as below :</p>
 <pre xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
-http://localhost:8080/sa-struts-tutorial/add
+http://localhost:8080/sa-struts-tutorial/add/
 </pre>
 <p xmlns="http://www.w3.org/1999/xhtml">In the case of form submit, specify the name of the execution method to name attribute of the button. In the following example, submit() method of the action class is called.</p>
 <pre xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
@@ -166,7 +165,7 @@ http://localhost:8080/sa-struts-tutorial/add
 </pre><p xmlns="http://www.w3.org/1999/xhtml">For details of @Execute,  please see <a href="annotationReference.html#Execute" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">To validate with annotations (validators), add <a href="annotationReference.html#Validation" xmlns="http://www.w3.org/1999/xhtml" shape="rect">annotations for validation</a> to the fields and set validator attribute of @Execute to true (this is default). When validator=true, you have to specify a forward page on validation failure with input attibute. For details of validators, please see <a href="annotationReference.html#Validation" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">add.jsp is as this :</p>
-<h5 xmlns="http://www.w3.org/1999/xhtml">add.jsp</h5>
+<h5 xmlns="http://www.w3.org/1999/xhtml">/add/index.jsp</h5>
 <pre xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
 &lt;html&gt;
 &lt;head&gt;
@@ -182,14 +181,14 @@ http://localhost:8080/sa-struts-tutorial/add
 &lt;/body&gt;
 &lt;/html&gt;
 </pre>
-<p xmlns="http://www.w3.org/1999/xhtml">The declaration for taglib used commonly in every JSP is defined in /common/common.jsp. For details of common.jsp, see <a href="featureReference.html#JSP" xmlns="http://www.w3.org/1999/xhtml" shape="rect">JSP</a>.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">The declaration for taglib used commonly in every JSP is defined in  webapp/WEB-INF/common/common.jsp. For details of common.jsp, see <a href="featureReference.html#JSP" xmlns="http://www.w3.org/1999/xhtml" shape="rect">JSP</a>.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">To show messages on validation error, html:errors tag is placed.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">To receive the submitted values, s:form tag is placed. Specify the path of the action to action attribute. s:form is the same as html:form of Struts except that the value of action attribute in the produced HTML does not contain an extension (.do).</p>
 <p xmlns="http://www.w3.org/1999/xhtml">html:text tags are placed to receive input values. Specify the property names in the action.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">name attribute of submit tag is set  as &quot;submit&quot; in order to call AddAction#submit() on submission.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Once submitted, the input values arg1 and arg2 are set to the action and checked if they are present and both of them are integer, according to the specified validation rules, i.e. @Required and @IntegerType.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">If the validations fail, SAStruts will forward control back to add.jsp specified by input attribute. If the validations are performed successfully, submit() will be invoked.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">Then it  forwards to add.jsp again because the return value of submit() is add.jsp.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">If the validations fail, SAStruts will forward control back to index.jsp specified by input attribute. If the validations are performed successfully, submit() will be invoked.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Then it  forwards to index.jsp again because the return value of submit() is index.jsp.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">result property of the action is set as an attribute of the request with the same name (&quot;result&quot;) , and it can be displayed with ${f:h(result)}. f:h is a function to escape HTML. For details,  please see <a href="featureReference.html#JSP" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
 
 <h3 xmlns="http://www.w3.org/1999/xhtml"><a name="upload" xmlns="http://www.w3.org/1999/xhtml" shape="rect">File Upload</a></h3>
@@ -244,10 +243,10 @@ public class UploadAction {
                 new Object[] { e.getPermittedSize(), e.getActualSize() }));
             ActionMessagesUtil.addErrors(request, errors);
         }
-        return &quot;upload.jsp&quot;;
+        return &quot;index.jsp&quot;;
     }
 
-    @Execute(input = &quot;upload.jsp&quot;)
+    @Execute(input = &quot;index.jsp&quot;)
     public String upload() {
         ActionMessages messages = new ActionMessages();
         upload(formFile, messages);
@@ -255,7 +254,7 @@ public class UploadAction {
             upload(file, messages);
         }
         ActionMessagesUtil.addMessages(request, messages);
-        return &quot;upload.jsp&quot;;
+        return &quot;index.jsp&quot;;
     }
 
     protected void upload(FormFile file, ActionMessages messages) {
@@ -287,8 +286,8 @@ public class UploadAction {
 <p xmlns="http://www.w3.org/1999/xhtml">You cannot specify an annotation for validation to the FormFile array. So, for each element of the array, check that FormFile#getFileSize() returns a value greater than zero to judge if it is really uploaded.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">If the size of the uploaded file exceeds the limit predetermined (by maxFileSize attribute of controller tag in struts-config.xml), then SizeLimitExceededException will be thrown.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">In the case that exception is thrown, control will be forwarded to index() method. You can check if the upload size has exceeded the limit by checking the presence of SizeLimitExceededException [ as an attribute of the request; see the example code above ].</p>
-<p xmlns="http://www.w3.org/1999/xhtml">upload.jsp is as this:</p>
-<h5 xmlns="http://www.w3.org/1999/xhtml">upload.jsp</h5>
+<p xmlns="http://www.w3.org/1999/xhtml">/upload/index.jsp is as this :</p>
+<h5 xmlns="http://www.w3.org/1999/xhtml">/upload/index.jsp</h5>
 <pre xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
 &lt;html&gt;
 &lt;head&gt;
@@ -336,23 +335,23 @@ public class ClientValidatorAction {
 
     @Execute(validator = false)
     public String index() {
-        return &quot;clientValidator.jsp&quot;;
+        return &quot;index.jsp&quot;;
     }
 
-    @Execute(validator = true, input = &quot;clientValidator.jsp&quot;)
+    @Execute(validator = true, input = &quot;index.jsp&quot;)
     public String submit() {
-        return &quot;clientValidator.jsp&quot;;
+        return &quot;index.jsp&quot;;
     }
 
-    @Execute(validator = true, input = &quot;clientValidator.jsp&quot;)
+    @Execute(validator = true, input = &quot;index.jsp&quot;)
     public String submit2() {
         return &quot;clientValidator.jsp&quot;;
     }
 }
 </pre>
 <p xmlns="http://www.w3.org/1999/xhtml">If you want to use different validator for each button (method), you have to specify the names of the methods to target attribute to the annotations for validators. To specify multiple methods, separate with comma(,) .</p>
-<p xmlns="http://www.w3.org/1999/xhtml">clientValidator.jsp is as this: </p>
-<h5 xmlns="http://www.w3.org/1999/xhtml">clientValidator.jsp</h5>
+<p xmlns="http://www.w3.org/1999/xhtml">/clientValidator/index.jsp is as this :</p>
+<h5 xmlns="http://www.w3.org/1999/xhtml">/clientValidator/index.jsp</h5>
 <pre xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
 &lt;html&gt;
 &lt;head&gt;
