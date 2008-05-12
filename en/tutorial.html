@@ -89,7 +89,7 @@ Start up the application server following the instructions at <a href="setup.htm
 
 <h3 xmlns="http://www.w3.org/1999/xhtml"><a name="index" xmlns="http://www.w3.org/1999/xhtml" shape="rect">index</a></h3>
 <p xmlns="http://www.w3.org/1999/xhtml">Open http://localhost:8080/sa-struts-tutorial with your web browser. You see a showcase page for various applications.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">Let's see under webapp directory. There is no index.jsp(index.html) present. Then, what page is displayed?</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Let's see contents under webapp directory. There is no index.jsp(index.html) present. Then, what page is displayed?</p>
 <p xmlns="http://www.w3.org/1999/xhtml">If  a class named &lt;rootpackage&gt;.action.IndexAction is present, then SAStruts automatically  invokes it when you access the web application root. For details of rootpackage, please see <a href="featureReference.html#Project" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Source code for IndexAction.java is as follows :</p>
 <h5 xmlns="http://www.w3.org/1999/xhtml">IndexAction.java</h5>
@@ -109,7 +109,7 @@ public class IndexAction {
 <p xmlns="http://www.w3.org/1999/xhtml">After the transition to every action, an execution method with @Execute annotation is invoked. Please see <a href="featureReference.html#ExecuteMethod" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a> to find out which one of multiple execution methods defined is invoked. In this case, we have only one execution method, and obviously, index() is called.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">The return value of the method specifies where to forward. In the case of IndexAction#index(), it forwards to index.jsp. More precisely, it forwards to /WEB-INF/view/index.jsp because VIEW_PREFIX parameter in web.xml is specified as /WEB-INF/view.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Now, let's see webapp/WEB-INF/struts-config.xml. You don't see any configurations about actions nor actionforms. SAStruts seeks appropriate action classes for the URL, picks up information from them, then reconstructs required configurations equivalent to struts-config.xml.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">Also, let's see webapp/WEB-INF/validation.xml. You don't see such a file. SAStruts reconstructs required configurations equivalent to validation.xml from annotations added to properties for validation.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Where is webapp/WEB-INF/validation.xml ? You don't see such a file. SAStruts reconstructs required configurations equivalent to validation.xml from annotations added to properties for validation.</p>
 
 <h3 xmlns="http://www.w3.org/1999/xhtml"><a name="add" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Add numbers</a></h3>
 <p xmlns="http://www.w3.org/1999/xhtml">Access Add Numbers page from the index page. [NOTE: Currently, the index page is written only in Japanese. You may try an alternative way mentioned in the next sentence :] Or, open http://localhost:8080/sa-struts-tutorial/add with your browser. It's the same thing. You see Add Numbers page.</p>
@@ -148,7 +148,7 @@ public class AddAction {
 }
 </pre>
 <p xmlns="http://www.w3.org/1999/xhtml">An action is a POJO (an ordinary Java class with no specific superclass). The statuses of the action are also defined in the action.  That's because it is easier to understand if you find related multiple information in one class.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">As Seasar2 can recognize public fields as properties, it is not necessary to write getters nor setters. In SAStruts, public fields are recognizable from EL and Struts too. If you are interested in the mechanism, read the source code in org.seasar.struts.action package. </p>
+<p xmlns="http://www.w3.org/1999/xhtml">As Seasar2 can recognize public fields as properties, it is not necessary to write getters nor setters. In SAStruts, public fields are recognizable even from EL and Struts. If you are interested in the mechanism, read the source code in org.seasar.struts.action package. </p>
 <p xmlns="http://www.w3.org/1999/xhtml">Request handling should be written in <a href="featureReference.html#ExecuteMethod" xmlns="http://www.w3.org/1999/xhtml" shape="rect">execution methods</a>. Every execution method have an @Execute annotation. Its return value is the path of the page to forward to.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">SAStruts uses the URL and optionally a request parameter  to determine which of multiple execution methods to call.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">In the following example, AddAction#index() is called. The string after /add will be the method name.</p>
@@ -164,7 +164,7 @@ http://localhost:8080/sa-struts-tutorial/add/
 &lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Submit this!&quot;/&gt;
 </pre><p xmlns="http://www.w3.org/1999/xhtml">For details of @Execute,  please see <a href="annotationReference.html#Execute" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">To validate with annotations (validators), add <a href="annotationReference.html#Validation" xmlns="http://www.w3.org/1999/xhtml" shape="rect">annotations for validation</a> to the fields and set validator attribute of @Execute to true (this is default). When validator=true, you have to specify a forward page on validation failure with input attibute. For details of validators, please see <a href="annotationReference.html#Validation" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">add.jsp is as this :</p>
+<p xmlns="http://www.w3.org/1999/xhtml">/add/index.jsp is as this :</p>
 <h5 xmlns="http://www.w3.org/1999/xhtml">/add/index.jsp</h5>
 <pre xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
 &lt;html&gt;
@@ -182,10 +182,10 @@ http://localhost:8080/sa-struts-tutorial/add/
 &lt;/html&gt;
 </pre>
 <p xmlns="http://www.w3.org/1999/xhtml">The declaration for taglib used commonly in every JSP is defined in  webapp/WEB-INF/common/common.jsp. For details of common.jsp, see <a href="featureReference.html#JSP" xmlns="http://www.w3.org/1999/xhtml" shape="rect">JSP</a>.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">To show messages on validation error, html:errors tag is placed.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">To receive the submitted values, s:form tag is placed. Specify the path of the action to action attribute. s:form is the same as html:form of Struts except that the value of action attribute in the produced HTML does not contain an extension (.do).</p>
-<p xmlns="http://www.w3.org/1999/xhtml">html:text tags are placed to receive input values. Specify the property names in the action.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">name attribute of submit tag is set  as &quot;submit&quot; in order to call AddAction#submit() on submission.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">To show messages on validation error, put html:errors tag.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">To receive the submitted values, put s:form. Specify the path of the action to action attribute. s:form is the same as html:form of Struts except that the value of action attribute in the produced HTML does not contain an extension (.do).</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Put html:text tags  to receive input values. Specify the property names in the action.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Set name attribute of submit tag  to &quot;submit&quot; in order to call AddAction#submit() on submission.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Once submitted, the input values arg1 and arg2 are set to the action and checked if they are present and both of them are integer, according to the specified validation rules, i.e. @Required and @IntegerType.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">If the validations fail, SAStruts will forward control back to index.jsp specified by input attribute. If the validations are performed successfully, submit() will be invoked.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Then it  forwards to index.jsp again because the return value of submit() is index.jsp.</p>
