@@ -186,6 +186,12 @@ public String edit() {
 チェックがNGの場合、org.seasar.struts.exception.NoRoleRuntimeExceptionが
 スローされます。
 </p>
+<h5>stopOnvalidationError属性(オプション)</h5>
+<p>
+検証エラーがあった場合に後続の検証をやめるかどうかを指定します。
+デフォルトはtrueで、validatorなどでエラーがあると後続の検証メソッドは実行しません。
+falseの場合は、validatorなどでエラーがあっても後続の検証メソッドを続けて実行します。
+</p>
 
 <h4><a name="ActionForm">ActionFormアノテーション</a></h4>
 <p>
