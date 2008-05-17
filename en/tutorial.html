@@ -17,8 +17,8 @@
 <div style="position:absolute; left: 200px; top: 160px; border: 1px dotted gray; width: 800px; background-color: #EEEEFF">
 NOTE: This page is a translation from the original Japanese version of
  <a href="../tutorial.html">tutorial.html, 
- rev 487</a> 
- as of 2008-05-10.
+ rev 508</a> 
+ as of 2008-05-17.
 </div>
 <!--  TRANSLATION NOTE ENDS  -->
 
@@ -89,7 +89,7 @@ Start up the application server following the instructions at <a href="setup.htm
 
 <h3 xmlns="http://www.w3.org/1999/xhtml"><a name="index" xmlns="http://www.w3.org/1999/xhtml" shape="rect">index</a></h3>
 <p xmlns="http://www.w3.org/1999/xhtml">Open http://localhost:8080/sa-struts-tutorial with your web browser. You see a showcase page for various applications.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">Let's see contents under webapp directory. There is no index.jsp(index.html) present. Then, what page is displayed?</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Let's see contents under webapp (i.e. web application root) directory.  There is no index.jsp(index.html) present. Then, what page is displayed?</p>
 <p xmlns="http://www.w3.org/1999/xhtml">If  a class named &lt;rootpackage&gt;.action.IndexAction is present, then SAStruts automatically  invokes it when you access the web application root. For details of rootpackage, please see <a href="featureReference.html#Project" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Source code for IndexAction.java is as follows :</p>
 <h5 xmlns="http://www.w3.org/1999/xhtml">IndexAction.java</h5>
@@ -313,7 +313,7 @@ ${f:h(m)}&lt;br /&gt;
 <p xmlns="http://www.w3.org/1999/xhtml">For file upload, set enctype attribute of form to &quot;multipart/form-data&quot;. Set the names of the properties of Action or ActionForm to name attributes of the tags for upload (&lt;input type=&quot;file&quot; .../&gt;).  For FormFile array, set the value of name attribute to property_name[index].</p>
 
 <h3 xmlns="http://www.w3.org/1999/xhtml"><a name="clientValidator" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Client-side Validator</a></h3>
-<p xmlns="http://www.w3.org/1999/xhtml">Access Client-Side Validator page from the index page. [NOTE: Currently, the index page is written only in Japanese. You may try an alternative way mentioned in the next sentence: ] Or, open http://localhost:8080/sa-struts-tutorial/clientValidator with your browser. It's the same thing. You see the Client-Side Validator page.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Access Client-Side Validator page from the index page. [NOTE: Currently, the index page is written only in Japanese. You may try an alternative way mentioned in the next sentence: ] Or, open http://localhost:8080/sa-struts-tutorial/clientValidator/ with your browser. It's the same thing. You see the Client-Side Validator page.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Don't enter anything and click &quot;aaa is required&quot; button. [NOTE: Currently, the button is in Japanese, but  you may find which button to click, with &quot;aaa&quot; letter sequence.] JavaScript validation will be invoked and a message &quot;aaa is required. &quot; will be shown.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Then similarly, click &quot;bbb is required&quot; button. JavaScript validation will be invoked and a message &quot;bbb is required. &quot; will be shown. That shows that different validations are perfomed for each button. </p>
 <p xmlns="http://www.w3.org/1999/xhtml">The action class corresponding to /clientValidator is tutorial.action.ClientValidatorAction. For details of actions, please see <a href="featureReference.html#Action" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
