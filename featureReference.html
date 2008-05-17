@@ -311,20 +311,19 @@ HOT deployがうまくいかないときは、セッションをアプリケー�
 保存しないように設定してください。
 </p>
 <p>
-複数のアクションから共通に使われるようなロジックをロジッククラスで定義する場合、
-ルートパッケージ.logicにXxxLogicを作成します。
+ビジネスロジックをサービスに格納する場合、ルートパッケージ.serviceにXxxServiceを作成します。
 </p>
 <pre>
-public class XxxLogic {
+public class XxxService {
     ...
 }
 </pre>
 <p>
-作成したXxxLogicをアクションで利用するには、次のようにプロパティを定義しておけば、
+作成したXxxServiceをアクションで利用するには、次のようにプロパティを定義しておけば、
 Seasar2が自動的に設定します。フィールド名は、クラス名の先頭を小文字にしたものにします。
 </p>
 <pre>
-public XxxLogic xxxLogic;
+public XxxService xxxService;
 </pre>
 <p>
 リクエストに対する処理を記述したい場合は、
@@ -356,13 +355,16 @@ public String execute() {
 パスが/ではじまっていない場合、アクションのパスからみた相対パスとみなされます。
 </p>
 <p>
-例えば、http://localhost:8080/sa-struts-tutorial/login/のアクションで
-戻り値をlogin.jspとした場合<br />
-http://localhost:8080/sa-struts-tutorial/login/login.jspに遷移します。
+例えば、/add/のアクションで戻り値をindex.jspとした場合、
+/add/index.jspとみなされます。
+さらに<a href="fileReference.html#web">web.xml</a>
+でVIEW_PREFIXが指定されていると、プレフィックスとしてパスに追加されます。
+sa-strtus-tutorialプロジェクトでは、VIEW_PREFIXが/WEB-INF/viewと指定されているので
+/WEB-INF/view/add/index.jspに遷移することになります。
 </p>
 <p>
 パスが/ではじまっている場合、Webアプリケーションのルートからの相対パスと
-みなされます。例えば、戻り値を/selectとした場合、
+みなされます。例えば、戻り値を/select/とした場合、
 http://localhost:8080/sa-struts-tutorial/select/に遷移します。
 </p>
 <p>
@@ -974,7 +976,7 @@ JavaBeansはMapに、配列はListにラップされています。
 </p>
 <p>
 どのJSPでも共通で使うような宣言は、1つのJSPにまとめ、web.xmlでそのJSPを指定します。
-sa-strtus-tutorialプロジェクトでは、webapp/common/common.jspに共通で使う宣言が
+sa-strtus-tutorialプロジェクトでは、webapp/WEB-INF/view/common/common.jspに共通で使う宣言が
 定義されています。
 </p>
 <h5>commons.jsp</h5>
