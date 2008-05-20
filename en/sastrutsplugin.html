@@ -17,8 +17,8 @@
 <div style="position:absolute; left: 200px; top: 160px; border: 1px dotted gray; width: 800px; background-color: #EEEEFF">
 NOTE: This page is a translation from the original Japanese version of
  <a href="../sastrutsplugin.html">sastrutsplugin.html, 
- rev 512</a> 
- as of 2008-05-18.
+ rev 525</a> 
+ as of 2008-05-20.
 </div>
 <!--  TRANSLATION NOTE ENDS  -->
 
@@ -128,7 +128,11 @@ NOTE: This page is a translation from the original Japanese version of
 
 <h4><a name="func_java_open">Open the JAVA file</a></h4>
 
-<p>In a JSP source code, place the text cursor on the line where the action attribute of s:form tag or one of input tags is present, then use the context menu or hit the shortcut key (F7) to open the corresponding JAVA source file. If  the cursor was on s:form tag, it  forwards to index method of the JAVA source. If the cursor was on an input tag, it forwards to the corresponding JAVA method (whose name is the same as the name attribute of the tag). If no corresponding method is found, it will forward to index method.</p>
+<p>On JSP Editor, you can open a Java source file corresponding to the JSP file via the popup menu or by a keyboard shortcut (F7). <ul>
+  <li>If  the cursor was on s:form tag, it  forwards to index method of the JAVA source. If urlPatten is used, then the cursor will be on the corresponding method.</li>
+  <li>If the cursor was on an input tag, it forwards to the corresponding JAVA method (whose name is the same as the name attribute of the tag).</li>
+  <li>If the cursor was on the line of HTML a tag whose href attribute uses urlPattern, then it forwards to the corresponding method.</li>
+</ul>In all cases,it will forward to index method  if no corresponding method is found .</p>
 
 <img src="images/open_java.gif"/>
 
@@ -151,6 +155,7 @@ NOTE: This page is a translation from the original Japanese version of
 
 <h3><a name="news">NEWS</a></h3>
 <p>The latest news and information are on <a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew">Seasar wiki page (in Japanese) </a> .
+</p>
 
 <h3><a name="maillist">Mailing List</a></h2>
 <dl>
