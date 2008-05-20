@@ -139,10 +139,13 @@ JSPファイルを開こうとして対応するJSPファイルが存在しな�
 <h4><a name="func_java_open">Javaファイルを開く</a></h4>
 
 <p>
-s:formタグの行、inputタグの行からポップアップメニューかショートカットキー（F7）で対応するJavaソースを開くことができます。
-s:formタグの行から操作した場合はJavaソースのindexメソッドに遷移します。
-inputタグの行から操作した場合はJavaソースの該当するメソッド（name属性と同じメソッド名）に遷移します。
-対応するメソッドが見つからない場合はindexメソッドに遷移します。
+JSP Editor上からポップアップメニューかショートカットキー（F7）で対応するJavaソースを開くことができます。
+<ul>
+  <li>s:formタグの行から操作した場合はJavaソースのindexメソッドに遷移します。urlPatternを使っている場合は該当するメソッドに遷移します。</li>
+  <li>inputタグの行から操作した場合はJavaソースの該当するメソッド（name属性と同じメソッド名）に遷移します。</li>
+  <li>aタグのhref属性でurlPatternを使っている場合は、aタグの行で操作すれば該当するメソッドに遷移します。</li>
+</ul>
+どのケースも対応するメソッドが見つからない場合はindexメソッドに遷移します。
 </p>
 
 <img src="images/open_java.gif"/>
@@ -171,6 +174,7 @@ Javaファイルを開こうとして対応するJavaファイルが存在しな
 
 <h3><a name="news">NEWS</a></h3>
 <ul>
+  <li>2008/05/20 SAStrutsPlugin 0.0.5  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-05-20#pb4b2b6c">こちら</a></li>
   <li>2008/05/18 SAStrutsPlugin 0.0.4  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-05-18#d9114288">こちら</a></li>
   <li>2008/04/27 SAStrutsPlugin 0.0.3  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-04-27#r2910cdf">こちら</a></li>
   <li>2008/03/22 SAStrutsPlugin 0.0.2  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-03-22#n5246636">こちら</a></li>
