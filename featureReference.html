@@ -387,7 +387,7 @@ return "xxx.jsp?key=value&amp;redirect=true";
 </p>
 <pre>
 ...
-return "https://ホスト名/アプリケーション名/パス?redirect=true";
+return "https://ホスト名/アプリケーション名/パス/?redirect=true";
 </pre>
 <p>
 ファイルのダウンロードのように既にレスポンスに出力済みの場合は、
@@ -410,7 +410,7 @@ http://localhost:8080/sa-struts-tutorial/add/index
 上記の呼び出しは、下記の呼び出しと一緒です。
 </p>
 <pre>
-http://localhost:8080/sa-struts-tutorial/add
+http://localhost:8080/sa-struts-tutorial/add/
 </pre>
 <p>
 @ExecuteでURLのパターン(urlPattern)を指定することで、
@@ -820,7 +820,7 @@ cutomizer.dicon
   ...
 &lt;/component&gt;
 	
-&lt;component name="logicCustomizer"
+&lt;component name="serviceCustomizer"
   class="org.seasar.framework.container.customizer.CustomizerChain"&gt;
   &lt;initMethod name="addCustomizer"&gt;
     &lt;arg&gt;
@@ -940,6 +940,12 @@ ELは、items="${プロパティ名}"のように属性の設定のみに使い�
 タグのボディでは使わないようにしてください。
 クロスサイトスクリプティングの問題が起こる危険があります。
 タグのボディでは、f:h()を使ってください。
+</p>
+<p>
+aタグのhref要素などを設定するときに、コンテキストルートを自動的に補完させる場合は、
+f:url()を使います。
+パスを/ではじめた場合は、コンテキストルートからみたパスになります。
+パスが/ではじまっていない場合は、JSPからみたパスになります。
 </p>
 <p>
 テキストエリアで入力した値を表示するときに、改行を&lt;br /&gt;に変換したい場合は、
