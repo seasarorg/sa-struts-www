@@ -213,7 +213,7 @@ publicフィールドは、ELやStrutsからでも認識できるようになっ
 /add/の後ろがメソッド名になります。
 </p>
 <pre>
-http://localhost:8080/sa-struts-tutorial/add/index/
+http://localhost:8080/sa-struts-tutorial/add/index
 </pre>
 <p>
 メソッドが定義されていない場合、index()が呼び出されるので、
@@ -249,7 +249,7 @@ validator=trueの場合は、検証結果がNGのときの遷移先をinput属�
 &lt;/head&gt;
 &lt;body&gt;
 &lt;html:errors/&gt;
-&lt;s:form action="/add"&gt;
+&lt;s:form&gt;
 &lt;html:text property="arg1"/&gt; + &lt;html:text property="arg2"/&gt;
 = ${f:h(result)}&lt;br /&gt;
 &lt;input type="submit" name="submit" value="サブミット"/&gt;
@@ -267,9 +267,7 @@ html:errorsタグを定義します。
 </p>
 <p>
 サブミットされた値を受け取るためにs:formを定義します。
-action属性には、アクションのパスを指定します。
-s:formはHTMLに出力されるaction属性の値に拡張子(.do)が含まれないことを除いては、
-Strutsのhtml:formと同じです。
+action属性は自動的に計算されるので通常は指定する必要がありません
 </p>
 <p>
 入力値を受け取るために、html:textタグを定義します。
