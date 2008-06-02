@@ -17,8 +17,8 @@
 <div style="position:absolute; left: 200px; top: 160px; border: 1px dotted gray; width: 800px; background-color: #EEEEFF">
 NOTE: This page is a translation from the original Japanese version of
  <a href="../tutorial.html">tutorial.html, 
- rev 508</a> 
- as of 2008-05-17.
+ rev 547</a> 
+ as of 2008-06-02.
 </div>
 <!--  TRANSLATION NOTE ENDS  -->
 
@@ -153,7 +153,7 @@ public class AddAction {
 <p xmlns="http://www.w3.org/1999/xhtml">SAStruts uses the URL and optionally a request parameter  to determine which of multiple execution methods to call.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">In the following example, AddAction#index() is called. The string after /add will be the method name.</p>
 <pre xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
-http://localhost:8080/sa-struts-tutorial/add/index/
+http://localhost:8080/sa-struts-tutorial/add/index
 </pre>
 <p xmlns="http://www.w3.org/1999/xhtml">If no methods are defined, index() is called. Therefore, the invocation above is the same thing as below :</p>
 <pre xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
@@ -173,17 +173,17 @@ http://localhost:8080/sa-struts-tutorial/add/
 &lt;/head&gt;
 &lt;body&gt;
 &lt;html:errors/&gt;
-&lt;s:form action=&quot;/add&quot;&gt;
+&lt;s:form&gt;
 &lt;html:text property=&quot;arg1&quot;/&gt; + &lt;html:text property=&quot;arg2&quot;/&gt;
 = ${f:h(result)}&lt;br /&gt;
-&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Submit this!&quot;/&gt;
+&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Submit This!&quot;/&gt;
 &lt;/s:form&gt;
 &lt;/body&gt;
 &lt;/html&gt;
 </pre>
 <p xmlns="http://www.w3.org/1999/xhtml">The declaration for taglib used commonly in every JSP is defined in  webapp/WEB-INF/common/common.jsp. For details of common.jsp, see <a href="featureReference.html#JSP" xmlns="http://www.w3.org/1999/xhtml" shape="rect">JSP</a>.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">To show messages on validation error, put html:errors tag.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">To receive the submitted values, put s:form. Specify the path of the action to action attribute. s:form is the same as html:form of Struts except that the value of action attribute in the produced HTML does not contain an extension (.do).</p>
+<p xmlns="http://www.w3.org/1999/xhtml">To receive the submitted values, put s:form. Normally, you don't have to specify action attribute because it is automatically determined.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Put html:text tags  to receive input values. Specify the property names in the action.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Set name attribute of submit tag  to &quot;submit&quot; in order to call AddAction#submit() on submission.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Once submitted, the input values arg1 and arg2 are set to the action and checked if they are present and both of them are integer, according to the specified validation rules, i.e. @Required and @IntegerType.</p>
