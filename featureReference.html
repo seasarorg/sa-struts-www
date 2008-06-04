@@ -457,7 +457,7 @@ Tomcatを使っている場合は、<a href="fileReference.html#server">server.x
 をリンク先の指示に従って修正してください。
 </p>
 <p>
-フォームをサブミットする場合は、ボタン系のname属性に実行メソッド名を指定します。
+フォームをサブミットする場合は、ボタン系のname要素に実行メソッド名を指定します。
 次の例では、アクションクラスのsubmit()を呼び出します。
 </p>
 <pre>
@@ -465,12 +465,12 @@ Tomcatを使っている場合は、<a href="fileReference.html#server">server.x
 </pre>
 <p>
 実行メソッドを呼び出す前に、<a href="http://commons.apache.org/validator/">commons validator</a>を使った
-検証を行なうには、@Executeのvalidator属性をtrueにします。デフォルトはtrueです。
+検証を行なうには、@Executeのvalidator要素をtrueにします。デフォルトはtrueです。
 </p>
 <p>
-validator=trueの場合は、検証結果がNGのときの遷移先のパスをinput属性で指定します。
+validator=trueの場合は、検証結果がNGのときの遷移先のパスをinput要素で指定します。
 パスの書き方は、実行メソッドの戻り値の書き方に加えて、
-urlPattern属性のようにパラメータをパス({パラメータ名})で指定することもできます。
+urlPattern要素のようにパラメータをパス({パラメータ名})で指定することもできます。
 バリデータの詳細は、<a href="#Validator">こちら</a>を参照してください。
 </p>
 <pre>
@@ -478,12 +478,12 @@ urlPattern属性のようにパラメータをパス({パラメータ名})で指
 </pre>
 <p>
 実行メソッドを呼び出す前に、アクションクラスのメソッドで検証を行なうには、
-@Executeのvalidate属性で検証用のメソッド名を指定します。
+@Executeのvalidate要素で検証用のメソッド名を指定します。
 </p>
 <p>
-validate属性を指定した場合は、検証結果がNGのときの遷移先のパスをinput属性で指定します。
+validate要素を指定した場合は、検証結果がNGのときの遷移先のパスをinput要素で指定します。
 パスの書き方は、実行メソッドの戻り値の場合と一緒です。
-validator属性とvalidate属性を両方指定した場合には、
+validator要素とvalidate要素を両方指定した場合には、
 バリデータのほうが先に実行されます。
 検証メソッドの詳細は、<a href="#ValidateMethod">こちら</a>を参照してください。
 </p>
@@ -491,7 +491,7 @@ validator属性とvalidate属性を両方指定した場合には、
 @Execute(validate = "validate", input = "login.jsp")
 </pre>
 <p>
-roles属性を指定して、メソッドを呼び出すのに必要なロールを設定できます。
+roles要素を指定して、メソッドを呼び出すのに必要なロールを設定できます。
 複数のロールを設定するには、カンマ(,)で区切ります。
 必要なロールがない場合、org.seasar.struts.exception.NoRoleRuntimeExceptionがスローされます。
 NoRoleRuntimeExceptionがスローされた場合に、適切なページ(/error/norole.jsp)に遷移して、
@@ -609,7 +609,7 @@ public String userName;
 <p>
 特定のプロパティのみ、メッセージをカスタマイズしたい場合は、
 <a href="fileReference.html#MessageResources">メッセージリソース</a>に、
-メッセージを追加し、検証用のアノテーションのmsg属性で指定します。
+メッセージを追加し、検証用のアノテーションのmsg要素で指定します。
 </p>
 <pre>
 errors.required2={0}は必須だぜ。
@@ -620,7 +620,7 @@ errors.required2={0}は必須だぜ。
 <p>
 メッセージには、{位置}で引数を渡すことができます。
 位置は0からはじまります。
-検証用のアノテーションで、引数を指定するには、arg0, arg1, ..., args属性で指定します。
+検証用のアノテーションで、引数を指定するには、arg0, arg1, ..., args要素で指定します。
 </p>
 <pre>
 @Required(arg0 = @Arg(key = "ほげ", resource = false))
@@ -640,9 +640,9 @@ errors.required2={0}は必須だぜ。
 labels.userName=ユーザ名
 </pre>
 <p>
-target属性を指定することで、特定のメソッドの場合だけ、検証を行なうようにすることもできます。
+target要素を指定することで、特定のメソッドの場合だけ、検証を行なうようにすることもできます。
 複数のメソッドを指定する場合は、カンマで区切ります。
-target属性が指定されていない場合、@Executeでvalidator=trueのすべての実行メソッドが対象になります。
+target要素が指定されていない場合、@Executeでvalidator=trueのすべての実行メソッドが対象になります。
 次の例では、secondプロパティは、goThirdメソッドが呼び出されるときだけ、
 入力必須になります。
 </p>
@@ -691,9 +691,9 @@ public ActionMessages validate() {
 }
 </pre>
 <p>
-実行メソッドで、どの検証メソッドを使うのかは、validate属性で指定します。
-validate属性を指定した場合は、
-input属性に検証結果がNGのときの遷移先も指定する必要があります。
+実行メソッドで、どの検証メソッドを使うのかは、validate要素で指定します。
+validate要素を指定した場合は、
+input要素に検証結果がNGのときの遷移先も指定する必要があります。
 </p>
 <pre>
 @Execute(validate = "validate", input = "login.jsp")
@@ -936,7 +936,7 @@ URLエンコーディング(クロスサイトスクリプティング対策でU
 のような感じでJavaScriptが実行されないように変換すること)が必要なケースは、f:u()を使ってください。
 </p>
 <p style="background-color:red">
-ELは、items="${プロパティ名}"のように属性の設定のみに使い、
+ELは、items="${プロパティ名}"のように要素の設定のみに使い、
 タグのボディでは使わないようにしてください。
 クロスサイトスクリプティングの問題が起こる危険があります。
 タグのボディでは、f:h()を使ってください。
@@ -953,7 +953,7 @@ f:br()を使います。
 </p>
 <p>
 日付をフォーマットして表示するには、fmt:formatDateを使いますが、
-value属性に設定する値はDate型である必要があります。
+value要素に設定する値はDate型である必要があります。
 Strutsの場合、入力値は、文字列で定義するのが一般的なので、
 文字列で定義されている入力値は、fmt:formatDateでフォーマットできません。
 このような場合は、f:date()を使って文字列をDate型に変換します。
@@ -961,7 +961,7 @@ Strutsの場合、入力値は、文字列で定義するのが一般的なの�
 </p>
 <p>
 数値をフォーマットして表示するには、fmt:formatNumberを使いますが、
-value属性に設定する値はNumber型である必要があります。
+value要素に設定する値はNumber型である必要があります。
 Strutsの場合、入力値は、文字列で定義するのが一般的なので、
 文字列で定義されている入力値は、fmt:formatNumberでフォーマットできません。
 このような場合は、f:number()を使って文字列をNumber型に変換します。
@@ -1014,8 +1014,8 @@ sa-strtus-tutorialプロジェクトでは、webapp/WEB-INF/view/common/common.j
 </pre>
 <p>
 SAStrutsには、Strutsのhtml:formを継承したs:formが用意されています。
-s:formタグは、action属性の値に拡張子(.do)が付かないこと以外は、
-html:formと同じです。
+action要素は自動的に計算されますが、Tilesのレイアウト側のJSPでは、
+明示的にaction要素を指定してください。
 </p>
 <p>
 JSPへのダイレクト(methodがGETによる)アクセスは、デフォルトで禁止されています。
