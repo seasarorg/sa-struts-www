@@ -96,12 +96,13 @@ SAStrutsを使った開発を支援するためのEclipseプラグインです�
 	<li>プロジェクトのプロパティで「SAStruts」を選択し、Webapp ルートを選択します。</li>
 	<li>プロジェクトのプロパティで「SAStruts」を選択し、Main Java Source Pathを選択します。</li>
 	<li>プロジェクトのプロパティで「SAStruts」を選択し、convention.dicon パスを選択します。</li>
+	<li>プロジェクトのプロパティで「SAStruts」を選択し、WebServerを選択します。</li>
 </ul>
 
 <img src="images/project_property.gif"/>
 
 <p>
-Super Agile Strutsチュートリアル(sa-struts-tutorial)であれば「/webapp」、「/src/main/java」、「/src/main/resouces/convention.dicon」となります。
+Super Agile Strutsチュートリアル(sa-struts-tutorial)であれば「/webapp」、「/src/main/java」、「/src/main/resouces/convention.dicon」、「http://localhost:8080」となります。
 Maven2のWebアプリケーションプロジェクトならWebapp ルートは「/src/main/webapp」となります。
 </p>
 <p>
@@ -110,6 +111,7 @@ Webapp ルートを基点にJSPファイルのパスを、
 Main Java Source Pathを基点にJavaファイルのパスを、
 convention.dicon パスを基点にルートパッケージ名を、
 取得します。
+WebServerは後述するView on Server機能でアクセスするURLの基点となります。
 </p>
 
 <h4><a name="func_jsp_open">JSPファイルを開く</a></h4>
@@ -166,6 +168,15 @@ Javaファイルを開こうとして対応するJavaファイルが存在しな
   <img class="ss" src="images/wizard_java.gif" alt=""/>
 </ol>
 
+<h4>View on Server機能</h4>
+<ol type="1">
+<p>
+APサーバを起動後、Actionクラスを選択してポップアップメニューからブラウザを起動して表示を確認することができます。
+</p>
+
+<img src="images/view_on_server.gif"/>
+<img src="images/browse.gif"/>
+
 <h3><a name="Setup">セットアップ</a></h3>
 <p>Eclipse3.3+WTP2.0で動作します。JSP EditorからJavaファイルを開くことができます。。Web Page Editorからは開けません。次の更新サイトから「SAStrutsPlugin」を選択してインストールしてください。</p>
 <ul>
@@ -174,6 +185,7 @@ Javaファイルを開こうとして対応するJavaファイルが存在しな
 
 <h3><a name="news">NEWS</a></h3>
 <ul>
+  <li>2008/06/06 SAStrutsPlugin 0.0.6  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-06-06#ibcb44da">こちら</a></li>
   <li>2008/05/20 SAStrutsPlugin 0.0.5  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-05-20#pb4b2b6c">こちら</a></li>
   <li>2008/05/18 SAStrutsPlugin 0.0.4  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-05-18#d9114288">こちら</a></li>
   <li>2008/04/27 SAStrutsPlugin 0.0.3  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-04-27#r2910cdf">こちら</a></li>
