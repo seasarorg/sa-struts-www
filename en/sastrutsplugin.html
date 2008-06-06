@@ -17,8 +17,8 @@
 <div style="position:absolute; left: 200px; top: 160px; border: 1px dotted gray; width: 800px; background-color: #EEEEFF">
 NOTE: This page is a translation from the original Japanese version of
  <a href="../sastrutsplugin.html">sastrutsplugin.html, 
- rev 525</a> 
- as of 2008-05-20.
+ rev 571</a> 
+ as of 2008-06-06.
 </div>
 <!--  TRANSLATION NOTE ENDS  -->
 
@@ -102,12 +102,13 @@ NOTE: This page is a translation from the original Japanese version of
 	<li>In the Properties of your project, select  "SAStruts",  then specify Webapp Root.  </li>
 	<li>In the Properties of your project, select "SAStruts", then specify Main Java Source Path.  </li>
 	<li>In the Properties of your project, select  "SAStruts" , then specify convention.dicon Path. </li>
+	<li>In the Properties of your project, select  "SAStruts",  then specify WebServer.  </li>
 </ul>
 
 <img src="images/project_property.gif"/>
 
-<p>For example, in the case of Super Agile Struts Tutorial(sa-struts-tutorial), you have to specify those parameters as "/webapp", "/src/main/java" and "/src/main/resouces/convention.dicon". For a web application project of Maven2 [i.e. maven-archetype-webapp], Webapp  Root must be specified as "/src/main/webapp".</p>
-<p>SAStrutsPlugin obtains JSP file paths, Java file paths and root packages from Webapp Root, Main Java Source Path and convention.dicon Path, respectively.</p>
+<p>For example, in the case of Super Agile Struts Tutorial(sa-struts-tutorial), you have to specify those parameters as "/webapp", "/src/main/java",  "/src/main/resouces/convention.dicon" and "http://localhost:8080". For a web application project of Maven2 [i.e. maven-archetype-webapp], Webapp  Root must be specified as "/src/main/webapp".</p>
+<p>SAStrutsPlugin obtains JSP file paths, Java file paths and root packages from Webapp Root, Main Java Source Path and convention.dicon Path, respectively. WebServer parameter is a base URL for View on Server feature which is described later.</p>
 
 <h4><a name="func_jsp_open">Open the  JSP file</a></h4>
 
@@ -146,6 +147,13 @@ NOTE: This page is a translation from the original Japanese version of
   <ol><li value="2">By clicking OK, "Create a new Java file" wizard appears. The file name of the JAVA file and the folder to save in are automatically determined, so no modification is required in most cases.</li></ol><br clear="all"/>
   <img class="ss" src="images/wizard_java.gif" alt=""/>
 </ol>
+
+<h4>View on Server</h4>
+<ol type="1">
+<p>Once you have started the application server, you can view how your action class is rendered  through the server by just selecting the class then choosing View on Server from SAStruts context menu.</p>
+
+<img src="images/view_on_server.gif"/>
+<img src="images/browse.gif"/>
 
 <h3><a name="Setup">Setting up</a></h3>
 <p>SAStrutsPlugin works with Eclipse3.3+WTP2.0. The JAVA file can be opened from JSP Editor.    You cannot open the one from Web page Editor. Go to the following update site and select "SAStrutsPlugin" to install.</p>
