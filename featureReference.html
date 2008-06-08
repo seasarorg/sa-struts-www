@@ -359,7 +359,7 @@ public String execute() {
 /add/index.jspとみなされます。
 さらに<a href="fileReference.html#web">web.xml</a>
 でVIEW_PREFIXが指定されていると、プレフィックスとしてパスに追加されます。
-sa-strtus-tutorialプロジェクトでは、VIEW_PREFIXが/WEB-INF/viewと指定されているので
+sa-struts-tutorialプロジェクトでは、VIEW_PREFIXが/WEB-INF/viewと指定されているので
 /WEB-INF/view/add/index.jspに遷移することになります。
 </p>
 <p>
@@ -464,7 +464,7 @@ Tomcatを使っている場合は、<a href="fileReference.html#server">server.x
 &lt;input type="submit" name="submit" value="サブミット"/&gt;
 </pre>
 <p>
-実行メソッドを呼び出す前に、<a href="http://commons.apache.org/validator/">commons validator</a>を使った
+実行メソッドを呼び出す前に、<a href="http://commons.apache.org/validator/">Commons Validator</a>を使った
 検証を行なうには、@Executeのvalidator要素をtrueにします。デフォルトはtrueです。
 </p>
 <p>
@@ -477,15 +477,16 @@ urlPattern要素のようにパラメータをパス({パラメータ名})で指
 @Execute(validator = true, input = "edit.jsp")
 </pre>
 <p>
-実行メソッドを呼び出す前に、アクションクラスのメソッドで検証を行なうには、
+実行メソッドを呼び出す前に、アクションクラスのメソッドで、Commons Validatorとは別に独自に検証を行なうには、
 @Executeのvalidate要素で検証用のメソッド名を指定します。
 </p>
 <p>
 validate要素を指定した場合は、検証結果がNGのときの遷移先のパスをinput要素で指定します。
 パスの書き方は、実行メソッドの戻り値の場合と一緒です。
 validator要素とvalidate要素を両方指定した場合には、
-バリデータのほうが先に実行されます。
-検証メソッドの詳細は、<a href="#ValidateMethod">こちら</a>を参照してください。
+Commons Validatorによる<a href="#Validator">バリデータ</a>のほうが先に実行され、
+その後にvalidateで指定した検証メソッドが実行されます。
+独自に定義する検証メソッドの詳細は、<a href="#ValidateMethod">こちら</a>を参照してください。
 </p>
 <pre>
 @Execute(validate = "validate", input = "login.jsp")
@@ -567,7 +568,7 @@ tomcat.jspにアクセスできます。インデックスページに戻って�
 
 <h3><a name="Validator">バリデータ</a></h3>
 <p>
-<a href="http://commons.apache.org/validator/">commons validator</a>を使った検証を行なうには、
+<a href="http://commons.apache.org/validator/">Commons Validator</a>を使った検証を行なうには、
 アクションやアクションフォームのフィールドに検証用のアノテーションを指定します。
 検証用のアノテーションの詳細は、<a href="annotationReference.html#Validation">こちら</a>を参照してください。
 </p>
@@ -982,7 +983,7 @@ JavaBeansはMapに、配列はListにラップされています。
 </p>
 <p>
 どのJSPでも共通で使うような宣言は、1つのJSPにまとめ、web.xmlでそのJSPを指定します。
-sa-strtus-tutorialプロジェクトでは、webapp/WEB-INF/view/common/common.jspに共通で使う宣言が
+sa-struts-tutorialプロジェクトでは、webapp/WEB-INF/view/common/common.jspに共通で使う宣言が
 定義されています。
 </p>
 <h5>commons.jsp</h5>
@@ -1140,7 +1141,7 @@ public class XxxDto implements Serializable {
 </div><!-- contents_center -->
 
 <div id="footer">
-<address>&copy; Copyright The Seasar Foundation and the others 2006, all rights reserved.</address>
+<address>&copy; Copyright The Seasar Foundation and the others 2006-1008, all rights reserved.</address>
 <div class="line"><span class="hide">spacer</span></div>
 </div><!-- footer -->
 
