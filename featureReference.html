@@ -933,8 +933,9 @@ HTMLエスケープ(クロスサイトスクリプティング対策で"<"を"&a
 f:h()は、配列もリストと同じように表示できます。
 </p>
 <p>
-URLエンコーディング(クロスサイトスクリプティング対策でURLの部分をjavascript:alert('hoge')
-のような感じでJavaScriptが実行されないように変換すること)が必要なケースは、f:u()を使ってください。
+URLエンコーディング(クロスサイトスクリプティング対策で「javascript:alert('hoge')」のような入力を
+「javascript%3Aalert%28%27hoge%27%29」のようにJavaScriptが実行されないように変換すること)が
+必要なケースは、f:u()を使ってください。
 </p>
 <p style="background-color:red">
 ELは、items="${プロパティ名}"のように要素の設定のみに使い、
