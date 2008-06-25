@@ -60,15 +60,15 @@
 			<li><a href="#Architecture">アーキテクチャ</a></li>
 			<li><a href="#Action">アクション</a></li>
 			<li><a href="#ExecuteMethod">実行メソッド</a></li>
+			<li><a href="#ActionForm">アクションフォーム</a></li>
 			<li><a href="#Validator">バリデータ</a></li>
 			<li><a href="#ValidateMethod">検証メソッド</a></li>
+			<li><a href="#ResetMethod">リセットメソッド</a></li>
 			<li><a href="#FileUpload">ファイルアップロード</a></li>
 			<li><a href="#DataAccess">データアクセス</a></li>
 			<li><a href="#Transaction">トランザクション</a></li>
 			<li><a href="#DataExchange">データ変換</a></li>
 			<li><a href="#JSP">JSP</a></li>
-			<li><a href="#ActionForm">アクションフォーム</a></li>
-			<li><a href="#ResetMethod">リセットメソッド</a></li>
 		</ul>
 	</li>
 	<li><a href="annotationReference.html">アノテーションリファレンス</a></li>
@@ -116,14 +116,12 @@ sa-struts-tutorialプロジェクトでは、src/main/resourcesで次のよう�
 <p>
 <a href="#Action">アクション</a>は、ルートパッケージ.actionに格納します。
 例えば、http://ホスト名/プロジェクト名/xxx/のURLに対応するアクションクラスは、
-ルートパッケージ.action.XxxActionという名前にします。
+XxxActionという名前にします。
 </p>
 <p>
 <a href="#ActionForm">アクションフォーム</a>は、ルートパッケージ.dtoに格納します。
 例えば、XxxActionで利用するアクションフォームは、XxxDtoという名前にします。
-通常は、<a href="#ActionForm">アクションフォーム</a>を定義する必要はありません。
-<a href="#Action">アクション</a>で状態も一緒に管理したほうが、
-関連する定義が近くにあるので、わかりやすいためです。
+アクションフォームの役割は、リクエストのパラメータを管理することです。
 </p>
 <p>
 <a href="http://s2container.seasar.org/2.4/ja/s2jdbc_entity.html">エンティティ</a>は、
@@ -135,7 +133,7 @@ sa-struts-tutorialプロジェクトでは、src/main/resourcesで次のよう�
 <p>
 エンティティに対する操作を格納するクラスをサービスといいます。
 サービスは、ルートパッケージ.serviceに格納します。
-クラス名は、ルートパッケージ.service.XxxServiceのようにServiceで終わるようにします。
+名前は、XxxServiceのようにServiceで終わるようにします。
 Xxxは、任意の名前を指定することができますが、通常は、エンティティ名にします。
 </p>
 <p>
@@ -244,72 +242,62 @@ index.jspの方が優先されて呼び出されるためです。
 ルートパッケージ.action.aaa.BbbActionになります。
 </p>
 <p>
-アクションはPOJO(普通のJavaのクラス)にします。StrutsのようにActionを継承する必要はありません。
-HttpServletRequestやHttpServletResponseなどのServlet API関連のオブジェクトは、
-次のようにプロパティを定義しておけば、Seasar2が自動的に設定します。
+アクションはPOJO(普通のJavaのクラス)にします。
+StrutsのようにActionを継承する必要はありません。
+</p>
+<p>
+スコープはリクエストです。Strutsのようにシングルトンじゃないのは、
+アクションフォームなどのリクエストやセッションで管理されているオブジェクトを
+プロパティとして受け取るためです。
+リクエストで管理されているので、Strutsのようにスレッドセーフかどうか気にする必要はありません。
+</p>
+<p>
+アクションフォームを利用するには、次のようにフィールドを定義し、
+@Resourceをつけます。
+@Resourceは、フィールドを設定するようにSeasar2に指示するためのアノテーションです。
+フィールド名は、クラス名の先頭を小文字にしたものにします。
 </p>
 <pre>
-public class MyAction {
-    public HttpServletRequest request;
-    public HttpServletResponse response;
-    public HttpSession session;
-    public ServletContext application;
-    ...
-}
+@Resource
+protected AddDto addDto;
 </pre>
 <p>
-Seasar2は、publicフィールドをプロパティとみなすので、
-setter,getterメソッドをいちいち定義する必要はありません。
-setter,getterメソッドを定義してもかまいませんが、
-何かと面倒なので、publicフィールドにすることをお勧めします。
-</p>
-<p>
-Strutsでは、リクエストのパラメータの内容は、アクションフォームで受け取りますが、
-SAStrutsでは、アクションにリクエストのパラメータ名と同じ名前のプロパティを
-定義しておけば、アクションで受け取ることができます。
-入力値を受け取るためのプロパティは、バリデーションエラーになっても値を格納できるように
-プロパティの型をStringあるいはbooleanで定義してください。
-アクションフォームをアクションとは別に定義することもできます。
-詳しくは<a href="#ActionForm">アクションフォームの説明</a>を参照してください。
-</p>
-<p>
-アクションは、リクエストスコープで管理されています。
-セッションスコープにすることはできません。
-セッションスコープを使いたい場合は、<a href="#ActionForm">アクションフォーム</a>を
-セッションスコープで管理してください。
+JSPに出力するだけの値は、アクションにプロパティを定義し、
+そのプロパティ経由で、JSPに出力します。
+リクエストのパラメータは、アクションフォームで受け取るようにしてください。
 </p>
 <p>
 ログインしたユーザに関する情報など、
-<a href="#ActionForm">アクションフォーム</a>以外をセッションで管理したい場合、
+アクションフォーム以外をセッションで管理する場合、
 ルートパッケージ.dtoにXxxDto作成し、@Componentでセッションで管理されるように定義します。
 </p>
+<p>
+Seasar2は、Dtoのフィールドがpublicで宣言されている場合、
+自動的にプロパティとみなすことができます。
+</p>
 <pre>
-@Component(instance = InstanceType.SESSION)
+<b>@Component(instance = InstanceType.SESSION)</b>
 public class UserDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    public String userName;
+    <b>public String userName;</b>
     ...
 }
 </pre>
 <p>
-作成したUserDtoをアクションで利用するには、次のようにプロパティを定義しておけば、
-Seasar2が自動的に設定します。フィールド名は、クラス名の先頭を小文字にしたものにします。
+作成したUserDtoを利用するには、次のようにフィールドを定義し、
+@Resourceをつけます。
+フィールド名は、クラス名の先頭を小文字にしたものにします。
 </p>
 <pre>
-public UserDto userDto;
+@Resource
+protected UserDto userDto;
 </pre>
 <p style="background-color:red">
-Dtoをセッションに保存する設定のときに、DtoのHOT deployが効かない場合があります。
+Dtoをセッションに保存している場合に、DtoのHOT deployが効かない場合があります。
 Tomcatを使っているなら、<a href="fileReference.html#context">context.xml</a>を
 リンクの指示に従って修正してください。
-</p>
-<p>
-他のアプリケーションサーバでも、セッションをアプリケーションの終了時に
-保存する設定になっていると同様のことが起こると思われます。
-HOT deployがうまくいかないときは、セッションをアプリケーションの終了時に
-保存しないように設定してください。
 </p>
 <p>
 ビジネスロジックをサービスに格納する場合、ルートパッケージ.serviceにXxxServiceを作成します。
@@ -320,33 +308,49 @@ public class XxxService {
 }
 </pre>
 <p>
-作成したXxxServiceをアクションで利用するには、次のようにプロパティを定義しておけば、
-Seasar2が自動的に設定します。フィールド名は、クラス名の先頭を小文字にしたものにします。
+作成したXxxServiceを利用するには、次のようにフィールドを定義し、
+@Resourceをつけます。フィールド名は、クラス名の先頭を小文字にしたものにします。
 </p>
 <pre>
-public XxxService xxxService;
+@Resource
+protected XxxService xxxService;
 </pre>
 <p>
-リクエストに対する処理を記述したい場合は、
-<a href="#ExecuteMethod">実行メソッド</a>を定義します。
-</p>
+HttpServletRequestやHttpServletResponseなどのServlet API関連のオブジェクトは、
+次のようにフィールドを定義し、@Resourceをつけます。
+フィールド名は、下記のとおりにしてください。
+<pre>
+public class MyAction {
+
+    @Resource
+    protected HttpServletRequest request;
+
+    @Resource
+    protected HttpServletResponse response;
+    
+    @Resource
+    protected HttpSession session;
+    
+    @Resource
+    protected ServletContext application;
+    ...
+}
+</pre>
 <p>
-入力値の検証は、<a href="#Validator">検証用のアノテーション</a>を定義します。
-</p>
-<p>
-入力値に対する検証をロジックで記述したい場合は、
-<a href="#ValidateMethod">検証メソッド</a>を定義します。
+リクエストに対する処理は、
+<a href="#ExecuteMethod">実行メソッド</a>に記述します。
 </p>
 
 <h3><a name="ExecuteMethod">実行メソッド</a></h3>
 <p>
-リクエストに対する処理は、実行メソッドに記述します。
-実行メソッドは、<a href="annotationReference.html#Execute">@Execute</a>がつけられている任意の名前のメソッドで、
+リクエストを処理するのがアクションの実行メソッドです。
+実行メソッドは、名前は任意、
+<a href="annotationReference.html#Execute">@Execute</a>がついていて、
 戻り値はString、引数は無しにする必要があります。
 </p>
 <pre>
 @Execute
-public String execute() {
+public String xxx() {
     ...
     return ...;
 }
@@ -369,7 +373,8 @@ sa-struts-tutorialプロジェクトでは、VIEW_PREFIXが/WEB-INF/viewと指�
 http://localhost:8080/sa-struts-tutorial/select/に遷移します。
 </p>
 <p>
-デフォルトではフォワードで遷移しますが、リダイレクトで遷移したい場合は、
+デフォルトではフォワードで遷移します。
+リダイレクトで遷移したい場合は、
 パスの<b>最後</b>に<b>redirect=true</b>を追加します。
 =の前後に余分な空白は含めないでください。
 redirect=trueの部分は、実際に実行されるときには、消去されます。
@@ -415,7 +420,7 @@ http://localhost:8080/sa-struts-tutorial/add/
 </pre>
 <p>
 @ExecuteでURLのパターン(urlPattern)を指定することで、
-URLがパターンに一致した場合にそのメソッドが呼び出されます。
+URLがパターンに一致したときにそのメソッドが呼び出されるように指定できます。
 また、URLの一部をパラメータの値として受け取ることができます。
 </p>
 <p>
@@ -451,41 +456,34 @@ public String edit() {
 SAStrutsは、idパラメータの値をアクションのプロパティに設定し、
 SAStruts.methodパラメータで指定されているeditメソッドを呼び出します。
 </p>
-<p style="background-color:red">
-パターンに一致する値が化ける場合があります。
-アプリケーションサーバがURLを正しくデコードしていないのが原因です。
-Tomcatを使っている場合は、<a href="fileReference.html#server">server.xml</a>
-をリンク先の指示に従って修正してください。
-</p>
 <p>
-フォームをサブミットする場合は、ボタン系のname要素に実行メソッド名を指定します。
-次の例では、アクションクラスのsubmit()を呼び出します。
+フォームをサブミットする場合は、ボタン系タグのname属性に実行メソッド名を指定します。
+次の例では、confirmメソッドを呼び出します。
 </p>
 <pre>
-&lt;input type="submit" name="submit" value="サブミット"/&gt;
+&lt;input type="submit" name="confirm" value="確認"/&gt;
 </pre>
 <p>
-実行メソッドを呼び出す前に、<a href="http://commons.apache.org/validator/">Commons Validator</a>を使った
-検証を行なうには、@Executeのvalidator要素をtrueにします。デフォルトはtrueです。
+実行メソッドを呼び出す前に、<a href="#Validator">アノテーションを使った検証</a>を行なうには、
+@Executeのvalidator要素をtrueにします。デフォルトはtrueです。
 </p>
 <p>
 validator=trueの場合は、検証結果がNGのときの遷移先のパスをinput要素で指定します。
 パスの書き方は、実行メソッドの戻り値の書き方に加えて、
 urlPattern要素のようにパラメータをパス({パラメータ名})で指定することもできます。
-バリデータの詳細は、<a href="#Validator">こちら</a>を参照してください。
+アノテーションを使った検証の詳細は、<a href="#Validator">こちら</a>を参照してください。
 </p>
 <pre>
 @Execute(validator = true, input = "edit.jsp")
 </pre>
 <p>
-実行メソッドを呼び出す前に、アクションクラスのメソッドで、Commons Validatorとは別に独自に検証を行なうには、
-@Executeのvalidate要素で検証用のメソッド名を指定します。
+実行メソッドを呼び出す前に、独自の検証を行なうには、
+@Executeのvalidate要素でアクションフォームの検証メソッド名を指定します。
 </p>
 <p>
 validate要素を指定した場合は、検証結果がNGのときの遷移先のパスをinput要素で指定します。
-パスの書き方は、実行メソッドの戻り値の場合と一緒です。
 validator要素とvalidate要素を両方指定した場合には、
-Commons Validatorによる<a href="#Validator">バリデータ</a>のほうが先に実行され、
+<a href="#Validator">アノテーションを使った検証</a>が先に実行され、
 その後にvalidateで指定した検証メソッドが実行されます。
 独自に定義する検証メソッドの詳細は、<a href="#ValidateMethod">こちら</a>を参照してください。
 </p>
@@ -521,57 +519,79 @@ errors.norole=適切なロールがありません。
 &lt;/body&gt;
 &lt;/html&gt;
 </pre>
-<h5>ProtectAction</h5>
+
+<h3><a name="ActionForm">アクションフォーム</a></h3>
+<p>
+アクションフォームとは、リクエストのパラメータを管理するクラスです。
+SAStrutsでは、アクションフォームもPOJOで記述することができます。
+</p>
+<p>
+リクエストのパラメータと同じ名前のプロパティをアクションフォームに定義します。
+入力値を受け取るためのプロパティは、検証エラーになっても値を格納できるように
+型をStringあるいはbooleanで定義してください。
+Seasar2は、アクションフォームのフィールドがpublicで宣言されている場合、
+自動的にプロパティとみなすことができます。
+</p>
+<p>
+アクションフォームクラスは、ルートパッケージ.dtoにおき、クラス名の最後は、Dtoで終わるようにします。
+</p>
+<p>
+SAStrutsのアクションフォームは、デフォルトだとリクエストスコープで管理されますが、
+次のようにアノテーションを指定することで、
+セッションスコープで管理することもできます。
+セッションスコープで管理するコンポーネントは、
+java.io.Serializableをimplementsする必要があります。
+</p>
 <pre>
-package tutorial.action;
+@Component(instance = InstanceType.SESSION)
+public class FormDto implements Serializable {
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.seasar.struts.annotation.Execute;
-
-public class ProtectAction {
-
-    public HttpServletRequest request;
-
-    @Execute(validator = false)
-    public String index() {
-        return "index.jsp";
-    }
-
-    @Execute(validator = false, input = "input.jsp", <b>roles = "tomcat"</b>)
-    public String tomcat() {
-        return "tomcat.jsp";
-    }
+    private static final long serialVersionUID = 1L;
+    ...
 }
 </pre>
-<h5>/protect/index.jsp</h5>
+<p style="background-color:red">
+アクションフォームをセッションに保存する設定のときに、アクションフォームのHOT deployが効かない場合があります。
+Tomcatを使っているなら、<a href="fileReference.html#context">context.xml</a>を
+リンクの指示に従って修正してください。
+</p>
+<p>
+<a href="#Validator">アノテーションを使った検証</a>は次のように、
+フィールドに対して指定します。
+アノテーションを使った検証の詳細は、<a href="#Validator">こちら</a>
+を参照してください。
+</p>
 <pre>
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;Protect index&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;html:errors/&gt;
-このページは、tomcatとrole1ユーザが表示できます。&lt;br /&gt;
-&lt;s:form action="/protect"&gt;
-&lt;input type="submit" name="tomcat"
-  value="tomcatユーザだけが押せます"/&gt;
-&lt;/s:form&gt;
-&lt;/body&gt;
-&lt;/html&gt;
+@Required
+public String arg1;
 </pre>
 <p>
-チュートリアルの保護されたページに、tomcatユーザでアクセスすると、
-tomcat.jspにアクセスできます。インデックスページに戻ってログアウトして、
-もう一度保護されたページにrole1でアクセスしてください。
-今度は、tomcat.jspにアクセスできずにエラーのページに遷移します。
+独自の検証は、次のように、検証メソッドでおこないます。
+検証メソッドの詳細は、<a href="#ValidateMethod">こちら</a>
+を参照してください。
 </p>
+<pre>
+public ActionMessages validate() {
+    ActionMessages errors = new ActionMessages();
+    ...
+    return errors;
+}
+</pre>
+<p>
+チェックボックスなどの初期化は、次のように、リセットメソッドでおこないます。
+リセットメソッドの詳細は、<a href="#ResetMethod">こちら</a>を参照してください。
+</p>
+<pre>
+public void reset() {
+    checked = false;
+}
+</pre>
 
 <h3><a name="Validator">バリデータ</a></h3>
 <p>
-<a href="http://commons.apache.org/validator/">Commons Validator</a>を使った検証を行なうには、
-アクションやアクションフォームのフィールドに検証用のアノテーションを指定します。
-検証用のアノテーションの詳細は、<a href="annotationReference.html#Validation">こちら</a>を参照してください。
+アノテーションを使った検証を行なうには、
+アクションフォームのフィールドに検証用のアノテーションを指定します。
+検証用アノテーションの詳細は、<a href="annotationReference.html#Validation">こちら</a>を参照してください。
 </p>
 <pre>
 @Required
@@ -579,7 +599,7 @@ public String userName;
 </pre>
 <p>
 検証結果がNGの場合に出力されるメッセージは、<a href="fileReference.html#MessageResources">メッセージリソース</a>に
-記述します。検証用のアノテーションとメッセージのキーは次のようになっています。
+記述します。検証用アノテーションとメッセージのキーは次のようになっています。
 </p>
 <table>
 <tr><th>アノテーション</th><th>メッセージのキー</th></tr>
@@ -677,12 +697,12 @@ JavaScriptを使ったクライアントサイドの検証は、
 
 <h3><a name="ValidateMethod">検証メソッド</a></h3>
 <p>
-<a href="#Validator">バリデータ</a>では検証できないような複雑なものは、
-<a href="#Action">アクション</a>の検証メソッドを使います。
+検証用アノテーションではできないような個別の検証は、検証メソッドを使います。
+検証メソッドは、アクションフォーム、アクションのどちらにも記述できますが、
+検証対象のデータを持っているアクションフォームに記述したほうがいいでしょう。
 </p>
 <p>
-検証メソッドには、任意の名前をつけることができ、戻り値はActionMessages、
-引数は無しにする必要があります。
+検証メソッドは、名前は任意、引数は無し、戻り値はActionMessagesにする必要があります。
 戻り値のActionMessagesが空でない場合、検証結果はNGだとみなされます。
 </p>
 <pre>
@@ -701,26 +721,8 @@ input要素に検証結果がNGのときの遷移先も指定する必要があ�
 @Execute(validate = "validate", input = "login.jsp")
 </pre>
 <p>
-ログインをするときの実行メソッドと検証メソッドは次のようになります。
-</p>
-<pre>
-@Execute(validate = "validate", input = "login.jsp")
-public String login() {
-    return "welcome.jsp";
-}
-
-public ActionMessages validate() {
-    ActionMessages errors = new ActionMessages();
-    if (!userName.equals(password)) {
-        errors.add(ActionMessages.GLOBAL_MESSAGE,
-            new ActionMessage("errors.invalid.login"));
-    }
-    return errors;
-}
-</pre>
-<p>
-<a href="#Action">アクション</a>以外で、検証を行ないたい場合は、
-検証結果がNGの場合、ActionMessagesExceptionをスローします。
+任意のメソッドで検証を行なうには、検証結果がNGの場合に、
+ActionMessagesExceptionをスローします。
 </p>
 <pre>
 public void validateLogin(String userName, String password) {
@@ -732,8 +734,7 @@ public void validateLogin(String userName, String password) {
 <p>
 ActionMessagesExceptionの処理は、app.diconに<br />
 org.seasar.struts.interceptor.ActionMessagesThrowsInterceptorを登録し、
-customizer.diconで登録したインターセプタを使うように記述しておけば、
-個別のアクションでは何もする必要はありません。
+customizer.diconで登録したインターセプタを使うように記述します。
 app.diconとcustomizer.diconは、sa-struts-tutorialプロジェクトの場合、
 src/main/resourcesにおかれています。
 </p>
@@ -752,6 +753,40 @@ src/main/resourcesにおかれています。
     &lt;/initMethod&gt;
     ...
 &lt;/component&gt;
+</pre>
+
+<h3><a name="ResetMethod">リセットメソッド</a></h3>
+<p>
+チェックボックス(&lt;input type="checkbox" .../&gt;)や
+複数選択リスト(&lt;select multiple="multiple" ...&gt;&lt;/select&gt;)
+は、選択された値だけがリクエストで送信されます。
+何も選択しなかった場合は、何も送信されません。
+そのため、アクションフォームをセッションで管理している場合、
+チェックボックスや複数選択リストで選択状態をすべて解除しても
+何もリクエストで送信されないため、元の状態のまま残ってしまいます。
+</p>
+<p>
+この問題に対応するために用意されているのが、
+アクションフォームのリセットメソッドです。
+リセットメソッドは、リクエストパラメータをアクションフォームにセットする直前に呼び出されるため、
+リセットメソッドで、チェックボックスや複数選択リストのプロパティを選択されていない状態に更新することで、
+リクエストで何も送られてこなかった場合でも、選択状態を解除することができます。
+</p>
+<pre>
+@Component(instance = InstanceType.SESSION)
+public class XxxDto implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    
+    public boolean foo;
+    
+    public String[] bar;
+    ...
+    public void reset() {
+        foo = false;
+        bar = new String[0];
+    }
+}
 </pre>
 
 <h3><a name="FileUpload">ファイルアップロード</a></h3>
@@ -788,10 +823,11 @@ sa-struts-tutorialプロジェクトの場合、jdbc.diconは、src/main/resourc
 <a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>は、
 <a href="http://s2container.seasar.org/2.4/ja/s2jdbc_manager.html">JdbcManager</a>経由で利用します。
 JdbcManagerを<a href="#Action">アクション</a>で利用するには、
-次のようにプロパティを定義しておけば、Seasar2が自動的に設定します。
+次のようにフィールドを定義し、@Resourceをつけます。
 </p>
 <pre>
-public JdbcManager jdbcManager;
+@Resource
+protected JdbcManager jdbcManager;
 </pre>
 
 <h3><a name="Transaction">トランザクション</a></h3>
@@ -886,21 +922,19 @@ publicフィールドを使いたい場合は、<a href="http://s2container.seas
 <p>
 <a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>を組み合わせて、
 プライマリーキーで取得したデータを<a href="#Action">アクション</a>にコピーするには次のようにします。
-thisは<a href="#Action">アクション</a>です。
 </p>
 <pre>
 Employee emp = jdbcManager
     .from(Employee.class)
     .id(id)
     .getSingleResult();
-Beans.copy(emp, this).execute();
+Beans.copy(emp, employeeDto).execute();
 </pre>
 <p>
-<a href="#Action">アクション</a>のデータでテーブルを更新するには次のようにします。
-thisは<a href="#Action">アクション</a>です。
+アクションフォームのデータでテーブルを更新するには次のようにします。
 </p>
 <pre>
-Employee emp = Beans.createAndCopy(Employee.class, this).execute();
+Employee emp = Beans.createAndCopy(Employee.class, employeeDto).execute();
 jdbcManager.update(emp).execute();
 </pre>
 
@@ -1041,100 +1075,6 @@ return "/アクション名/メソッド名?redirect=true";
 web.xmlのroutingfilterのinit-paramでjspDirectAccessの値をtrueにします。
 詳しくは、<a href="fileReference.html#web">web.xml</a>を参照してください。
 </p>
-
-<h3><a name="ActionForm">アクションフォーム</a></h3>
-<p>
-SAStrutsでは、アクションフォームもPOJOで記述することができます。
-リクエストのパラメータと同じ名前のプロパティをアクションフォームに定義します。
-入力値を受け取るためのプロパティは、バリデーションエラーになっても値を格納できるように
-プロパティの型をStringあるいはbooleanで定義してください。
-</p>
-<p>
-アクションフォームクラスは、ルートパッケージ.dtoにおき、クラス名の最後は、Dtoで終わるようにします。
-</p>
-<p>
-SAStrutsのアクションフォームは、デフォルトだとリクエストスコープで管理されますが、
-次のようにアノテーションを指定することで、
-セッションスコープで管理することもできます。
-セッションスコープで管理するコンポーネントは、
-java.io.Serializableをimplementsする必要があります。
-</p>
-<pre>
-@Component(instance = InstanceType.SESSION)
-public class FormDto implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    ...
-}
-</pre>
-<p>
-アクションフォームを利用するには、アクションのプロパティに@ActionFormを指定します。
-@ActionFormを複数指定しても意味がないので、
-複数指定しないようにしてください。
-次のようにプロパティを定義しておけば、 Seasar2が自動的に設定します。
-フィールド名は、クラス名の先頭を小文字にしたものにします。 
-</p>
-<pre>
-public class FormAction {
-
-    @ActionForm
-    public FormDto formDto;
-    ...
-}
-</pre>
-<p>
-検証メソッドはアクションフォームではなく、<a href="#Action">アクション</a>に定義します。
-複数のアクションでアクションフォームを共用した場合、
-検証の内容は、アクションごとに異なることがほとんどだからです。
-</p>
-<p>
-リセットメソッドは<a href="#ResetMethod">こちら</a>を参照してください。
-</p>
-<p style="background-color:red">
-アクションフォームをセッションに保存する設定のときに、アクションフォームのHOT deployが効かない場合があります。
-Tomcatを使っているなら、<a href="fileReference.html#context">context.xml</a>を
-リンクの指示に従って修正してください。
-</p>
-<p>
-他のアプリケーションサーバでも、セッションをアプリケーションの終了時に
-保存する設定になっていると同様のことが起こると思われます。
-HOT deployがうまくいかないときは、セッションをアプリケーションの終了時に
-保存しないように設定してください。
-</p>
-
-<h3><a name="ResetMethod">リセットメソッド</a></h3>
-<p>
-チェックボックス(&lt;input type="checkbox" .../&gt;)や
-複数選択リスト(&lt;select multiple="multiple" ...&gt;&lt;/select&gt;)
-では、選択された値のみをブラウザはリクエストで送信します。
-何も選択しなかった場合は、ブラウザは何も送信してくれません。
-そのため、アクションフォームをセッションで管理している場合、
-チェックボックスや複数選択リストで選択状態をすべて解除しても
-何もリクエストで送信されないため、元の状態のまま残ってしまいます。
-</p>
-<p>
-この問題に対応するために用意されているのが、
-アクションフォームのreset()です。
-reset()は、リクエストパラメータをアクションフォームにセットする直前に呼び出されるため、
-reset()で、チェックボックスや複数選択リストのプロパティを選択されていない状態に更新することで、
-リクエストで何も送られてこなかった場合でも、選択状態を解除することができます。
-</p>
-<pre>
-@Component(instance = InstanceType.SESSION)
-public class XxxDto implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    
-    public boolean foo;
-    
-    public String[] bar;
-    ...
-    public void reset() {
-        foo = false;
-        bar = new String[0];
-    }
-}
-</pre>
 
 </div><!-- section -->
 
