@@ -17,8 +17,8 @@
 <div style="position:absolute; left: 200px; top: 160px; border: 1px dotted gray; width: 800px; background-color: #EEEEFF">
 NOTE: This page is a translation from the original Japanese version of
  <a href="../sastrutsplugin.html">sastrutsplugin.html, 
- rev 571</a> 
- as of 2008-06-06.
+ rev 609</a> 
+ as of 2008-06-27.
 </div>
 <!--  TRANSLATION NOTE ENDS  -->
 
@@ -60,6 +60,7 @@ NOTE: This page is a translation from the original Japanese version of
 	<li><a href="index.html">Home</a></li>
 	<li><a href="setup.html">Setting up</a></li>
 	<li><a href="download.html">Download</a></li>
+	<li><a href="releaseNotes.html">Release Notes</a></li>
 	<li><a href="tutorial.html">Tutorial</a></li>
 	<li><a href="featureReference.html">Feature Reference</a></li>
 	<li><a href="annotationReference.html">Annotations Reference</a></li>
@@ -92,8 +93,8 @@ NOTE: This page is a translation from the original Japanese version of
 <p>SAStrutsPlugin is an Eclipse plugin to assist your development work with SAStruts. It has the following features:</p>
 
 <ul>
-	<li>Opens/creates a JSP file corresponding to a Java source file (which is an SAStruts action class) via the context menu or by a keyboard shortcut (F6) </li>
-	<li>Opens/creates a Java source file corresponding  to a JSP flie via the popup menu or by a keyboard shortcut (F7). </li>
+	<li>Opens/creates a JSP file corresponding to a Java source file (which is an SAStruts action class) via the context menu or by a keyboard shortcut (Ctrl+8) </li>
+	<li>Opens/creates a Java source file corresponding  to a JSP flie via the popup menu or by a keyboard shortcut (Ctrl+8). </li>
 </ul>
 
 <h3><a name="Usage">Usage</a></h3>
@@ -112,7 +113,7 @@ NOTE: This page is a translation from the original Japanese version of
 
 <h4><a name="func_jsp_open">Open the  JSP file</a></h4>
 
-<p>In an SAStruts action source code, place the text cursor on  the line where JSP file name string is present,  then use the context menu or hit the shortcut key(F6)  to  open the corresponding JSP file.</p>
+<p>In an SAStruts action source code, place the text cursor on  the line where JSP file name string is present,  then use the context menu or hit the shortcut key(Ctrl+8)  to  open the corresponding JSP file.</p>
 
 <img src="images/open_jsp.gif"/>
 
@@ -129,7 +130,7 @@ NOTE: This page is a translation from the original Japanese version of
 
 <h4><a name="func_java_open">Open the JAVA file</a></h4>
 
-<p>On JSP Editor, you can open a Java source file corresponding to the JSP file via the popup menu or by a keyboard shortcut (F7). <ul>
+<p>On JSP Editor, you can open a Java source file corresponding to the JSP file via the popup menu or by a keyboard shortcut (Ctrl+8). <ul>
   <li>If  the cursor was on s:form tag, it  forwards to index method of the JAVA source. If urlPatten is used, then the cursor will be on the corresponding method.</li>
   <li>If the cursor was on an input tag, it forwards to the corresponding JAVA method (whose name is the same as the name attribute of the tag).</li>
   <li>If the cursor was on the line of HTML a tag whose href attribute uses urlPattern, then it forwards to the corresponding method.</li>
