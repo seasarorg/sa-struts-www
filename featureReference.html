@@ -119,8 +119,8 @@ sa-struts-tutorialプロジェクトでは、src/main/resourcesで次のよう�
 XxxActionという名前にします。
 </p>
 <p>
-<a href="#ActionForm">アクションフォーム</a>は、ルートパッケージ.dtoに格納します。
-例えば、XxxActionで利用するアクションフォームは、XxxDtoという名前にします。
+<a href="#ActionForm">アクションフォーム</a>は、ルートパッケージ.formに格納します。
+例えば、XxxActionで利用するアクションフォームは、XxxFormという名前にします。
 アクションフォームの役割は、リクエストのパラメータを管理することです。
 </p>
 <p>
@@ -194,7 +194,9 @@ staticメソッドだと、テスト用にオーバーライドすることが�
 短いソースコードは、バグが入り込む余地も少なくなるからです。
 この方法だけで、すべての問題が解決するわけではありませんが、1つの判断基準にはなるでしょう。
 </p>
-
+<p>
+最後に、特定のエンティティに関連する定数（区分値・属性値）は、それぞれに対応するエンティティに定義しておきます。
+</p>
 <h3><a name="Action">アクション</a></h3>
 <p>
 リクエストに応じて起動されるクラスをアクションといいます。
@@ -259,7 +261,8 @@ StrutsのようにActionを継承する必要はありません。
 </p>
 <pre>
 @Resource
-protected AddDto addDto;
+protected AddForm addForm;
+
 </pre>
 <p>
 JSPに出力するだけの値は、アクションにプロパティを定義し、
@@ -288,11 +291,13 @@ public class UserDto implements Serializable {
 <p>
 作成したUserDtoを利用するには、次のようにフィールドを定義し、
 @Resourceをつけます。
+(以下のコードは、スコープがpublicでないためにJSPから参照できないので注意して下さい。）
 フィールド名は、クラス名の先頭を小文字にしたものにします。
 </p>
 <pre>
 @Resource
 protected UserDto userDto;
+
 </pre>
 <p style="background-color:red">
 Dtoをセッションに保存している場合に、DtoのHOT deployが効かない場合があります。
@@ -533,7 +538,12 @@ Seasar2は、アクションフォームのフィールドがpublicで宣言さ�
 自動的にプロパティとみなすことができます。
 </p>
 <p>
-アクションフォームクラスは、ルートパッケージ.dtoにおき、クラス名の最後は、Dtoで終わるようにします。
+アクションフォームを使用する場合は、アクションのプロパティでリクエストのパラメータを
+受け取ることができなくなるので注意して下さい。
+</p>
+<p>
+アクションフォームクラスは、ルートパッケージ.formにおき、クラス名の最後は、Formで終わるようにします。
+(バージョン 1.0.3-rc1 よりアクションフォームは ～Dtoに代わって ～Formが推奨になりました。)
 </p>
 <p>
 SAStrutsのアクションフォームは、デフォルトだとリクエストスコープで管理されますが、
@@ -774,7 +784,7 @@ src/main/resourcesにおかれています。
 </p>
 <pre>
 @Component(instance = InstanceType.SESSION)
-public class XxxDto implements Serializable {
+public class XxxForm implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
