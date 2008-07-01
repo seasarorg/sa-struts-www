@@ -554,6 +554,8 @@ creator.diconがあります。
     &lt;component
         class="org.seasar.framework.container.creator.ActionCreator"/&gt;
     &lt;component
+        class="org.seasar.struts.creator.FormCreator"/&gt;
+    &lt;component
         class="org.seasar.framework.container.creator.ServiceCreator"/&gt;
     &lt;component
         class="org.seasar.framework.container.creator.DtoCreator"/&gt;
@@ -562,7 +564,7 @@ creator.diconがあります。
 &lt;/components&gt;
 </pre>
 <p>
-action、service、dtoなどそれぞれのパッケージ応じたクリエータが登録されています。
+action、form、serviceなどそれぞれのパッケージ応じたクリエータが登録されています。
 </p>
 
 <h3><a name="customizer">customizer.dicon</a></h3>
@@ -602,6 +604,9 @@ customizer.diconがあります。
         &lt;/initMethod&gt;
     &lt;/component&gt;
 	
+    &lt;component name="formCustomizer"
+        class="org.seasar.framework.container.customizer.CustomizerChain"/&gt;
+        
     &lt;component name="serviceCustomizer"
         class="org.seasar.framework.container.customizer.CustomizerChain"&gt;
         &lt;initMethod name="addAspectCustomizer"&gt;

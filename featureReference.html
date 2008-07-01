@@ -65,7 +65,7 @@
 			<li><a href="#ValidateMethod">検証メソッド</a></li>
 			<li><a href="#ResetMethod">リセットメソッド</a></li>
 			<li><a href="#FileUpload">ファイルアップロード</a></li>
-			<li><a href="#DataAccess">データアクセス</a></li>
+			<li><a href="#Service">サービス</a></li>
 			<li><a href="#Transaction">トランザクション</a></li>
 			<li><a href="#DataExchange">データ変換</a></li>
 			<li><a href="#JSP">JSP</a></li>
@@ -255,11 +255,12 @@ StrutsのようにActionを継承する必要はありません。
 </p>
 <p>
 アクションフォームを利用するには、次のようにフィールドを定義し、
-@Resourceをつけます。
+@ActionFormと@Resourceをつけます。
 @Resourceは、フィールドを設定するようにSeasar2に指示するためのアノテーションです。
 フィールド名は、クラス名の先頭を小文字にしたものにします。
 </p>
 <pre>
+@ActionForm
 @Resource
 protected AddForm addForm;
 
@@ -554,7 +555,7 @@ java.io.Serializableをimplementsする必要があります。
 </p>
 <pre>
 @Component(instance = InstanceType.SESSION)
-public class FormDto implements Serializable {
+public class XxxForm implements Serializable {
 
     private static final long serialVersionUID = 1L;
     ...
@@ -810,12 +811,12 @@ FormFile経由でアップロードされたファイルを取得します。
 詳しくは<a href="tutorial.html#upload">チュートリアルのファイルアップロード</a>を参照してください。
 </p>
 
-<h3><a name="DataAccess">データアクセス</a></h3>
+<h3><a name="Service">サービス</a></h3>
 <p>
-データアクセス用のフレームワークは、任意のものを使うことができますが、
-SAStrutsと一緒に使うことを想定して作成されている
-<a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>を
-使うことをお勧めします。
+機能中心のビジネスロジックは、サービスで実装します。
+<a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>に
+<a href="http://s2container.seasar.org/2.4/ja/s2jdbc_service.html">サービスの雛形</a>が
+用意されているので、それを利用すると良いでしょう。
 </p>
 <p>
 <a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>を
@@ -832,7 +833,7 @@ sa-struts-tutorialプロジェクトの場合、jdbc.diconは、src/main/resourc
 <p>
 <a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>は、
 <a href="http://s2container.seasar.org/2.4/ja/s2jdbc_manager.html">JdbcManager</a>経由で利用します。
-JdbcManagerを<a href="#Action">アクション</a>で利用するには、
+JdbcManagerをサービスで利用するには、
 次のようにフィールドを定義し、@Resourceをつけます。
 </p>
 <pre>
@@ -849,7 +850,7 @@ JTAの設定は、s2container.diconで行ないます。
 sa-struts-tutorialプロジェクトの場合、s2container.diconは、src/main/resourcesにおかれています。
 </p>
 <p>
-<a href="#Action">アクション</a>やロジックのメソッドが呼び出されたときに、
+アクションやサービスのメソッドが呼び出されたときに、
 自動的にトランザクションを開始するには、customizer.diconにトランザクション用の設定を記述します。
 sa-struts-tutorialプロジェクトの場合、customizer.diconは、src/main/resourcesにおかれています。
 </p>
@@ -930,22 +931,18 @@ publicフィールドを使いたい場合は、<a href="http://s2container.seas
 を使ってください。
 </p>
 <p>
-<a href="http://s2container.seasar.org/2.4/ja/s2jdbc.html">S2JDBC</a>を組み合わせて、
-プライマリーキーで取得したデータを<a href="#Action">アクション</a>にコピーするには次のようにします。
+プライマリーキーで取得したデータをアクションフォームにコピーするには次のようにします。
 </p>
 <pre>
-Employee emp = jdbcManager
-    .from(Employee.class)
-    .id(id)
-    .getSingleResult();
-Beans.copy(emp, employeeDto).execute();
+Employee emp = employeeService.findById(employeeForm.id);
+Beans.copy(emp, employeeForm).execute();
 </pre>
 <p>
 アクションフォームのデータでテーブルを更新するには次のようにします。
 </p>
 <pre>
-Employee emp = Beans.createAndCopy(Employee.class, employeeDto).execute();
-jdbcManager.update(emp).execute();
+Employee emp = Beans.createAndCopy(Employee.class, employeeForm).execute();
+employeeService.update(emp);
 </pre>
 
 <h3><a name="JSP">JSP</a></h3>
