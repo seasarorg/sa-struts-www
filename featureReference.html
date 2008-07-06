@@ -947,7 +947,7 @@ publicフィールドを使いたい場合は、<a href="http://s2container.seas
 プライマリーキーで取得したデータをアクションフォームにコピーするには次のようにします。
 </p>
 <pre>
-Employee emp = employeeService.findById(employeeForm.id);
+Employee emp = employeeService.findById(Integer.valueOf(employeeForm.id));
 Beans.copy(emp, employeeForm).execute();
 </pre>
 <p>
