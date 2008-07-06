@@ -561,6 +561,12 @@ public class XxxForm implements Serializable {
     ...
 }
 </pre>
+<p>
+アクションフォームをセッションに保存している場合、
+@ExecuteのremoveActionForm要素をtrueに設定しておくと、
+実行メソッドの正常終了時にセッションからアクションフォームが削除されます。
+デフォルトはfalseで、削除しません。
+</p>
 <p style="background-color:red">
 アクションフォームをセッションに保存する設定のときに、アクションフォームのHOT deployが効かない場合があります。
 Tomcatを使っているなら、<a href="fileReference.html#context">context.xml</a>を
@@ -798,6 +804,13 @@ public class XxxForm implements Serializable {
         bar = new String[0];
     }
 }
+</pre>
+<p>
+リセットメソッドは、実行メソッドごとに指定することができます。
+デフォルトは、resetになります。
+</p>
+<pre>
+@Execute(reset = "リセットメソッド名", ...)
 </pre>
 
 <h3><a name="FileUpload">ファイルアップロード</a></h3>
