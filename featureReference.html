@@ -65,6 +65,7 @@
 			<li><a href="#ValidateMethod">検証メソッド</a></li>
 			<li><a href="#ResetMethod">リセットメソッド</a></li>
 			<li><a href="#FileUpload">ファイルアップロード</a></li>
+			<li><a href="#Ajax">Ajax</a></li>
 			<li><a href="#Service">サービス</a></li>
 			<li><a href="#Transaction">トランザクション</a></li>
 			<li><a href="#DataExchange">データ変換</a></li>
@@ -822,6 +823,69 @@ FormFile経由でアップロードされたファイルを取得します。
 プロパティの型をFormFile[]のように配列指定することで、
 複数のFormFileを受け取ることができます。
 詳しくは<a href="tutorial.html#upload">チュートリアルのファイルアップロード</a>を参照してください。
+</p>
+
+<h3><a name="Ajax">Ajax</a></h3>
+<p>
+SAStrutsは、任意のAjaxのライブラリと組み合わせて使えます。
+ここでは<a href="http://jquery.com/">jQuery</a>を使った例で説明します。
+</p>
+<p>
+アクションの実行メソッドでは、ResponseUtil.write("文字列")を使って、
+レスポンスに文字列を書き込みます。
+画面遷移をするわけではないので、戻り値はnullになります。
+</p>
+<pre>
+@Execute(validator = false)
+public String hello() {
+    ResponseUtil.write("こんにちわ");
+    return null;
+}
+</pre>
+<p>
+JSPでは、jQueryを使うためにヘッダでjquery.jsを取り込みます。
+あるタグをアクションの実行メソッドがレスポンスに書き込んだ値で置き換える場合は、
+$('タグのid').load('実行メソッド名');を呼び出します。
+</p>
+<pre>
+&lt;script src="${f:url('/js/jquery.js')}"&gt;&lt;/script&gt;
+...
+&lt;span id="message"&gt;&lt;/span&gt;&lt;br /&gt;
+&lt;input type="button" value="hello"
+    onclick="$('#message').load('hello');"/&gt;
+</pre>
+<p>
+アクションにパラメータを渡す場合は、アクションにパラメータ用のプロパティを追加し、
+jQuery側は、load()の二番目の引数で指定します。
+</p>
+<pre>
+public String greeting;
+...
+@Execute(validator = false)
+public String hello() {
+    ResponseUtil.write(greeting);
+    return null;
+}
+</pre>
+<pre>
+&lt;input type="button" value="hello"
+    onclick="$('#message').load('hello',{'greeting':'Hello'});"/&gt;
+</pre>
+<p>
+URLを使って、パラメータを渡すこともできます。
+<pre>
+public String greeting;
+...
+@Execute(validator = false, urlPattern = "hello/{greeting})
+public String hello() {
+    ResponseUtil.write(greeting);
+    return null;
+}
+</pre>
+<pre>
+&lt;input type="button" value="hello"
+    onclick="$('#message').load('hello/Hello');"/&gt;
+</pre>
 </p>
 
 <h3><a name="Service">サービス</a></h3>
