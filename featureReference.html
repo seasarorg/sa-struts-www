@@ -1135,8 +1135,14 @@ sa-struts-tutorialプロジェクトでは、webapp/WEB-INF/view/common/common.j
 </pre>
 <p>
 SAStrutsには、Strutsのhtml:formを継承したs:formが用意されています。
-action要素は自動的に計算されますが、Tilesのレイアウト側のJSPでは、
-明示的にaction要素を指定してください。
+action属性は自動的に計算されますが、Tilesのレイアウト側のJSPでは、
+明示的にaction属性を指定してください。
+</p>
+<p>
+SAStrutsには、Strutsのhtml:linkを継承したs:linkが用意されています。
+href属性を設定するときに、コンテキストルートを自動的に補完させる場合に使います。
+パスを/ではじめた場合は、コンテキストルートからみたパスになります。
+パスが/ではじまっていない場合は、JSPからみたパスになります。
 </p>
 <p>
 JSPへのダイレクト(methodがGETによる)アクセスは、デフォルトで禁止されています。
