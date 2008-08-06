@@ -1102,6 +1102,22 @@ JavaBeansはMapに、配列はListにラップされています。
 変数にアクセスするときには気をつけてください。
 </p>
 <p>
+任意のオブジェクトの値を読みやすい文字列で表示するには、
+f:label(value, dataList, valueName, labelName)を使います。
+valueは、任意のオブジェクトの値です。
+dataListはJavaBeansかMap&lt;String, Object&gt;のリストで、
+どのオブジェクトの値をどの文字列に変換するのかを指定します。
+valueNameはvalue用のプロパティ名(Mapの場合はキー名)、
+labelNameはlabel用のプロパティ名(Mapの場合はキー名)です。
+</p>
+<p>
+例えば、部署のidプロパティの値をnameプロパティの値で表示したい場合、
+次のように指定します。deptItemsには、部署のデータが全件入っているとします。
+</p>
+<pre>
+${f:label(e.departmentId, deptItems, "id", "name")}
+</pre>
+<p>
 どのJSPでも共通で使うような宣言は、1つのJSPにまとめ、web.xmlでそのJSPを指定します。
 sa-struts-tutorialプロジェクトでは、webapp/WEB-INF/view/common/common.jspに共通で使う宣言が
 定義されています。
