@@ -70,6 +70,8 @@
 			<li><a href="#Transaction">トランザクション</a></li>
 			<li><a href="#DataExchange">データ変換</a></li>
 			<li><a href="#JSP">JSP</a></li>
+			<li><a href="#Scaffold">アプリケーションの自動生成</a></li>
+			<li><a href="#SQLFileToDto">SQLファイルからDTOの自動生成</a></li>
 		</ul>
 	</li>
 	<li><a href="annotationReference.html">アノテーションリファレンス</a></li>
@@ -1180,6 +1182,19 @@ return "/アクション名/メソッド名?redirect=true";
 どうしても、JSPへ直接アクセスする必要がでてきた場合は、
 web.xmlのroutingfilterのinit-paramでjspDirectAccessの値をtrueにします。
 詳しくは、<a href="fileReference.html#web">web.xml</a>を参照してください。
+</p>
+
+<h3><a name="Scaffold">アプリケーションの自動生成</a></h3>
+<p>
+Doltengを使って、データベースにアクセスするアプリケーションを自動生成することができます。
+詳しくは、<a href="http://dolteng.sandbox.seasar.org/usage.html#database-view">Database View</a>を参照してください。
+</p>
+
+<h3><a name="SQLFileToDto">SQLファイルからDTOの自動生成</a></h3>
+<p>
+Doltengを使って、SQLファイルに対応するDTOを自動生成することができます。
+詳しくは、<a href="http://dolteng.sandbox.seasar.org/usage.html#sql-dto">こちら</a>を参照してください。
+SQLファイルの詳細は、<a href="http://s2container.seasar.org/2.4/ja/s2jdbc_manager_sqlfile.html">こちら</a>を参照してください。
 </p>
 
 </div><!-- section -->

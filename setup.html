@@ -200,20 +200,23 @@ http://localhost:8080/sa-struts-tutorialにアクセスしてください。
 
 <h3><a name="blank">ブランクのセットアップ</a></h3>
 <p>
-プロジェクトの雛形としてブランクプロジェクトが用意されています。
-ブランクプロジェクトは、サンプルのアプリケーションがないことを除いては、
-チュートリアル用のプロジェクトと同じです。
-<a href="#tutorial">チュートリアルのセットアップ</a>を参考にしてください。
+プロジェクトの雛形は、DoltengというEclipseのプラグインを使って作成します。
+Doltengのインストールは<a href="http://dolteng.sandbox.seasar.org/#Setup">こちら</a>を参照してください。
 </p>
 <p>
-プロジェクトにあわせて、ルートパッケージを指定します。
-ルートパッケージの詳細は、<a href="featureReference.html#Project">プロジェクト構成</a>を参照してください。
+Doltengでプロジェクトを作成すると、デフォルトのデータベースとして、H2がインストールされます。
+H2でとりあえず試してみたい場合はDbLauncherも次の更新サイトからインストールしてください。<br />
+http://eclipse.seasar.org/updates/3.2/
 </p>
 <p>
-データアクセスの設定は、<a href="featureReference.html#DataAccess">こちら</a>を参照してください。
+Doltengの設定を確認します。
+「Window」-「Preferences」でDoltengの設定ダイアログを開いてください。 
+Maven2を使わない場合は、Download resources from onlineのチェックボックスをオフにします。
+Maven2を使う場合は、Maven Repository Pathを設定してください。
 </p>
 <p>
-トランザクションの設定は、<a href="featureReference.html#Transaction">こちら</a>を参照してください。
+プロジェクトの作成は、<a href="http://dolteng.sandbox.seasar.org/usage.html#project-wizard">こちら</a>を参照してください。
+Persistenceには「S2JDBC」、Presentationには「SAStruts」を選択します。
 </p>
 
 <h3><a name="primitive">プリミティブなセットアップ</a></h3>
