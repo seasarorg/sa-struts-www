@@ -17,8 +17,8 @@
 <div style="position:absolute; left: 200px; top: 160px; border: 1px dotted gray; width: 800px; background-color: #EEEEFF">
 NOTE: This page is a translation from the original Japanese version of
  <a href="../setup.html">setup.html, 
- rev 470</a> 
- as of 2008-05-05.
+ rev 692</a> 
+ as of 2008-08-15.
 </div>
 <!--  TRANSLATION NOTE ENDS  -->
 
@@ -66,6 +66,7 @@ NOTE: This page is a translation from the original Japanese version of
     	</ul>
     </li>
     <li xmlns="http://www.w3.org/1999/xhtml"><a href="download.html" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Download</a></li>
+    <li xmlns="http://www.w3.org/1999/xhtml"><a href="releaseNotes.html" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Release Notes</a></li>
 	<li xmlns="http://www.w3.org/1999/xhtml"><a href="tutorial.html" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Tutorial</a></li>
 	<li xmlns="http://www.w3.org/1999/xhtml"><a href="featureReference.html" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Feature Reference</a></li>
 	<li xmlns="http://www.w3.org/1999/xhtml"><a href="annotationReference.html" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Annotations Reference</a></li>
@@ -122,16 +123,16 @@ as an Eclipse project.</p>
 Please proceed to <a href="tutorial.html" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Tutorial</a>.</p>
 
 <h3 xmlns="http://www.w3.org/1999/xhtml"><a name="blank" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Setting up Blank</a></h3>
-<p xmlns="http://www.w3.org/1999/xhtml">A Blank project  is available as a template for your project. The content of Blank project is the same as the content of Tutorial project except that it lacks the sample application. Please refer to <a href="#tutorial" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Setting up Tutorial</a>  to set up Blank.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">Specify a root package for your project. For details of root package, see <a href="featureReference.html#Project" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Project components</a>.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">For configurations of data access, please see <a href="featureReference.html#DataAccess" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">For configurations of transaction, please see <a href="featureReference.html#Transaction" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">You can create a new SAStruts project with an Eclipse plugin named Dolteng. For installation of Dolteng, see <a href="http://dolteng.sandbox.seasar.org/#Setup" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">A project made with Dolteng has H2 database installed as a default  [but  you can use other databases as well, of course ]. If you want to try SAStruts with H2 as the first step, install DbLauncher from the following update site (for Seasar Plugin3.2). <br xmlns="http://www.w3.org/1999/xhtml"/> http://eclipse.seasar.org/updates/3.2/</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Now we will confirm settings of Dolteng. Open Dolteng Settings Dialog with [Window] - [Preferences]. Uncheck Download resources from online checkbox if you don't use Maven2. Or, in the case you use Maven2, you have to set Maven Repository Path.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">See <a href="http://dolteng.sandbox.seasar.org/usage.html#project-wizard" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a> to know how to create a new project.[While the  page of the link above is in Japanese, the outline should be clear from screenshots and the context .] Select &quot;S2JDBC&quot; for Persistence; &quot;SAStruts&quot; for Presentation. Other options include various Seasar and related subproducts which may work with SAStruts, but we are not going to dig into them in detail here.</p>
 
 <h3 xmlns="http://www.w3.org/1999/xhtml"><a name="primitive" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Primitive Setup</a></h3>
-<p xmlns="http://www.w3.org/1999/xhtml">In the case you want to set up without relying on Tutorial nor Blank,  download sa-struts-blank-xxx.zip from the <a href="download.html" xmlns="http://www.w3.org/1999/xhtml" shape="rect">download page</a>  and extract the archive to obtain required files.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">Add files in sa-struts-blank/src/main/resources to your classpath.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">Copy files in sa-struts-blank/webapp/WEB-INF into WEB-INF.</p>
-<p xmlns="http://www.w3.org/1999/xhtml">Copy files in sa-struts-blank/webapp/WEB-INF/lib into WEB-INF/lib.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">In the case you want to set up without relying on Tutorial nor Blank,  download sa-struts-turorial-xxx.zip from the <a href="download.html" xmlns="http://www.w3.org/1999/xhtml" shape="rect">download page</a>  and extract the archive to obtain required files.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Add files in sa-struts-tutorial/src/main/resources to your classpath.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Copy files in sa-struts-tutorial/webapp/WEB-INF into WEB-INF.</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Copy files in sa-struts-tutorial/webapp/WEB-INF/lib into WEB-INF/lib.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Specify a root package for your project. For details of root package, see <a href="featureReference.html#Project" xmlns="http://www.w3.org/1999/xhtml" shape="rect">Project components</a>.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">For configurations of data access, please see <a href="featureReference.html#DataAccess" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
 <p xmlns="http://www.w3.org/1999/xhtml">For configurations of transaction, please see <a href="featureReference.html#Transaction" xmlns="http://www.w3.org/1999/xhtml" shape="rect">here</a>.</p>
