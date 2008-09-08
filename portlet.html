@@ -96,7 +96,7 @@ SAStruts で作成したアプリケーションをポートレットしても�
     <li>struts-config.xml を変更</li>
     <li>common.jsp を変更</li>
     <li>portlet.xml を追加</li>
-    <li>sa-struts-portlet-1.0-*.jar を追加</li>
+    <li>sa-struts-portlet-*.jar を追加</li>
 </ul>
 
 <h4>web.xml を変更</h4>
@@ -106,8 +106,9 @@ web.xml で以下の点を変更します。
 <ul>
     <li>org.seasar.struts.portlet.filter.PortletRequestFilter を encodingFilter の後に INCLUDE で追加</li>
     <li>org.seasar.framework.container.filter.S2ContainerFilter を org.seasar.struts.portlet.filter.S2ContainerFilter に変更</li>
-    <li>org.seasar.framework.container.hotdeploy.HotdeployFilter を org.seasar.framework.container.hotdeploy.HotdeployFilter に変更</li>
+    <li>org.seasar.framework.container.hotdeploy.HotdeployFilter を org.seasar.struts.portlet.filter.HotdeployFilter に変更</li>
     <li>org.seasar.struts.portlet.filter.PortletRoutingFilter を routingfilter の後に INCLUDE で追加</li>
+    <li>org.apache.struts.action.ActionServlet を org.seasar.struts.portlet.servlet.ActionServlet に変更</li>
 </ul>
 <p>
 以下は web.xml の変更例です。
@@ -203,6 +204,19 @@ web.xml で以下の点を変更します。
     &lt;dispatcher&gt;FORWARD&lt;/dispatcher&gt;
     &lt;dispatcher&gt;INCLUDE&lt;/dispatcher&gt;
   &lt;/filter-mapping&gt;
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;action&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;<font color="red">org.seasar.struts.portlet.servlet.ActionServlet</font>&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+      &lt;param-name&gt;config&lt;/param-name&gt;
+      &lt;param-value&gt;/WEB-INF/struts-config.xml&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+      &lt;param-name&gt;configFactory&lt;/param-name&gt;
+      &lt;param-value&gt;org.seasar.struts.config.S2ModuleConfigFactory&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+  &lt;/servlet&gt;
 ...
 </pre>
 
@@ -288,9 +302,9 @@ portlet-class には org.seasar.struts.portlet.SAStrutsPortlet を指定しま�
 &lt;/portlet-app&gt;
 </pre>
 
-<h4>sa-struts-portlet-1.0-*.jar を追加</h4>
+<h4>sa-struts-portlet-*.jar を追加</h4>
 <p>
-sa-struts-portlet-1.0-*.jar を取得して、WEB-INF/lib に追加してください。
+sa-struts-portlet-*.jar を取得して、WEB-INF/lib に追加してください。
 <a href="http://maven.seasar.org/maven2/org/seasar/sastruts/sa-struts-portlet/">http://maven.seasar.org/maven2/org/seasar/sastruts/sa-struts-portlet/</a> などから取得できます。
 </p>
 
@@ -302,7 +316,8 @@ war ファイルをポータルに配備して、ポートレットとして利�
 
 <h3><a name="news">NEWS</a></h3>
 <ul>
-  <li>2008/09/04 SAStrutsポートレット 1.0.0-rc1 をリリースしました。<a href="http://maven.seasar.org/maven2/org/seasar/sastruts/sa-struts-portlet/">こちら</a></li>
+  <li>2008/09/08 SAStrutsポートレット 1.0.0-rc2 をリリースしました。<a href="http://maven.seasar.org/maven2/org/seasar/sastruts/sa-struts-portlet/1.0.0-rc2/">こちら</a></li>
+  <li>2008/09/04 SAStrutsポートレット 1.0.0-rc1 をリリースしました。<a href="http://maven.seasar.org/maven2/org/seasar/sastruts/sa-struts-portlet/1.0.0-rc1/">こちら</a></li>
 </ul>
 
 <h3><a name="subversion">Subversionリポジトリ</a></h3>
