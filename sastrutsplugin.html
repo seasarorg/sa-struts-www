@@ -60,9 +60,9 @@
 	<li><a href="sastrutsplugin.html">SAStrutsPlugin</a></li>
 		<ul>
 			<li><a href="#Abstract">概要</a></li>
-			<li><a href="#Usage">使い方</a></li>
 			<li><a href="#Setup">セットアップ</a>
-			<li><a href="#news">NEWS</a></li>
+			<li><a href="sastrutspluginUsage.html">使い方</a></li>
+			<li><a href="sastrutspluginReleaseNotes.html">SAStrutsPluginリリースノート</a></li>
 			<li><a href="#maillist">メーリングリスト</a></li>
 			<li><a href="#tracking">トラッキング</a></li>
 			<li><a href="#subversion">Subversionリポジトリ</a></li>
@@ -90,101 +90,32 @@ SAStrutsを使った開発を支援するためのEclipseプラグインです�
 <ul>
 	<li>Javaファイルからポップアップメニューかショートカットキー（Ctrl+8）で対応するJSPファイルを開く・作成する</li>
 	<li>JSPファイルからポップアップメニューかショートカットキー（Ctrl+8）で対応するJavaファイルを開く・作成する</li>
+	<li>JSP Editorの補完機能</li>
+	<li>View on Server機能</li>
+	<li>View SAStruts Help機能</li>
 </ul>
-
-<h3><a name="Usage">使い方</a></h3>
-<h4>プロジェクトの設定</h4>
-<ul>
-	<li>プロジェクトのプロパティで「SAStruts」を選択し、Webapp ルートを選択します。</li>
-	<li>プロジェクトのプロパティで「SAStruts」を選択し、Main Java Source Pathを選択します。</li>
-	<li>プロジェクトのプロパティで「SAStruts」を選択し、convention.dicon パスを選択します。</li>
-	<li>プロジェクトのプロパティで「SAStruts」を選択し、WebServerを選択します。</li>
-</ul>
-
-<img src="images/project_property.gif"/>
-
-<p>
-Super Agile Strutsチュートリアル(sa-struts-tutorial)であれば「/webapp」、「/src/main/java」、「/src/main/resouces/convention.dicon」、「http://localhost:8080」となります。
-Maven2のWebアプリケーションプロジェクトならWebapp ルートは「/src/main/webapp」となります。
-</p>
-<p>
-SAStrutsPluginは、
-Webapp ルートを基点にJSPファイルのパスを、
-Main Java Source Pathを基点にJavaファイルのパスを、
-convention.dicon パスを基点にルートパッケージ名を、
-取得します。
-WebServerは後述するView on Server機能でアクセスするURLの基点となります。
-</p>
-
-<h4><a name="func_jsp_open">JSPファイルを開く</a></h4>
-
-<p>
-JSPファイル名が記述されている文字列のある行からポップアップメニューかショートカットキー（Ctrl+8）で対応するJSPファイルを開くことができます。
-</p>
-
-<img src="images/open_jsp.gif"/>
-
-<h4>JSPファイルを作成する</h4>
-<ol type="1">
-<p>
-JSPファイルを開こうとして対応するJSPファイルが存在しない場合は、JSPファイル作成用のウィザードを使って新規に作成することができます。
-ファイル名や保存するフォルダは自動的に決定されるのでほとんどの場合変更する必要はありません。
-</p>
-  <ol><li value="1">対応するJSPファイルが存在しない場合は、
-    メッセージボックスがポップアップします。</li></ol><br clear="all"/>
-
-  <img class="ss" src="images/message_box_jsp.gif" alt=""/>
-  <br/><br/>
-  <ol><li value="2">OKをクリックすると「JSPファイルの新規作成ウィザード」が開きます。
-  保存先のディレクトリやJSPファイル名は自動的に決まるので、ほとんどの場合、変更する必要はありません。</li></ol><br clear="all"/>
-  <img class="ss" src="images/wizard_jsp.gif" alt=""/>
-</ol>
-
-<h4><a name="func_java_open">Javaファイルを開く</a></h4>
-
-<p>
-JSP Editor上からポップアップメニューかショートカットキー（Ctrl+8）で対応するJavaソースを開くことができます。
-<ul>
-  <li>s:formタグの行から操作した場合はJavaソースのindexメソッドに遷移します。urlPatternを使っている場合は該当するメソッドに遷移します。</li>
-  <li>inputタグの行から操作した場合はJavaソースの該当するメソッド（name属性と同じメソッド名）に遷移します。</li>
-  <li>aタグのhref属性でurlPatternを使っている場合は、aタグの行で操作すれば該当するメソッドに遷移します。</li>
-</ul>
-どのケースも対応するメソッドが見つからない場合はindexメソッドに遷移します。
-</p>
-
-<img src="images/open_java.gif"/>
-
-<h4>Javaファイルを作成する</h4>
-<ol type="1">
-<p>
-Javaファイルを開こうとして対応するJavaファイルが存在しない場合は、Javaファイル作成用のウィザードを使って新規に作成することができます。
-ファイル名や保存するフォルダは自動的に決定されるのでほとんどの場合変更する必要はありません。
-</p>
-  <ol><li value="1">対応するJavaファイルが存在しない場合は、
-    メッセージボックスがポップアップします。</li></ol><br clear="all"/>
-
-  <img class="ss" src="images/message_box_java.gif" alt=""/>
-  <br/><br/>
-  <ol><li value="2">OKをクリックすると「Javaファイルの新規作成ウィザード」が開きます。
-  保存先のディレクトリやJavaファイル名は自動的に決まるので、ほとんどの場合、変更する必要はありません。</li></ol><br clear="all"/>
-  <img class="ss" src="images/wizard_java.gif" alt=""/>
-</ol>
-
-<h4>View on Server機能</h4>
-<ol type="1">
-<p>
-APサーバを起動後、Actionクラスを選択してポップアップメニューからブラウザを起動して表示を確認することができます。
-</p>
-
-<img src="images/view_on_server.gif"/>
-<img src="images/browse.gif"/>
 
 <h3><a name="Setup">セットアップ</a></h3>
-<p>Eclipse3.3+WTP2.0で動作します。JSP EditorからJavaファイルを開くことができます。。Web Page Editorからは開けません。次の更新サイトから「SAStrutsPlugin」を選択してインストールしてください。</p>
+<p>Eclipse3.3+WTP2.0で動作します。JSP EditorからJavaファイルを開くことができます。Web Page Editorからは開けません。次の更新サイトから「SAStrutsPlugin」を選択してインストールしてください。</p>
 <ul>
   <li><a href="http://eclipse.seasar.org/updates/3.3/ ">http://eclipse.seasar.org/updates/3.3/ </a></li>
 </ul>
 
+<h3><a href="sastrutspluginUsage.html">使い方</a></h3>
+<ul>
+	<li><a href="sastrutspluginUsage.html#Usage">プロジェクトの設定</a>
+	<li><a href="sastrutspluginUsage.html#func_jsp_open">JSPファイルを開く</a>
+	<li><a href="sastrutspluginUsage.html#func_jsp_create">JSPファイルを作成する</a>
+	<li><a href="sastrutspluginUsage.html#func_java_open">Javaファイルを開く</a>
+	<li><a href="sastrutspluginUsage.html#func_java_create">Javaファイルを作成する</a>
+	<li><a href="sastrutspluginUsage.html#jsp_editor_contents_assist">JSP Editorの補完機能</a>
+	<li><a href="sastrutspluginUsage.html#view_on_server">View on Server機能</a>
+	<li><a href="sastrutspluginUsage.html#view_sastruts_help">View SAStruts Help機能</a>
+</ul>
+
+<h3><a href="sastrutspluginReleaseNotes.html">SAStrutsPluginリリースノート</a></h3>
+
+<!--
 <h3><a name="news">NEWS</a></h3>
 <ul>
   <li>2008/08/11 SAStrutsPlugin 0.0.8  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-08-11#hbefca06">こちら</a></li>
@@ -196,6 +127,7 @@ APサーバを起動後、Actionクラスを選択してポップアップメニ
   <li>2008/03/22 SAStrutsPlugin 0.0.2  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-03-22#n5246636">こちら</a></li>
   <li>2008/03/14 SAStrutsPlugin 0.0.1  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-03-14#jf0fbc8c">こちら</a></li>
 </ul>
+-->
 
 <h3><a name="maillist">メーリングリスト</a></h3>
 <dl>
