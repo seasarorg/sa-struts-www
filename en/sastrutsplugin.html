@@ -17,8 +17,8 @@
 <div style="position:absolute; left: 200px; top: 160px; border: 1px dotted gray; width: 800px; background-color: #EEEEFF">
 NOTE: This page is a translation from the original Japanese version of
  <a href="../sastrutsplugin.html">sastrutsplugin.html, 
- rev 609</a> 
- as of 2008-06-27.
+ rev 753</a> 
+ as of 2008-09-21.
 </div>
 <!--  TRANSLATION NOTE ENDS  -->
 
@@ -68,9 +68,9 @@ NOTE: This page is a translation from the original Japanese version of
 	<li><a href="sastrutsplugin.html">SAStrutsPlugin</a></li>
 		<ul>
 			<li><a href="#Abstract">Overview</a></li>
-			<li><a href="#Usage">Usage</a></li>
 			<li><a href="#Setup">Setting up</a>
-			</li><li><a href="#news">NEWS</a></li>
+			</li><li><a href="sastrutspluginUsage.html">Usage</a></li>
+			<li><a href="sastrutspluginReleaseNotes.html">Release Note of SAStrutsPlugin</a></li>
 			<li><a href="#maillist">Mailing List</a></li>
 			<li><a href="#tracking">Tracking</a></li>
 			<li><a href="#subversion">Subversion Repository</a></li>
@@ -96,90 +96,58 @@ NOTE: This page is a translation from the original Japanese version of
 <ul>
 	<li>Opens/creates a JSP file corresponding to a Java source file (which is an SAStruts action class) via the context menu or by a keyboard shortcut (Ctrl+8) </li>
 	<li>Opens/creates a Java source file corresponding  to a JSP flie via the popup menu or by a keyboard shortcut (Ctrl+8). </li>
+	<li>completion feature on JSP Editor</li>
+	<li>View on Server</li>
+	<li>View SAStruts Help</li>
 </ul>
-
-<h3><a name="Usage">Usage</a></h3>
-<h4>Project setting</h4>
-<ul>
-	<li>In the Properties of your project, select  "SAStruts",  then specify Webapp Root.  </li>
-	<li>In the Properties of your project, select "SAStruts", then specify Main Java Source Path.  </li>
-	<li>In the Properties of your project, select  "SAStruts" , then specify convention.dicon Path. </li>
-	<li>In the Properties of your project, select  "SAStruts",  then specify WebServer.  </li>
-</ul>
-
-<img src="images/project_property.gif"/>
-
-<p>For example, in the case of Super Agile Struts Tutorial(sa-struts-tutorial), you have to specify those parameters as "/webapp", "/src/main/java",  "/src/main/resouces/convention.dicon" and "http://localhost:8080". For a web application project of Maven2 [i.e. maven-archetype-webapp], Webapp  Root must be specified as "/src/main/webapp".</p>
-<p>SAStrutsPlugin obtains JSP file paths, Java file paths and root packages from Webapp Root, Main Java Source Path and convention.dicon Path, respectively. WebServer parameter is a base URL for View on Server feature which is described later.</p>
-
-<h4><a name="func_jsp_open">Open the  JSP file</a></h4>
-
-<p>In an SAStruts action source code, place the text cursor on  the line where JSP file name string is present,  then use the context menu or hit the shortcut key(Ctrl+8)  to  open the corresponding JSP file.</p>
-
-<img src="images/open_jsp.gif"/>
-
-<h4>Creating the JSP file</h4>
-<ol type="1">
-<p>When no corresponding JSP file to open is found, you can create a new one with a wizard. The file name and the folder to save in are automatically determined, and no modification is required in most cases.</p>
-  <ol><li value="1">When no corresponding JSP file to open is found, a message box appears. [NOTE: The following screenshots are in Japanese. If you use a non-Japanese environment, the message will be as this: "JSP file is not found. / Create a corresponding JSP file?"]</li></ol><br clear="all"/>
-
-  <img class="ss" src="images/message_box_jsp.gif" alt=""/>
-  <br/><br/>
-  <ol><li value="2">By clicking OK, "Create a new JSP file" wizard appears.  The file name of the JSP file and the folder to save in are automatically determined, so no modification is required in most cases.</li></ol><br clear="all"/>
-  <img class="ss" src="images/wizard_jsp.gif" alt=""/>
-</ol>
-
-<h4><a name="func_java_open">Open the JAVA file</a></h4>
-
-<p>On JSP Editor, you can open a Java source file corresponding to the JSP file via the popup menu or by a keyboard shortcut (Ctrl+8). <ul>
-  <li>If  the cursor was on s:form tag, it  forwards to index method of the JAVA source. If urlPatten is used, then the cursor will be on the corresponding method.</li>
-  <li>If the cursor was on an input tag, it forwards to the corresponding JAVA method (whose name is the same as the name attribute of the tag).</li>
-  <li>If the cursor was on the line of HTML a tag whose href attribute uses urlPattern, then it forwards to the corresponding method.</li>
-</ul>In all cases,it will forward to index method  if no corresponding method is found .</p>
-
-<img src="images/open_java.gif"/>
-
-<h4>Creating the JAVA file</h4>
-<ol type="1">
-<p>When no corresponding JAVA file to open is found, you can create a new one with a wizard. The file name and the folder to save in are automatically determined, and no modification is required in most cases.</p>
-  <ol><li value="1">When no corresponding JAVA file to open is found, a message box appears. [ For a non-Japanese environment, the message will be: "Java file is not found. / Create a corresponding Java file? ". ]</li></ol><br clear="all"/>
-
-  <img class="ss" src="images/message_box_java.gif" alt=""/>
-  <br/><br/>
-  <ol><li value="2">By clicking OK, "Create a new Java file" wizard appears. The file name of the JAVA file and the folder to save in are automatically determined, so no modification is required in most cases.</li></ol><br clear="all"/>
-  <img class="ss" src="images/wizard_java.gif" alt=""/>
-</ol>
-
-<h4>View on Server</h4>
-<ol type="1">
-<p>Once you have started the application server, you can view how your action class is rendered  through the server by just selecting the class then choosing View on Server from SAStruts context menu.</p>
-
-<img src="images/view_on_server.gif"/>
-<img src="images/browse.gif"/>
 
 <h3><a name="Setup">Setting up</a></h3>
-<p>SAStrutsPlugin works with Eclipse3.3+WTP2.0. The JAVA file can be opened from JSP Editor.    You cannot open the one from Web page Editor. Go to the following update site and select "SAStrutsPlugin" to install.</p>
+<p>SAStrutsPlugin works with Eclipse3.3+WTP2.0. The JAVA file can be opened from JSP Editor.  You cannot open the one from Web page Editor. Go to the following update site and select "SAStrutsPlugin" to install.</p>
 <ul>
   <li><a href="http://eclipse.seasar.org/updates/3.3/ ">http://eclipse.seasar.org/updates/3.3/ </a></li>
 </ul>
 
-<h3><a name="news">NEWS</a></h3>
-<p>The latest news and information are on <a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew">Seasar wiki page (in Japanese) </a> .
-</p>
+<h3><a href="sastrutspluginUsage.html">Usage</a></h3>
+<ul>
+	<li><a href="sastrutspluginUsage.html#Usage">Project setting</a>
+	</li><li><a href="sastrutspluginUsage.html#func_jsp_open">Open the  JSP file</a>
+	</li><li><a href="sastrutspluginUsage.html#func_jsp_create">Creating the JSP file</a>
+	</li><li><a href="sastrutspluginUsage.html#func_java_open">Open the JAVA file</a>
+	</li><li><a href="sastrutspluginUsage.html#func_java_create">Creating the JAVA file</a>
+	</li><li><a href="sastrutspluginUsage.html#jsp_editor_contents_assist">completion feature on JSP Editor</a>
+	</li><li><a href="sastrutspluginUsage.html#view_on_server">View on Server</a>
+	</li><li><a href="sastrutspluginUsage.html#view_sastruts_help">View SAStruts Help</a>
+</li></ul>
 
-<h3><a name="maillist">Mailing List</a></h2>
+<h3><a href="sastrutspluginReleaseNotes.html">Release Note of SAStrutsPlugin</a></h3><!--
+<h3><a name="news">NEWS</a></h3>
+<ul>
+  <li>2008/08/11 SAStrutsPlugin 0.0.8  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-08-11#hbefca06">こちら</a></li>
+  <li>2008/06/27 SAStrutsPlugin 0.0.7  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-06-27#s16b895e">こちら</a></li>
+  <li>2008/06/06 SAStrutsPlugin 0.0.6  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-06-06#ibcb44da">こちら</a></li>
+  <li>2008/05/20 SAStrutsPlugin 0.0.5  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-05-20#pb4b2b6c">こちら</a></li>
+  <li>2008/05/18 SAStrutsPlugin 0.0.4  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-05-18#d9114288">こちら</a></li>
+  <li>2008/04/27 SAStrutsPlugin 0.0.3  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-04-27#r2910cdf">こちら</a></li>
+  <li>2008/03/22 SAStrutsPlugin 0.0.2  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-03-22#n5246636">こちら</a></li>
+  <li>2008/03/14 SAStrutsPlugin 0.0.1  をリリースしました。変更点は<a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew%2F2008-03-14#jf0fbc8c">こちら</a></li>
+</ul>
+-->
+
+
+
+<h3><a name="maillist">Mailing List</a></h3>
 <dl>
   <dt><a href="https://www.seasar.org/mailman/listinfo/seasar-user">seasar-user</a></dt>
     <dd>A mailing list for users of Seasar2 and related products. <br> For questions, troubles or any suggestions on SAStrutsPlugin, use this list. <br> Please include [SAStrutsPlugin] to the subject. It would also be appreciated if you could include any excerpt of the Eclipse error log, if any.</dd>
   <dt><a href="https://www.seasar.org/mailman/listinfo/seasar-dev">seasar-dev</a></dt>
     <dd>A mailing list for developers of Seasar2 and related products.</dd>
 </dl>
-<h3><a name="tracking">Tracking</a></h2>
+<h3><a name="tracking">Tracking</a></h3>
 <dl>
   <dt><a href="https://www.seasar.org/issues/browse/SAStruts">JIRA</a></dt>
     <dd>Bugs of SAStrutsPlugin are managed  using a component named SAStruts plugin.</dd>
 </dl>
-<h3><a name="subversion">Subversion Repository</a></h2>
+<h3><a name="subversion">Subversion Repository</a></h3>
 <p>SAStrutsPlugin source code is available from the Subversion repository of seasar.org. </br> Everyone can access it to view. </br> (Follow the link below to view sourcecode on the Web)</p>
 <dl>
 <dt><b>URL for the SVN repository</b></dt><dd><a href="https://www.seasar.org/svn/sastruts/trunk/sa-struts-plugin/">https://www.seasar.org/svn/sastruts/trunk/sa-struts-plugin/</a></dd>
