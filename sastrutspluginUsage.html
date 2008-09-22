@@ -59,8 +59,8 @@
 	<li><a href="fileReference.html">設定ファイルリファレンス</a></li>
 	<li><a href="sastrutsplugin.html">SAStrutsPlugin</a></li>
 		<ul>
-			<li><a href="#Abstract">概要</a></li>
-			<li><a href="#Setup">セットアップ</a>
+			<li><a href="sastrutsplugin.html#Abstract">概要</a></li>
+			<li><a href="sastrutsplugin.html#Setup">セットアップ</a>
 			<li><a href="sastrutspluginUsage.html">使い方</a></li>
 				<ul>
 					<li><a href="#Usage">プロジェクトの設定</a>
@@ -73,10 +73,10 @@
 					<li><a href="#view_sastruts_help">View SAStruts Help機能</a>
 				</ul>
 			<li><a href="sastrutspluginReleaseNotes.html">SAStrutsPluginリリースノート</a></li>
-			<li><a href="#maillist">メーリングリスト</a></li>
-			<li><a href="#tracking">トラッキング</a></li>
-			<li><a href="#subversion">Subversionリポジトリ</a></li>
-			<li><a href="#blog">コミッタのブログ</a></li>
+			<li><a href="sastrutsplugin.html#maillist">メーリングリスト</a></li>
+			<li><a href="sastrutsplugin.html#tracking">トラッキング</a></li>
+			<li><a href="sastrutsplugin.html#subversion">Subversionリポジトリ</a></li>
+			<li><a href="sastrutsplugin.html#blog">コミッタのブログ</a></li>
 		</ul>
 	<li><a href="portlet.html">ポートレット対応</a></li>
 </ul>
@@ -174,7 +174,9 @@ Javaファイルを開こうとして対応するJavaファイルが存在しな
 <h4><a name="jsp_editor_contents_assist">JSP Editorの補完機能</a></h4>
 <ol type="1">
 <p>
-WTP2.0のJSP Editor上でActionFormのプロパティやActionの実行メソッドを補完することができます。WTP3.0のJSP Editorでは動きません。
+WTP2.0のJSP Editor上でActionFormのプロパティやActionの実行メソッドを補完することができます。
+html:text等の入力系htmlタグのproperty属性の場合はActionFormのpublicフィールドプロパティを、
+html:submit等のボタン系htmlタグのname属性の場合はActionの実行メソッド（public、戻り値がString、引数0、@Executeアノテーション付き）を補完することができます。
 </p>
 <img src="images/contents_assist_property.gif"/>
 <img src="images/contents_assist_method.gif"/>
