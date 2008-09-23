@@ -174,9 +174,10 @@ Javaファイルを開こうとして対応するJavaファイルが存在しな
 <h4><a name="jsp_editor_contents_assist">JSP Editorの補完機能</a></h4>
 <ol type="1">
 <p>
-WTPのJSP Editor上でActionFormのプロパティやActionの実行メソッドを補完することができます。
+WTPのJSP Editor上でActionFormのプロパティやActionの実行メソッドを補完することができます。<br/>
 html:text等の入力系htmlタグのproperty属性の場合はActionFormのpublicフィールドプロパティを、
-html:submit等のボタン系htmlタグのname属性の場合はActionの実行メソッド（public、戻り値がString、引数0、@Executeアノテーション付き）を補完することができます。
+html:submit等のボタン系htmlタグのname属性の場合はActionの実行メソッド（public、戻り値がString、引数無し、@Executeアノテーション付き）を補完することができます。<br/>
+なおc:foreachタグには対応していません。
 </p>
 <img src="images/contents_assist_property.gif"/>
 <img src="images/contents_assist_method.gif"/>
