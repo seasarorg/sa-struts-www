@@ -17,8 +17,8 @@
 <div style="position:absolute; left: 200px; top: 160px; border: 1px dotted gray; width: 800px; background-color: #EEEEFF">
 NOTE: This page is a translation from the original Japanese version of
  <a href="../sastrutspluginUsage.html">sastrutspluginUsage.html, 
- rev 753</a> 
- as of 2008-09-21.
+ rev 756</a> 
+ as of 2008-09-22.
 </div>
 <!--  TRANSLATION NOTE ENDS  -->
 
@@ -68,8 +68,8 @@ NOTE: This page is a translation from the original Japanese version of
 	<li><a href="fileReference.html">Configuration File Reference</a></li>
 	<li><a href="sastrutsplugin.html">SAStrutsPlugin</a></li>
 		<ul>
-			<li><a href="#Abstract">Overview</a></li>
-			<li><a href="#Setup">Setting up</a>
+			<li><a href="sastrutsplugin.html#Abstract">Overview</a></li>
+			<li><a href="sastrutsplugin.html#Setup">Setting up</a>
 			</li><li><a href="sastrutspluginUsage.html">Usage</a></li>
 				<ul>
 					<li><a href="#Usage">Project setting</a>
@@ -82,10 +82,10 @@ NOTE: This page is a translation from the original Japanese version of
 					</li><li><a href="#view_sastruts_help">View SAStruts Help</a>
 				</li></ul>
 			<li><a href="sastrutspluginReleaseNotes.html">Release Note of SAStrutsPlugin</a></li>
-			<li><a href="#maillist">Mailing List</a></li>
-			<li><a href="#tracking">Tracking</a></li>
-			<li><a href="#subversion">Subversion Repository</a></li>
-			<li><a href="#blog">Committer's blog</a></li>
+			<li><a href="sastrutsplugin.html#maillist">Mailing List</a></li>
+			<li><a href="sastrutsplugin.html#tracking">Tracking</a></li>
+			<li><a href="sastrutsplugin.html#subversion">Subversion Repository</a></li>
+			<li><a href="sastrutsplugin.html#blog">Committer's blog</a></li>
 		</ul>
 	<li><a href="portlet.html">Portlet</a></li>
 </ul>
@@ -156,7 +156,7 @@ NOTE: This page is a translation from the original Japanese version of
 
 <h4><a name="jsp_editor_contents_assist">completion feature on JSP Editor</a></h4>
 <ol type="1">
-<p>Code completion is available for properties of ActionForm and execution methods of Action  on the JSP Editor of WTP2.0. Currently, It doesn't work on WTP3.0.</p>
+<p>Code completion is available for properties of ActionForm and execution methods of Action  on the JSP Editor of WTP2.0. Public field properties of the ActionForm will be shown as the completion candidates at the "property" attribute of html:text and other tags for input. Execution methods of the Action (public, return value String, no arguments and with a @Execute annnotation) will be shown as the completion candidates at the "name" attribute of html:submit and other tags for buttons.</p>
 <img src="images/contents_assist_property.gif"/>
 <img src="images/contents_assist_method.gif"/>
 </ol>
