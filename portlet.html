@@ -301,6 +301,40 @@ portlet-class には org.seasar.struts.portlet.SAStrutsPortlet を指定しま�
   &lt;/portlet&gt;
 &lt;/portlet-app&gt;
 </pre>
+<p>
+init-param では、以下のものを指定することができます。
+</p>
+<table>
+    <tr>
+        <th>名前(name)</th>
+        <th>値(value)</th>
+    </tr>
+    <tr>
+        <td>viewPage</td>
+        <td>表示(VIEW)モードの初期ページ。</td>
+    </tr>
+    <tr>
+        <td>editPage</td>
+        <td>編集(EDIT)モードの初期ページ。</td>
+    </tr>
+    <tr>
+        <td>helpPage</td>
+        <td>ヘルプ(HELP)モードの初期ページ。</td>
+    </tr>
+    <tr>
+        <td>contentType</td>
+        <td>デフォルトのコンテンツタイプ。アプリケーション側で設定されていない場合に利用します。</td>
+    </tr>
+    <tr>
+        <td>encoding</td>
+        <td>処理時に利用するエンコーディング。指定しない場合は UTF-8 です。</td>
+    </tr>
+    <tr>
+        <td>maxCacheSize</td>
+        <td>保持する過去ページのキャッシュ値です。デフォルトは 10 です。このキャッシュはブラウザの戻るボタンをクリックしたときに利用します。</td>
+    </tr>
+</table>
+    
 
 <h4>sa-struts-portlet-*.jar を追加</h4>
 <p>
@@ -316,6 +350,7 @@ war ファイルをポータルに配備して、ポートレットとして利�
 
 <h3><a name="news">NEWS</a></h3>
 <ul>
+  <li>2008/09/25 SAStrutsポートレット 1.0.0-rc3 をリリースしました。<a href="http://maven.seasar.org/maven2/org/seasar/sastruts/sa-struts-portlet/1.0.0-rc3/">こちら</a></li>
   <li>2008/09/08 SAStrutsポートレット 1.0.0-rc2 をリリースしました。<a href="http://maven.seasar.org/maven2/org/seasar/sastruts/sa-struts-portlet/1.0.0-rc2/">こちら</a></li>
   <li>2008/09/04 SAStrutsポートレット 1.0.0-rc1 をリリースしました。<a href="http://maven.seasar.org/maven2/org/seasar/sastruts/sa-struts-portlet/1.0.0-rc1/">こちら</a></li>
 </ul>
@@ -335,6 +370,7 @@ war ファイルをポータルに配備して、ポートレットとして利�
 </p>
 <ul>
   <li>初回アクセスなどで表示だけの処理が行われる場合、実行メソッドでリダイレクトを設定できません。ポートレットではリダイレクトを processAction() のときしかできないためです。</li>
+    <li>このライブラリは、デフォルトで、ポートレット表示に不要な body タグ以上の要素は出力時に削除します。この処理をスキップするためには、web.xml の PortletRequestFilter の設定で init-param で contentOnly を false と設定してください。</li>
 </ul>
 
 
