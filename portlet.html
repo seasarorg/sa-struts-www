@@ -160,10 +160,6 @@ web.xml で以下の点を変更します。
   <font color="red">&lt;filter&gt;
     &lt;filter-name&gt;portletRoutingfilter&lt;/filter-name&gt;
     &lt;filter-class&gt;org.seasar.struts.portlet.filter.PortletRoutingFilter&lt;/filter-class&gt;
-    &lt;init-param&gt;
-      &lt;param-name&gt;jspDirectAccess&lt;/param-name&gt;
-      &lt;param-value&gt;false&lt;/param-value&gt;
-    &lt;/init-param&gt;
   &lt;/filter&gt;</font>
   &lt;filter-mapping&gt;
     &lt;filter-name&gt;encodingfilter&lt;/filter-name&gt;
@@ -274,7 +270,7 @@ portlet-class には org.seasar.struts.portlet.SAStrutsPortlet を指定しま�
 </p>
 <pre>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;portlet-app id="pal-wcm" version="1.0" 
+&lt;portlet-app version="1.0" 
     xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd
@@ -351,6 +347,7 @@ war ファイルをポータルに配備して、ポートレットとして利�
 
 <h3><a name="news">NEWS</a></h3>
 <ul>
+  <li>2009/12/06 SAStrutsポートレット 1.0.2 をリリースしました。<a href="http://maven.seasar.org/maven2/org/seasar/sastruts/sa-struts-portlet/1.0.2/">こちら</a></li>
   <li>2009/10/24 SAStrutsポートレット 1.0.1 をリリースしました。<a href="http://maven.seasar.org/maven2/org/seasar/sastruts/sa-struts-portlet/1.0.1/">こちら</a></li>
   <li>2009/02/13 SAStrutsポートレット 1.0.0 をリリースしました。<a href="http://maven.seasar.org/maven2/org/seasar/sastruts/sa-struts-portlet/1.0.0/">こちら</a></li>
   <li>2008/12/31 SAStrutsポートレット 1.0.0-rc5 をリリースしました。<a href="http://maven.seasar.org/maven2/org/seasar/sastruts/sa-struts-portlet/1.0.0-rc5/">こちら</a></li>
