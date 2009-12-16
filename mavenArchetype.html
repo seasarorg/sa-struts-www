@@ -127,6 +127,10 @@ mvn archetype:generate -DarchetypeRepository=https://www.seasar.org/maven/maven2
         <td>Maven DBFlute Plugin の設定をするかどうか。デフォルト値は false。(ex. -Duse-dbflute=true)</td>
     </tr>
     <tr>
+        <td>use-mobylet</td>
+        <td>mobylet 用の設定ファイルを生成するかどうか。デフォルト値は false。(ex. -Duse-mobylet=true)</td>
+    </tr>
+    <tr>
         <td>use-portlet</td>
         <td>ポートレット用の設定ファイルを生成するかどうか。デフォルト値は false。(ex. -Duse-portlet=true)</td>
     </tr>
@@ -135,10 +139,10 @@ mvn archetype:generate -DarchetypeRepository=https://www.seasar.org/maven/maven2
 <h3><a name="Use">利用方法</a></h3>
 <p>
 archetype:generate ゴール実行後、通常のウェブアプリケーションの Maven 2 プロジェクトと同様に扱えます。
-mvn install を実行すると、target ディレクトリ以下に war ファイルが生成されます。
+mvn package を実行すると、target ディレクトリ以下に war ファイルが生成されます。
 </p>
 <pre>
-$ mvn install
+$ mvn package
 </pre>
 <p>
 ご利用のアプリケーションサーバに配備して利用してください。
