@@ -155,12 +155,29 @@ archetype:generate で生成した SAStruts プロジェクトを Eclipse で利
 $ mvn eclipse:eclipse
 </pre>
 <p>
-実行後、設定ファイルなどが自動生成されるので、Eclipse で外部プロジェクトで読むことが可能になります。
+実行後、設定ファイル (.project と .classpath) が自動生成されるので、Eclipse で外部プロジェクトで読むことが可能になります。
 </p>
 <p>
 Tomcat プラグインを利用している場合は、プロジェクトプロパティで Tomcat プラグインを有効にして、src/main/webapp をウェブアプリケーションのルートとして設定してください。
 src/main/webapp/WEB-INF/lib に必要な jar が保存されているので、Eclipse 上から HOT deploy 開発を行うことができます。
 </p>
+<p>
+Eclipse でプロジェクトの読み込み後、mvn clean や mvn package などを実行した場合は、再度 mvn eclipse:eclipse を実行してください。
+それらの mvn コマンドを実行すると、Tomcat プラグインで起動して利用する上で必要な src/main/webapp/WEB-INF/lib が削除されます。
+mvn eclipse:eclipse を再度実行することで、src/main/webapp/WEB-INF/lib が生成されます。
+</p>
+<p>
+Eclipse 上にプロジェクトを読み込んで、Tomcat プラグインで Tomcat を起動して利用する手順をまとめると以下になります。
+生成したウェブアプリケーションが起動しない場合は再度、以下の手順を確認してください。
+</p>
+<ol>
+<li>mvn eclipse:eclipse を実行</li>
+<li>(Eclipseに読み込んでいなければ) Eclipse にプロジェクトとして読み込み</li>
+<li>Eclipse 上でプロジェクトをリフレッシュ</li>
+<li>Eclipse 上でプロジェクトをクリーン・ビルド (自動ビルドにしておくとクリーンのみ)</li>
+<li>src/main/webapp/WEB-INF の lib と classes が生成されていることを確認</li>
+<li>Tomcat を起動</li>
+</ol>
 
 </div><!-- section -->
 
